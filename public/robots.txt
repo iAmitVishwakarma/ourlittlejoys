@@ -1,0 +1,8 @@
+# robots.txt for Little Joys (ourlittlejoys.com)
+User-agent: *
+Allow: /
+Disallow: /checkout/
+Disallow: /profile/
+Disallow: /wallet-recharge/
+
+Sitemap: https://ourlittlejoys.com/sitemap.xml
