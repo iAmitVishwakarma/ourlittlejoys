@@ -33,7 +33,7 @@ export const cartService = {
   async getUserCart(userId) {
     if (!userId) return [];
     try {
-      const res = await apiClient.get('/cart', { userId });
+      const res = await apiClient.get('/cart', { params: { userId } });
       if (res.success && Array.isArray(res.data)) {
         saveLocalUserCart(userId, res.data);
         return res.data;
@@ -51,8 +51,12 @@ export const cartService = {
     if (!userId) throw new Error('Authentication required to add to cart');
 
     const currentItems = await this.getUserCart(userId);
+    const targetId = String(product.id || product.productId || '');
+    const targetSlug = String(product.slug || '');
     const existingIndex = currentItems.findIndex(
-      (item) => item.productId === (product.id || product.productId) || item.id === product.id
+      (item) =>
+        (targetId && (String(item.productId) === targetId || String(item.id) === targetId)) ||
+        (targetSlug && String(item.slug || '') === targetSlug)
     );
 
     let updatedItems = [];
@@ -72,7 +76,7 @@ export const cartService = {
       const newCartItem = {
         id: `cart_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
         userId,
-        productId: product.id || product.slug || 'prod',
+        productId: String(product.id || product.slug || 'prod'),
         title: product.title || product.name,
         price: product.price,
         originalPrice: product.originalPrice || product.mrp || product.price,
@@ -97,21 +101,22 @@ export const cartService = {
   async updateQuantity(userId, cartItemIdOrSlug, newQty) {
     if (!userId) return [];
     const currentItems = await this.getUserCart(userId);
+    const target = String(cartItemIdOrSlug);
 
     let updatedItems = [];
     if (newQty <= 0) {
       updatedItems = currentItems.filter(
-        (i) => i.id !== cartItemIdOrSlug && i.productId !== cartItemIdOrSlug && i.slug !== cartItemIdOrSlug
+        (i) => String(i.id) !== target && String(i.productId) !== target && String(i.slug || '') !== target
       );
-      await apiClient.delete(`/cart/${cartItemIdOrSlug}`).catch(() => {});
+      await apiClient.delete(`/cart/${target}`).catch(() => {});
     } else {
       updatedItems = currentItems.map((item) => {
-        if (item.id === cartItemIdOrSlug || item.productId === cartItemIdOrSlug || item.slug === cartItemIdOrSlug) {
+        if (String(item.id) === target || String(item.productId) === target || String(item.slug || '') === target) {
           return { ...item, quantity: newQty };
         }
         return item;
       });
-      await apiClient.patch(`/cart/${cartItemIdOrSlug}`, { quantity: newQty }).catch(() => {});
+      await apiClient.patch(`/cart/${target}`, { quantity: newQty }).catch(() => {});
     }
 
     saveLocalUserCart(userId, updatedItems);

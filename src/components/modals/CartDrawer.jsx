@@ -1,17 +1,42 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { 
+  calculateSubtotal, 
+  calculateMrpTotal, 
+  calculateDiscount, 
+  calculateShipping, 
+  calculateOrderTotal, 
+  FREE_SHIPPING_THRESHOLD 
+} from '@/utils/pricing';
 
-export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
+import { useCartStore } from '@/stores/cartStore';
+
+export default function CartDrawer({ 
+  isOpen, 
+  onClose, 
+  cartItems: propCartItems, 
+  onUpdateQuantity: propOnUpdateQuantity, 
+  onRemoveItem: propOnRemoveItem 
+}) {
   const navigate = useNavigate();
+  const storeCartItems = useCartStore((s) => s.cartItems);
+  const storeUpdateQuantity = useCartStore((s) => s.updateQuantity);
+  const storeRemoveItem = useCartStore((s) => s.removeFromCart);
+
+  const cartItems = propCartItems ?? storeCartItems;
+  const onUpdateQuantity = propOnUpdateQuantity ?? storeUpdateQuantity;
+  const onRemoveItem = propOnRemoveItem ?? storeRemoveItem;
+
   if (!isOpen) return null;
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const totalSavings = cartItems.reduce((acc, item) => {
-    const orig = item.originalPrice || item.price;
-    return acc + (orig - item.price) * item.quantity;
-  }, 0);
-  const deliveryFee = subtotal > 499 || subtotal === 0 ? 0 : 50;
+  const subtotal = calculateSubtotal(cartItems);
+  const mrpTotal = calculateMrpTotal(cartItems);
+  const totalSavings = calculateDiscount(mrpTotal, subtotal);
+  const deliveryFee = calculateShipping(subtotal);
+  const totalAmount = calculateOrderTotal({ items: cartItems });
+  const hasFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -48,13 +73,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
           {/* Delivery Promo Banner */}
           <div className="bg-emerald-50 px-6 py-2.5 border-b border-emerald-100 flex items-center justify-between text-xs text-emerald-800 font-semibold">
-            {subtotal >= 499 ? (
+            {hasFreeShipping ? (
               <span className="flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-emerald-600" />
                 Yay! You unlocked <strong>FREE Shipping</strong>!
               </span>
             ) : (
-              <span>Add ₹{499 - subtotal} more to get FREE shipping!</span>
+              <span>Add ₹{amountToFreeShipping} more to get FREE shipping!</span>
             )}
           </div>
 
@@ -148,7 +173,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                 </div>
                 <div className="pt-2 border-t border-slate-100 flex justify-between font-black text-base text-slate-900">
                   <span>Total Amount</span>
-                  <span>₹{subtotal + deliveryFee}</span>
+                  <span>₹{totalAmount}</span>
                 </div>
               </div>
 

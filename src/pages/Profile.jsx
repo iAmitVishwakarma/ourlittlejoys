@@ -29,6 +29,7 @@ import {
   Phone,
   Mail,
   X,
+  ArrowRight,
 } from "lucide-react";
 
 export default function Profile({ defaultTab }) {

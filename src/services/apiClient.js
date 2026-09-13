@@ -140,10 +140,20 @@ export const apiClient = {
 
   /**
    * HTTP GET Request
+   * Supports both flat query objects ({ userId: '123' }) and standard axios config ({ params: { userId: '123' } })
    */
-  async get(endpoint, params = {}, config = {}) {
+  async get(endpoint, paramsOrConfig = {}, config = {}) {
+    const isConfigWithParams =
+      paramsOrConfig &&
+      typeof paramsOrConfig === 'object' &&
+      'params' in paramsOrConfig;
+
+    const requestConfig = isConfigWithParams
+      ? { ...paramsOrConfig, ...config }
+      : { ...config, params: paramsOrConfig };
+
     return executeRequest(() =>
-      axiosInstance.get(endpoint, { ...config, params })
+      axiosInstance.get(endpoint, requestConfig)
     );
   },
 

@@ -73,14 +73,18 @@ export const useWishlistStore = create(
        */
       removeFromWishlist: async (productIdOrSlug) => {
         const userId = get().activeUserId;
+        const target = String(productIdOrSlug);
         set((state) => ({
           wishlistItems: state.wishlistItems.filter(
-            (item) => item.id !== productIdOrSlug && item.slug !== productIdOrSlug && item.productId !== productIdOrSlug
+            (item) =>
+              String(item.id) !== target &&
+              String(item.slug || '') !== target &&
+              String(item.productId || '') !== target
           )
         }));
 
         if (userId) {
-          await wishlistService.removeFromWishlist(userId, productIdOrSlug);
+          await wishlistService.removeFromWishlist(userId, target);
         }
       },
 

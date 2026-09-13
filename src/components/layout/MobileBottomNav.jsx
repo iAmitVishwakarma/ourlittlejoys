@@ -1,13 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuthStore } from '@/stores/authStore';
 import { Home, ShoppingBag, ShoppingCart, User } from 'lucide-react';
 
 export default function MobileBottomNav({ onOpenAuth }) {
-  const cartItems = useCartStore((s) => s.cartItems);
-  const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const location = useLocation();
+  const cartCount = useCartStore((s) => s.cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0));
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  // Hide MobileBottomNav completely on all checkout screens to prevent mobile CTA clipping (F-2.1)
+  if (location.pathname.startsWith('/checkout')) {
+    return null;
+  }
 
   const handleProfileClick = (e) => {
     if (!isAuthenticated && onOpenAuth) {

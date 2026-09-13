@@ -33,7 +33,7 @@ export const useCheckoutStore = create(
 
         // Also fetch user-scoped orders
         try {
-          const res = await apiClient.get('/orders', { userId });
+          const res = await apiClient.get('/orders', { params: { userId } });
           if (res.success && Array.isArray(res.data)) {
             set({ orders: res.data });
           }
@@ -43,7 +43,7 @@ export const useCheckoutStore = create(
       },
 
       // Address Selection
-      selectAddress: (id) => set({ selectedAddressId: id }),
+      selectAddress: (id) => set({ selectedAddressId: id ? String(id) : null }),
 
       // Add Address
       addAddress: async (addressData) => {
@@ -53,7 +53,7 @@ export const useCheckoutStore = create(
         
         set({
           savedAddresses: updated,
-          selectedAddressId: newlyAdded?.id || updated[0]?.id
+          selectedAddressId: newlyAdded?.id ? String(newlyAdded.id) : (updated[0]?.id ? String(updated[0].id) : null)
         });
 
         return newlyAdded?.id || updated[0]?.id;
@@ -62,12 +62,13 @@ export const useCheckoutStore = create(
       // Update Address
       updateAddress: async (id, updatedData) => {
         const userId = get().activeUserId;
+        const targetId = String(id);
         if (userId) {
-          const updated = await addressService.updateAddress(userId, id, updatedData);
+          const updated = await addressService.updateAddress(userId, targetId, updatedData);
           set({ savedAddresses: updated });
         } else {
           set((state) => ({
-            savedAddresses: state.savedAddresses.map((a) => (a.id === id ? { ...a, ...updatedData } : a))
+            savedAddresses: state.savedAddresses.map((a) => (String(a.id) === targetId ? { ...a, ...updatedData } : a))
           }));
         }
       },
@@ -75,10 +76,11 @@ export const useCheckoutStore = create(
       // Remove Address
       removeAddress: async (id) => {
         const userId = get().activeUserId;
-        const remaining = get().savedAddresses.filter((a) => a.id !== id);
+        const targetId = String(id);
+        const remaining = get().savedAddresses.filter((a) => String(a.id) !== targetId);
         let nextSelectedId = get().selectedAddressId;
-        if (get().selectedAddressId === id) {
-          nextSelectedId = remaining[0]?.id || null;
+        if (String(get().selectedAddressId) === targetId) {
+          nextSelectedId = remaining[0]?.id ? String(remaining[0].id) : null;
         }
 
         set({
@@ -87,23 +89,24 @@ export const useCheckoutStore = create(
         });
 
         if (userId) {
-          await addressService.deleteAddress(userId, id);
+          await addressService.deleteAddress(userId, targetId);
         }
       },
 
       // Set Default Address
       setDefaultAddress: async (id) => {
         const userId = get().activeUserId;
+        const targetId = String(id);
         const updated = get().savedAddresses.map((a) => ({
           ...a,
-          isDefault: a.id === id
+          isDefault: String(a.id) === targetId
         }));
         set({
           savedAddresses: updated,
-          selectedAddressId: id
+          selectedAddressId: targetId
         });
         if (userId) {
-          await addressService.updateAddress(userId, id, { isDefault: true });
+          await addressService.updateAddress(userId, targetId, { isDefault: true });
         }
       },
 
@@ -133,6 +136,18 @@ export const useCheckoutStore = create(
         }));
 
         return newOrder;
+      },
+
+      /**
+       * Reset draft payment & checkout step state after successful order (F-3.2)
+       */
+      clearActiveCheckoutDraft: () => {
+        set({
+          paymentMethod: 'UPI',
+          upiApp: 'GPAY',
+          customUpiId: '',
+          useWalletBalance: false
+        });
       },
 
       /**

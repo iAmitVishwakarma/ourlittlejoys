@@ -54,13 +54,13 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
                 {/* Step Item */}
                 <div 
                   onClick={() => isClickable && navigate(step.path)}
-                  className={`flex items-center gap-1 sm:gap-2 select-none transition-all ${
+                  className={`flex items-center gap-1 sm:gap-2 shrink-0 select-none transition-all ${
                     isClickable ? 'cursor-pointer group' : 'cursor-default'
                   }`}
                 >
                   {/* Step Bubble */}
                   <div
-                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black transition-all ${
+                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full shrink-0 flex items-center justify-center text-[11px] sm:text-xs font-black transition-all ${
                       isCompleted
                         ? 'bg-[#13805B] text-white shadow-xs group-hover:scale-105'
                         : isCurrent
@@ -75,9 +75,9 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
                     )}
                   </div>
 
-                  {/* Step Title */}
+                  {/* Step Title: Hidden on screens < sm (640px) to prevent wrapping and squishing at 320px-375px (F-2.2) */}
                   <span
-                    className={`text-[11px] sm:text-xs md:text-sm tracking-tight transition-colors ${
+                    className={`hidden sm:inline-block text-[11px] sm:text-xs md:text-sm tracking-tight whitespace-nowrap transition-colors ${
                       isCurrent
                         ? 'font-black text-slate-900'
                         : isCompleted
@@ -91,7 +91,7 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
 
                 {/* Connecting Line */}
                 {idx < steps.length - 1 && (
-                  <div className="flex-1 max-w-[20px] sm:max-w-[45px] h-[2px]">
+                  <div className="flex-1 min-w-[8px] max-w-[20px] sm:max-w-[45px] h-[2px] shrink-0">
                     <div
                       className={`h-full rounded-full transition-all duration-300 ${
                         idx < currentIndex ? 'bg-[#13805B]' : 'bg-slate-200'

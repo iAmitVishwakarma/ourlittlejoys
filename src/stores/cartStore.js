@@ -35,8 +35,12 @@ export const useCartStore = create(
 
         // Optimistic update
         set((state) => {
+          const targetId = String(product.id || product.productId || '');
+          const targetSlug = String(product.slug || '');
           const existingIndex = state.cartItems.findIndex(
-            (item) => item.id === product.id || item.productId === product.id || item.slug === product.slug
+            (item) =>
+              (targetId && (String(item.id) === targetId || String(item.productId) === targetId)) ||
+              (targetSlug && String(item.slug || '') === targetSlug)
           );
 
           if (existingIndex > -1) {
@@ -49,8 +53,8 @@ export const useCartStore = create(
           }
 
           const newItem = {
-            id: product.id || `cart_${Date.now()}`,
-            productId: product.id || product.slug,
+            id: String(product.id || `cart_${Date.now()}`),
+            productId: String(product.id || product.slug || 'prod'),
             title: product.title || product.name,
             price: product.price,
             originalPrice: product.originalPrice || product.mrp || product.price,
@@ -75,6 +79,7 @@ export const useCartStore = create(
        */
       updateQuantity: async (id, newQty) => {
         const userId = get().activeUserId;
+        const targetId = String(id);
         if (newQty <= 0) {
           get().removeFromCart(id);
           return;
@@ -82,14 +87,14 @@ export const useCartStore = create(
 
         set((state) => ({
           cartItems: state.cartItems.map((item) =>
-            item.id === id || item.productId === id || item.slug === id
+            String(item.id) === targetId || String(item.productId) === targetId || (item.slug && String(item.slug) === targetId)
               ? { ...item, quantity: newQty }
               : item
           )
         }));
 
         if (userId) {
-          await cartService.updateQuantity(userId, id, newQty);
+          await cartService.updateQuantity(userId, targetId, newQty);
         }
       },
 
@@ -98,14 +103,18 @@ export const useCartStore = create(
        */
       removeFromCart: async (id) => {
         const userId = get().activeUserId;
+        const targetId = String(id);
         set((state) => ({
           cartItems: state.cartItems.filter(
-            (item) => item.id !== id && item.productId !== id && item.slug !== id
+            (item) =>
+              String(item.id) !== targetId &&
+              String(item.productId) !== targetId &&
+              (!item.slug || String(item.slug) !== targetId)
           )
         }));
 
         if (userId) {
-          await cartService.removeFromCart(userId, id);
+          await cartService.removeFromCart(userId, targetId);
         }
       },
 

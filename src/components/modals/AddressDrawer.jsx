@@ -114,11 +114,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
           role="dialog"
           aria-modal="true"
           aria-labelledby="address-drawer-title"
-          className="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full animate-in slide-in-from-right duration-300"
+          className="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full max-h-[90dvh] sm:max-h-screen my-auto sm:my-0 rounded-t-3xl sm:rounded-none animate-in slide-in-from-right duration-300 overflow-hidden"
         >
           
           {/* Drawer Header */}
-          <div className="p-5 sm:p-6 border-b border-orange-100 flex items-center justify-between bg-gradient-to-r from-orange-50/40 to-white">
+          <div className="p-5 sm:p-6 border-b border-orange-100 flex items-center justify-between bg-gradient-to-r from-orange-50/40 to-white shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-[#13805B] flex items-center justify-center border border-emerald-200/60">
                 <MapPin className="w-5 h-5" />
@@ -142,8 +142,8 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
             </button>
           </div>
 
-          {/* Drawer Form Body (Scrollable) */}
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
+          {/* Drawer Form Body (Scrollable with virtual keyboard tolerance) */}
+          <form id="address-drawer-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
             
             {/* Contact Details Group */}
             <div className="space-y-3">
@@ -336,26 +336,27 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
               </label>
             </div>
 
-            {/* Footer Buttons inside drawer */}
-            <div className="pt-4 border-t border-slate-100 flex gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 py-3 px-4 rounded-full border border-slate-300 text-slate-700 font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition-colors"
-              >
-                Cancel
-              </button>
-
-              <button
-                type="submit"
-                className="flex-1 py-3 px-4 rounded-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5"
-              >
-                <Check className="w-4 h-4 stroke-[3]" />
-                <span>Save Address</span>
-              </button>
-            </div>
-
           </form>
+
+          {/* Fixed Pinned Footer Action Buttons (Keyboard Safe & pb-safe) */}
+          <div className="p-4 sm:p-5 border-t border-slate-100 bg-white shrink-0 flex gap-3 pb-safe">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-3 px-4 rounded-full border border-slate-300 text-slate-700 font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              form="address-drawer-form"
+              className="flex-1 py-3 px-4 rounded-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Check className="w-4 h-4 stroke-[3]" />
+              <span>Save Address</span>
+            </button>
+          </div>
 
         </div>
       </div>

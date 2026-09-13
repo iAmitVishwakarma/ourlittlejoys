@@ -63,7 +63,7 @@ export const addressService = {
     // 2. Development json-server query fallback
     if (activeUid) {
       try {
-        const res = await apiClient.get('/addresses', { userId: activeUid });
+        const res = await apiClient.get('/addresses', { params: { userId: activeUid } });
         if (res.success && Array.isArray(res.data) && res.data.length > 0) {
           saveLocalAddresses(activeUid, res.data);
           return res.data;

@@ -23,12 +23,11 @@ import {
 export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAccount }) {
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const logout = useAuthStore((s) => s.logout);
-  const cartItems = useCartStore((s) => s.cartItems);
-  const wishlistItems = useWishlistStore((s) => s.wishlistItems);
   
-  const ctxCartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  // Fine-grained primitive selectors to avoid navbar re-renders when item attributes change (F-5.2)
+  const ctxCartCount = useCartStore((s) => s.cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0));
   const effectiveCartCount = cartCount || ctxCartCount || 0;
+  const wishlistCount = useWishlistStore((s) => (s.wishlistItems || []).length);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -201,12 +200,12 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                 state={!isAuthenticated ? { from: { pathname: '/wishlist' } } : undefined}
                 className="relative p-2 text-slate-700 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors flex items-center justify-center min-w-[38px] min-h-[38px]"
                 title="My Wishlist"
-                aria-label={`Wishlist with ${wishlistItems.length} items`}
+                aria-label={`Wishlist with ${wishlistCount} items`}
               >
                 <Heart className="w-4 h-4" />
-                {wishlistItems.length > 0 && (
+                {wishlistCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-in zoom-in-50">
-                    {wishlistItems.length}
+                    {wishlistCount}
                   </span>
                 )}
               </Link>
@@ -265,9 +264,9 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                             <Heart className="w-4 h-4 text-slate-400" />
                             <span>Wishlist</span>
                           </div>
-                          {wishlistItems.length > 0 && (
+                          {wishlistCount > 0 && (
                             <span className="bg-rose-100 text-rose-600 text-[10px] font-black px-1.5 py-0.5 rounded-full">
-                              {wishlistItems.length}
+                              {wishlistCount}
                             </span>
                           )}
                         </Link>
@@ -421,7 +420,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                   <span>My Wishlist</span>
                 </div>
                 <span className="bg-rose-500 text-white font-black text-[11px] px-2 py-0.5 rounded-full">
-                  {wishlistItems.length} items
+                  {wishlistCount} items
                 </span>
               </Link>
 

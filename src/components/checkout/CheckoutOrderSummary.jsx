@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { useCartDerived } from '@/stores/cartStore';
 import { useCheckoutStore } from '@/stores/checkoutStore';
+import { calculateOrderPricing, calculateItemTotal } from '@/utils/pricing';
 import { ShieldCheck, Truck, ChevronDown, Tag } from 'lucide-react';
 
 export default function CheckoutOrderSummary({ showItemsList = true }) {
-  const { cartItems, mrpTotal, mrpSavings, couponDiscount, appliedCoupon, deliveryFee, totalPayable } = useCartDerived();
+  const { cartItems, appliedCoupon } = useCartDerived();
   const { useWalletBalance, walletBalance } = useCheckoutStore();
 
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
-  // Calculate final payable considering wallet if applied
-  const walletDeduction = useWalletBalance ? Math.min(walletBalance, totalPayable) : 0;
-  const finalPayable = Math.max(0, totalPayable - walletDeduction);
+  // Derive all pricing deterministically through the pure calculation engine (F-2.1)
+  const pricing = calculateOrderPricing({
+    items: cartItems,
+    coupon: appliedCoupon,
+    walletBalance,
+    useWallet: useWalletBalance
+  });
+
+  const {
+    mrpTotal,
+    mrpSavings,
+    discount: couponDiscount,
+    shipping: deliveryFee,
+    walletDeduction,
+    finalTotal: finalPayable,
+    totalSavings
+  } = pricing;
 
   return (
     <div className="bg-white rounded-3xl p-5 sm:p-6 border border-orange-100 shadow-sm space-y-4">
@@ -59,7 +74,7 @@ export default function CheckoutOrderSummary({ showItemsList = true }) {
                   </div>
                 </div>
                 <span className="text-xs font-black text-slate-900 shrink-0">
-                  ₹{item.price * item.quantity}
+                  ₹{calculateItemTotal(item.price, item.quantity)}
                 </span>
               </div>
             ))}
@@ -126,10 +141,10 @@ export default function CheckoutOrderSummary({ showItemsList = true }) {
         </div>
 
         {/* Total Savings Pill */}
-        {mrpSavings + couponDiscount > 0 && (
+        {totalSavings > 0 && (
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 text-center">
             <p className="text-xs font-black text-emerald-800">
-              🎉 You are saving ₹{mrpSavings + couponDiscount} on this order!
+              🎉 You are saving ₹{totalSavings} on this order!
             </p>
           </div>
         )}

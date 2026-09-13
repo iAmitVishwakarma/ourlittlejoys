@@ -13,12 +13,9 @@ import {
   CreditCard, 
   Wallet, 
   ShieldCheck, 
-  ArrowRight, 
-  Check, 
   Smartphone, 
   Banknote, 
   Lock,
-  Sparkles,
   Loader2
 } from 'lucide-react';
 
@@ -28,7 +25,7 @@ export default function PaymentStep() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isLoading = useAuthStore((s) => s.isLoading);
 
-  const { cartItems, totalPayable } = useCartDerived();
+  const { cartItems } = useCartDerived();
   const clearCart = useCartStore((s) => s.clearCart);
   const { 
     savedAddresses, 
@@ -40,7 +37,6 @@ export default function PaymentStep() {
     customUpiId,
     setCustomUpiId,
     useWalletBalance,
-    toggleUseWallet,
     walletBalance,
     createOrder 
   } = useCheckoutStore();
@@ -89,7 +85,6 @@ export default function PaymentStep() {
     walletBalance,
     useWallet: useWalletBalance
   });
-  const walletDeduction = orderPricing.walletDeduction;
   const finalPayable = orderPricing.finalTotal;
 
   const handlePlaceOrder = async () => {

@@ -24,7 +24,17 @@ import {
 
 export default function OrderSuccessStep() {
   const navigate = useNavigate();
-  const { lastOrder, orders } = useCheckoutStore();
+  const { lastOrder, orders, clearActiveCheckoutDraft } = useCheckoutStore();
+
+  // Reset active checkout step & replace browser history entry so pressing Back does not return to payment submission (F-3.2)
+  useEffect(() => {
+    if (typeof clearActiveCheckoutDraft === 'function') {
+      clearActiveCheckoutDraft();
+    }
+    if (typeof window !== 'undefined' && window.history?.replaceState) {
+      window.history.replaceState(null, '', window.location.href);
+    }
+  }, [clearActiveCheckoutDraft]);
 
   // Active order is either lastOrder or the latest in orders list
   const activeOrder = lastOrder || orders[0] || {
@@ -206,6 +216,7 @@ export default function OrderSuccessStep() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <Link
             to="/orders"
+            replace
             className="w-full sm:w-auto bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-4 px-8 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
           >
             <span>View Orders &amp; Track</span>
@@ -214,6 +225,7 @@ export default function OrderSuccessStep() {
 
           <Link
             to="/shop/all"
+            replace
             className="w-full sm:w-auto bg-white hover:bg-orange-50/60 text-slate-800 border-2 border-slate-200 font-black py-4 px-8 rounded-full text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2"
           >
             <ShoppingBag className="w-4 h-4" />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCartStore, useCartDerived, VALID_COUPONS } from '@/stores/cartStore';
-import { calculateItemTotal, SHIPPING_THRESHOLD } from '@/utils/pricing';
+import { calculateItemTotal, FREE_SHIPPING_THRESHOLD } from '@/utils/pricing';
 import { CROSS_SELL_PRODUCTS } from '@/data/products';
 import ProductVisual from '@/components/product/ProductVisual';
 import SEO from '@/components/common/SEO';
@@ -47,6 +47,8 @@ export default function Cart() {
 
   const [couponInput, setCouponInput] = useState('');
   const [couponMessage, setCouponMessage] = useState(null);
+
+  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   const handleApplyCoupon = (codeToApply) => {
     const code = codeToApply || couponInput;
@@ -442,7 +444,7 @@ export default function Cart() {
 
                 {deliveryFee > 0 && (
                   <p className="text-[11px] text-slate-400">
-                    Add ₹{SHIPPING_THRESHOLD - subtotal} more for <strong>FREE Delivery</strong>
+                    Add ₹{freeShippingRemaining} more for <strong>FREE Delivery</strong>
                   </p>
                 )}
 

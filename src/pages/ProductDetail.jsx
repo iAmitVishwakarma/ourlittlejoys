@@ -21,6 +21,7 @@ import {
 import { useCartStore } from '@/stores/cartStore';
 import { useWishlistStore } from '@/stores/wishlistStore';
 import { useAuthStore } from '@/stores/authStore';
+import { sanitizeInput } from '@/utils';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import SEO from '@/components/common/SEO';
 import { ProductDetailSkeleton } from '@/components/common/Skeleton';
@@ -85,6 +86,30 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [showShareToast, setShowShareToast] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [reviewComment, setReviewComment] = useState('');
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+
+  const handleReviewSubmit = (e) => {
+    e?.preventDefault?.();
+    const cleanTitle = sanitizeInput(reviewTitle);
+    const cleanComment = sanitizeInput(reviewComment);
+
+    if (!cleanTitle && !cleanComment) {
+      alert('Please enter a review title or comment.');
+      return;
+    }
+
+    setReviewSubmitted(true);
+    setTimeout(() => {
+      setReviewSubmitted(false);
+      setShowReviewModal(false);
+      setReviewTitle('');
+      setReviewComment('');
+      setReviewRating(5);
+    }, 1200);
+  };
   const [openFaq, setOpenFaq] = useState(0);
   const [selectedThumbnail, setSelectedThumbnail] = useState(0);
   const [showStickyBar, setShowStickyBar] = useState(false);
@@ -1569,7 +1594,18 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <label className="text-xs font-bold text-slate-700 block mb-1">Your Rating</label>
                 <div className="flex gap-2 text-amber-400">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="w-6 h-6 fill-amber-400 cursor-pointer hover:scale-110 transition-transform" />
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setReviewRating(s)}
+                      className="focus:outline-none cursor-pointer"
+                    >
+                      <Star
+                        className={`w-6 h-6 transition-transform hover:scale-110 ${
+                          s <= reviewRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300'
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -1578,6 +1614,8 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <label className="text-xs font-bold text-slate-700 block mb-1">Review Title</label>
                 <input
                   type="text"
+                  value={reviewTitle}
+                  onChange={(e) => setReviewTitle(e.target.value)}
                   placeholder="e.g. My child loves the chocolate taste!"
                   className="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#13805B]"
                 />
@@ -1587,19 +1625,24 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <label className="text-xs font-bold text-slate-700 block mb-1">Your Review</label>
                 <textarea
                   rows="4"
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
                   placeholder="Share how this product helped your child's daily nutrition routine..."
                   className="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#13805B]"
                 />
               </div>
 
               <button
-                onClick={() => {
-                  alert("Thank you! Your verified review has been submitted for moderation.");
-                  setShowReviewModal(false);
-                }}
-                className="w-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
+                type="button"
+                onClick={handleReviewSubmit}
+                disabled={reviewSubmitted}
+                className="w-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 disabled:opacity-70 flex items-center justify-center gap-2 cursor-pointer"
               >
-                Submit Review
+                {reviewSubmitted ? (
+                  <span>Thank You! Review Submitted ✓</span>
+                ) : (
+                  <span>Submit Review</span>
+                )}
               </button>
             </div>
           </div>

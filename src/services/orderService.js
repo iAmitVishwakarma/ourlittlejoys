@@ -113,9 +113,9 @@ export const orderService = {
       // json-server fallback
     }
 
-    // 2. Development json-server query fallback
+    // 2. Development json-server query fallback (Standardized query parameters)
     if (activeUid) {
-      return apiClient.get('/orders', { userId: activeUid });
+      return apiClient.get('/orders', { params: { userId: activeUid } });
     }
 
     return { success: true, data: [] };

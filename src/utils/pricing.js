@@ -9,9 +9,12 @@
  * ============================================================================
  */
 
-export const SHIPPING_THRESHOLD = 499;
-export const DEFAULT_DELIVERY_FEE = 49;
-export const DEFAULT_TAX_RATE = 0.05; // 5% GST inclusive / computed
+export const FREE_SHIPPING_THRESHOLD = 499;
+export const SHIPPING_THRESHOLD = FREE_SHIPPING_THRESHOLD;
+export const STANDARD_SHIPPING_FEE = 49;
+export const DEFAULT_DELIVERY_FEE = STANDARD_SHIPPING_FEE;
+export const TAX_RATE = 0.05; // 5% GST rate
+export const DEFAULT_TAX_RATE = TAX_RATE;
 
 /**
  * Calculates item subtotal: price * quantity
@@ -23,7 +26,7 @@ export function calculateItemTotal(price, quantity = 1) {
 }
 
 /**
- * Calculates cart subtotal across all active items
+ * Calculates cart subtotal across all active items (sum of price * quantity)
  */
 export function calculateSubtotal(items = []) {
   if (!Array.isArray(items)) return 0;
@@ -40,17 +43,29 @@ export function calculateSubtotal(items = []) {
 export function calculateMrpTotal(items = []) {
   if (!Array.isArray(items)) return 0;
   return items.reduce((sum, item) => {
-    const mrp = Number(item.originalPrice) || Number(item.price) || 0;
+    const mrp = Number(item.originalPrice) || Number(item.mrp) || Number(item.price) || 0;
     const quantity = Math.max(1, Number(item.quantity) || 1);
     return sum + mrp * quantity;
   }, 0);
 }
 
 /**
- * Calculates delivery / shipping surcharge
- * Free shipping if subtotal is zero or exceeds threshold (default: ₹499)
+ * Calculates total discount (mrpSavings + couponSavings)
+ * Returns positive savings number
  */
-export function calculateShipping(subtotal, threshold = SHIPPING_THRESHOLD, deliveryFee = DEFAULT_DELIVERY_FEE) {
+export function calculateDiscount(mrpTotal, subtotal, coupon = null) {
+  const safeMrp = Math.max(0, Number(mrpTotal) || 0);
+  const safeSubtotal = Math.max(0, Number(subtotal) || 0);
+  const mrpSavings = Math.max(0, safeMrp - safeSubtotal);
+  const couponDiscount = calculateCouponDiscount(safeSubtotal, coupon);
+  return mrpSavings + couponDiscount;
+}
+
+/**
+ * Calculates delivery / shipping surcharge
+ * Returns 0 if subtotal is zero or exceeds threshold (default: ₹499), else STANDARD_SHIPPING_FEE (₹49)
+ */
+export function calculateShipping(subtotal, threshold = FREE_SHIPPING_THRESHOLD, deliveryFee = STANDARD_SHIPPING_FEE) {
   const safeSubtotal = Number(subtotal) || 0;
   if (safeSubtotal <= 0) return 0;
   return safeSubtotal >= threshold ? 0 : deliveryFee;
@@ -59,7 +74,7 @@ export function calculateShipping(subtotal, threshold = SHIPPING_THRESHOLD, deli
 /**
  * Calculates estimated tax (GST) for subtotal
  */
-export function calculateTax(subtotal, taxRate = DEFAULT_TAX_RATE) {
+export function calculateTax(subtotal, taxRate = 0) {
   const safeSubtotal = Number(subtotal) || 0;
   if (safeSubtotal <= 0) return 0;
   return Math.round(safeSubtotal * taxRate);
@@ -141,15 +156,41 @@ export function calculateOrderPricing({
   };
 }
 
+/**
+ * Calculates final order total considering items, coupon, and applied wallet deduction
+ */
+export function calculateOrderTotal({
+  items = [],
+  coupon = null,
+  walletAppliedAmount = 0,
+  threshold = FREE_SHIPPING_THRESHOLD,
+  deliveryFee = STANDARD_SHIPPING_FEE,
+  taxRate = 0
+} = {}) {
+  const subtotal = calculateSubtotal(items);
+  if (subtotal === 0) return 0;
+  const discount = calculateCouponDiscount(subtotal, coupon);
+  const shipping = calculateShipping(subtotal, threshold, deliveryFee);
+  const tax = calculateTax(subtotal, taxRate);
+  const netBeforeWallet = Math.max(0, subtotal - discount + shipping + tax);
+  return Math.max(0, netBeforeWallet - Math.max(0, Number(walletAppliedAmount) || 0));
+}
+
 export default {
   calculateItemTotal,
   calculateSubtotal,
   calculateMrpTotal,
+  calculateDiscount,
   calculateShipping,
   calculateTax,
   calculateCouponDiscount,
   calculateOrderPricing,
+  calculateOrderTotal,
+  FREE_SHIPPING_THRESHOLD,
   SHIPPING_THRESHOLD,
+  STANDARD_SHIPPING_FEE,
   DEFAULT_DELIVERY_FEE,
+  TAX_RATE,
   DEFAULT_TAX_RATE
 };
+
