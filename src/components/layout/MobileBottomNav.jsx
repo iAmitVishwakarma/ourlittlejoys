@@ -14,13 +14,6 @@ export default function MobileBottomNav({ onOpenAuth }) {
     return null;
   }
 
-  const handleProfileClick = (e) => {
-    if (!isAuthenticated && onOpenAuth) {
-      e.preventDefault();
-      onOpenAuth();
-    }
-  };
-
   return (
     <nav 
       aria-label="Mobile Bottom Navigation"
@@ -90,11 +83,11 @@ export default function MobileBottomNav({ onOpenAuth }) {
           <span className="text-[10px] tracking-tight">Cart</span>
         </NavLink>
 
-        {/* Profile */}
+        {/* Profile / Login */}
         <NavLink
-          to="/profile"
+          to={isAuthenticated ? "/profile" : "/login"}
+          state={!isAuthenticated ? { from: { pathname: '/profile' } } : undefined}
           aria-label={isAuthenticated ? 'Parent Account' : 'Log in to account'}
-          onClick={handleProfileClick}
           className={({ isActive }) =>
             `flex flex-col items-center justify-center min-w-12 min-h-12 py-1 px-2.5 rounded-xl transition-all ${
               isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
