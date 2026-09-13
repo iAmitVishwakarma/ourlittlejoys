@@ -36,6 +36,7 @@ const AboutUs = React.lazy(() => import("./pages/AboutUs"));
 const WalletRecharge = React.lazy(() => import("./pages/WalletRecharge"));
 const Cart = React.lazy(() => import("./pages/Cart"));
 const Profile = React.lazy(() => import("./pages/Profile"));
+const Wishlist = React.lazy(() => import("./pages/Wishlist"));
 const Login = React.lazy(() => import("./pages/Login"));
 const FAQPage = React.lazy(() =>
   import("./pages/StaticPages").then((m) => ({ default: m.FAQPage })),
@@ -162,7 +163,7 @@ function AppContent() {
               path="/wishlist"
               element={
                 <ProtectedRoute>
-                  <Profile defaultTab="wishlist" />
+                  <Wishlist />
                 </ProtectedRoute>
               }
             />

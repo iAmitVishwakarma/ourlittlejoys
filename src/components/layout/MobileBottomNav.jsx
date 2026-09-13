@@ -32,7 +32,7 @@ export default function MobileBottomNav({ onOpenAuth }) {
           to="/"
           aria-label="Home"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+            `flex flex-col items-center justify-center min-w-12 min-h-12 py-1 px-2.5 rounded-xl transition-all ${
               isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
@@ -46,7 +46,7 @@ export default function MobileBottomNav({ onOpenAuth }) {
           to="/shop/all"
           aria-label="Shop Products"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+            `flex flex-col items-center justify-center min-w-12 min-h-12 py-1 px-2.5 rounded-xl transition-all ${
               isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
@@ -60,8 +60,8 @@ export default function MobileBottomNav({ onOpenAuth }) {
           to="/honest-report"
           aria-label="Honest Lab Reports"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
-              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
+            `flex flex-col items-center justify-center min-w-12 min-h-12 py-2.5 px-2.5  transition-all ${
+              isActive ? 'bg-pink-600 rounded-full scale-120 -translate-y-1 font-extrabold' : 'text-slate-600 rounded-xl hover:text-slate-900 font-bold'
             }`
           }
         >
@@ -74,7 +74,7 @@ export default function MobileBottomNav({ onOpenAuth }) {
           to="/cart"
           aria-label={`Shopping cart with ${cartCount} items`}
           className={({ isActive }) =>
-            `relative flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+            `relative flex flex-col items-center justify-center min-w-12 min-h-12 py-1 px-2.5 rounded-xl transition-all ${
               isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
@@ -96,7 +96,7 @@ export default function MobileBottomNav({ onOpenAuth }) {
           aria-label={isAuthenticated ? 'Parent Account' : 'Log in to account'}
           onClick={handleProfileClick}
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+            `flex flex-col items-center justify-center min-w-12 min-h-12 py-1 px-2.5 rounded-xl transition-all ${
               isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }

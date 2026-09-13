@@ -99,7 +99,7 @@ export default function CartDrawer({
               </div>
             ) : (
               cartItems.map((item) => (
-                <div key={item.id} className="flex gap-4 p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/70">
+                <div key={item.id} className="flex gap-4 p-4 rounded-2xl bg-brand-cream border border-orange-100/70">
                   <div className="w-16 h-16 rounded-xl bg-white flex items-center justify-center text-3xl border border-slate-100 shrink-0">
                     {item.imageIcon || '🥣'}
                   </div>
@@ -110,7 +110,7 @@ export default function CartDrawer({
                       <button
                         onClick={() => onRemoveItem(item.id)}
                         aria-label={`Remove ${item.title} from cart`}
-                        className="text-slate-400 hover:text-red-500 transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center cursor-pointer"
+                        className="text-slate-400 hover:text-red-500 transition-colors min-w-9 min-h-9 flex items-center justify-center cursor-pointer"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

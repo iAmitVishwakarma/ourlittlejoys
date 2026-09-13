@@ -62,6 +62,16 @@ export function calculateDiscount(mrpTotal, subtotal, coupon = null) {
 }
 
 /**
+ * Calculates percentage discount between MRP/original price and selling price
+ */
+export function calculateDiscountPercentage(originalPrice, sellingPrice) {
+  const orig = Number(originalPrice) || 0;
+  const sell = Number(sellingPrice) || 0;
+  if (orig <= 0 || sell >= orig) return 0;
+  return Math.round(((orig - sell) / orig) * 100);
+}
+
+/**
  * Calculates delivery / shipping surcharge
  * Returns 0 if subtotal is zero or exceeds threshold (default: ₹499), else STANDARD_SHIPPING_FEE (₹49)
  */
@@ -181,6 +191,7 @@ export default {
   calculateSubtotal,
   calculateMrpTotal,
   calculateDiscount,
+  calculateDiscountPercentage,
   calculateShipping,
   calculateTax,
   calculateCouponDiscount,

@@ -6,7 +6,7 @@ import { productService } from '@/services/productService';
 import { useCartStore } from '@/stores/cartStore';
 import SEO from '@/components/common/SEO';
 
-import { ShoppingBag, Filter, Sparkles, ArrowRight, Check, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, Filter, Sparkles, ArrowRight, Check, ShieldCheck, X, Search } from 'lucide-react';
 import { RainbowDoodle, SunDoodle, MiniStarCluster } from '@/components/graphics/KidsDoodles';
 
 const CATEGORY_SLUG_MAP = {
@@ -65,11 +65,13 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
     };
   }, []);
 
+  const searchQuery = (searchParams.get('search') || '').trim();
+
   useEffect(() => {
     setIsFiltering(true);
     const timer = setTimeout(() => setIsFiltering(false), 240);
     return () => clearTimeout(timer);
-  }, [selectedCategory, selectedAge, sortBy]);
+  }, [selectedCategory, selectedAge, sortBy, searchQuery]);
 
   const categories = [
     "All",
@@ -121,17 +123,34 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
     }
   };
 
-  // Filter and Sort Products
+  // Filter and Sort Products (incorporating category, age, sort, and search query)
   const filteredProducts = useMemo(() => {
     const list = Array.isArray(catalogProducts) ? catalogProducts : [];
+    const normalizedSearch = searchQuery.toLowerCase();
+
     return list.filter((item) => {
-      // Category filter
+      // 1. Search filter
+      if (normalizedSearch) {
+        const titleMatch = (item.title || item.name || '').toLowerCase().includes(normalizedSearch);
+        const descMatch = (item.description || '').toLowerCase().includes(normalizedSearch);
+        const catMatch = (item.category || item.subCategory || '').toLowerCase().includes(normalizedSearch);
+        const tagMatch = (item.tag || '').toLowerCase().includes(normalizedSearch);
+        const flavorMatch = (item.flavor || '').toLowerCase().includes(normalizedSearch);
+        const benefitMatch = Array.isArray(item.benefits) && item.benefits.some((b) => b.toLowerCase().includes(normalizedSearch));
+        const ingredientMatch = Array.isArray(item.ingredients) && item.ingredients.some((i) => i.toLowerCase().includes(normalizedSearch));
+
+        if (!titleMatch && !descMatch && !catMatch && !tagMatch && !flavorMatch && !benefitMatch && !ingredientMatch) {
+          return false;
+        }
+      }
+
+      // 2. Category filter
       if (selectedCategory === 'New Launches' && !item.isNewLaunch) return false;
       if (selectedCategory !== 'All' && selectedCategory !== 'New Launches' && item.category !== selectedCategory) {
         return false;
       }
 
-      // Age filter
+      // 3. Age filter
       if (selectedAge !== 'All') {
         if (selectedAge === 'Moms' && item.ageGroup !== 'Moms') return false;
         if (selectedAge !== 'Moms' && item.ageGroup !== selectedAge && !(item.age || '').includes(selectedAge)) {
@@ -146,7 +165,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
       if (sortBy === 'rating') return parseFloat(b.rating || 0) - parseFloat(a.rating || 0);
       return 0; // Default popularity
     });
-  }, [catalogProducts, selectedCategory, selectedAge, sortBy]);
+  }, [catalogProducts, selectedCategory, selectedAge, sortBy, searchQuery]);
 
   const totalCartCount = effectiveCartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
   const totalCartAmount = effectiveCartItems.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
@@ -362,31 +381,82 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
 
       {/* Products Grid */}
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
-        <div className="flex justify-between items-center mb-6">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Showing <strong className="text-slate-800">{filteredProducts.length}</strong> items in "{selectedCategory}"
-          </p>
-          {selectedAge !== 'All' && (
-            <button
-              onClick={() => setSelectedAge('All')}
-              aria-label="Clear age filter"
-              className="text-xs text-pink-600 hover:underline font-bold min-h-[40px] px-2"
-            >
-              Clear Age Filter
-            </button>
-          )}
+        <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <div className="flex flex-wrap items-center gap-2">
+            {searchQuery && (
+              <span className="inline-flex items-center gap-1.5 bg-pink-100 text-pink-700 text-xs font-black px-3 py-1 rounded-full border border-pink-200">
+                <Search className="w-3.5 h-3.5" />
+                <span>Results for: "{searchQuery}"</span>
+                <button
+                  onClick={() => {
+                    setSearchParams((prev) => {
+                      const next = new URLSearchParams(prev);
+                      next.delete('search');
+                      return next;
+                    });
+                  }}
+                  className="hover:text-pink-900 cursor-pointer ml-1"
+                  aria-label="Clear search"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </span>
+            )}
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Showing <strong className="text-slate-800">{filteredProducts.length}</strong> items {selectedCategory !== 'All' ? `in "${selectedCategory}"` : ''}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {selectedAge !== 'All' && (
+              <button
+                onClick={() => setSelectedAge('All')}
+                aria-label="Clear age filter"
+                className="text-xs text-pink-600 hover:underline font-bold min-h-[36px] px-2 cursor-pointer"
+              >
+                Clear Age Filter
+              </button>
+            )}
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchParams((prev) => {
+                    const next = new URLSearchParams(prev);
+                    next.delete('search');
+                    return next;
+                  });
+                }}
+                className="text-xs text-slate-500 hover:text-slate-800 font-bold min-h-[36px] px-2 cursor-pointer underline"
+              >
+                View All Products
+              </button>
+            )}
+          </div>
         </div>
 
         {isFiltering ? (
           <ProductGridSkeleton count={8} />
         ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-orange-100 p-8">
+          <div className="text-center py-16 md:py-20 bg-white rounded-3xl border border-orange-100 p-8 shadow-2xs max-w-lg mx-auto my-8">
             <div className="text-5xl mb-4" aria-hidden="true">🔍</div>
-            <h2 className="text-lg font-black text-slate-800 mb-2">No products found for this filter</h2>
-            <p className="text-sm text-slate-500 mb-6">Try selecting "All" or a different age group.</p>
+            <h2 className="text-lg font-black text-slate-800 mb-2">
+              {searchQuery
+                ? `No products found for "${searchQuery}"`
+                : 'No products found for this filter'}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mb-6 max-w-sm mx-auto">
+              {searchQuery
+                ? "We couldn't find any products matching your search. Try checking your spelling or searching for 'Nutrimix', 'Gummies', or 'Protein'."
+                : 'Try selecting "All" or a different age group.'}
+            </p>
             <button
-              onClick={() => { setSelectedCategory('All'); setSelectedAge('All'); }}
-              className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3 min-h-[44px] rounded-full text-xs uppercase tracking-wider"
+              onClick={() => {
+                setSelectedCategory('All');
+                setSelectedAge('All');
+                setSearchParams({});
+              }}
+              className="bg-[#FF2F92] hover:bg-pink-600 active:scale-98 text-white font-black px-6 py-3 min-h-[44px] rounded-full text-xs uppercase tracking-wider shadow-xs transition-all cursor-pointer"
             >
               Reset All Filters
             </button>

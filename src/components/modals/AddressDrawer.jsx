@@ -118,7 +118,7 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
         >
           
           {/* Drawer Header */}
-          <div className="p-5 sm:p-6 border-b border-orange-100 flex items-center justify-between bg-gradient-to-r from-orange-50/40 to-white shrink-0">
+          <div className="p-5 sm:p-6 border-b border-orange-100 flex items-center justify-between bg-linear-to-r from-orange-50/40 to-white shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-[#13805B] flex items-center justify-center border border-emerald-200/60">
                 <MapPin className="w-5 h-5" />
@@ -353,7 +353,7 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
               form="address-drawer-form"
               className="flex-1 py-3 px-4 rounded-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Check className="w-4 h-4 stroke-[3]" />
+              <Check className="w-4 h-4 stroke-3" />
               <span>Save Address</span>
             </button>
           </div>

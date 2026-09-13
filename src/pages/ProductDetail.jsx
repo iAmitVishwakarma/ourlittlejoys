@@ -342,10 +342,10 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   }
 
   return (
-    <div className="bg-[#FFF9F5] min-h-screen pb-24 pt-4 md:pt-6">
+    <div className="bg-brand-cream min-h-screen pb-24 pt-4 md:pt-6">
       {/* 🚀 DESKTOP STICKY ADD-TO-CART BAR (Top) */}
       {showStickyBar && (
-        <div className="hidden md:block fixed top-[74px] md:top-[82px] left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-md py-2.5 px-4 animate-in slide-in-from-top duration-300">
+        <div className="hidden md:block fixed top-18.5 md:top-20.5 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-md py-2.5 px-4 animate-in slide-in-from-top duration-300">
           <div className="container mx-auto max-w-6xl flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               <img 
@@ -372,7 +372,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 onClick={handleAdd}
                 className="bg-[#13805B] hover:bg-[#0E6346] text-white text-xs font-black px-7 py-2.5 rounded-full uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center gap-1.5"
               >
-                {addedAnimation ? <Check className="w-4 h-4 stroke-[3]" /> : <ShoppingBag className="w-4 h-4" />}
+                {addedAnimation ? <Check className="w-4 h-4 stroke-3" /> : <ShoppingBag className="w-4 h-4" />}
                 <span>{addedAnimation ? 'ADDED TO BAG' : 'ADD TO BAG'}</span>
               </button>
             </div>
@@ -390,7 +390,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <span className="text-xs text-slate-400 line-through">₹{currentPack.mrp}</span>
               )}
             </div>
-            <span className="text-[10px] text-slate-500 font-semibold block truncate max-w-[140px]">
+            <span className="text-[10px] text-slate-500 font-semibold block truncate max-w-35">
               {currentPack.label}
             </span>
           </div>
@@ -399,7 +399,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             onClick={handleAdd}
             className="bg-[#13805B] active:bg-[#0E6346] text-white text-xs font-black px-6 py-3 rounded-full uppercase tracking-wider shadow-lg shadow-[#13805B]/30 flex items-center gap-1.5 shrink-0"
           >
-            {addedAnimation ? <Check className="w-4 h-4 stroke-[3]" /> : <ShoppingBag className="w-4 h-4" />}
+            {addedAnimation ? <Check className="w-4 h-4 stroke-3" /> : <ShoppingBag className="w-4 h-4" />}
             <span>{addedAnimation ? 'ADDED!' : 'ADD TO BAG'}</span>
           </button>
         </div>
@@ -438,7 +438,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               {product.category}
             </Link>
             <span>/</span>
-            <span className="text-slate-900 font-bold truncate max-w-[180px] sm:max-w-none">
+            <span className="text-slate-900 font-bold truncate max-w-45 sm:max-w-none">
               {product.title}
             </span>
           </div>
@@ -465,7 +465,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
           {/* Left Column: Product Gallery */}
           <div className="lg:col-span-6 flex flex-col items-center">
             {/* Big Main Image Showcase */}
-            <div className="relative w-full aspect-square max-w-md bg-gradient-to-tr from-[#FFF9F5] via-white to-amber-50/40 rounded-3xl p-6 flex items-center justify-center border border-orange-100 shadow-inner overflow-hidden group">
+            <div className="relative w-full aspect-square max-w-md bg-linear-to-tr from-brand-cream via-white to-amber-50/40 rounded-3xl p-6 flex items-center justify-center border border-orange-100 shadow-inner overflow-hidden group">
               <ResponsiveImage
                 src={galleryImages[selectedThumbnail]}
                 alt={product.title}
@@ -559,7 +559,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             </div>
 
             {/* Price & Savings Block */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FFF9F5] to-orange-50/50 border border-orange-200/80 flex items-baseline justify-between gap-3">
+            <div className="p-4 rounded-2xl bg-linear-to-r from-brand-cream to-orange-50/50 border border-orange-200/80 flex items-baseline justify-between gap-3">
               <div>
                 <div className="flex items-baseline gap-2.5">
                   <span className="text-3xl sm:text-4xl font-black text-slate-900">
@@ -577,7 +577,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   )}
                 </div>
                 <p className="text-xs font-bold text-emerald-700 mt-1 flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>You save ₹{currentPack.mrp - currentPack.price} on this pack</span>
                 </p>
               </div>
@@ -623,7 +623,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                       {/* Selected Indicator Pill */}
                       {isSelected && (
                         <span className="absolute -top-2 left-2 bg-[#13805B] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider flex items-center gap-0.5">
-                          <Check className="w-2.5 h-2.5 stroke-[3]" /> Selected
+                          <Check className="w-2.5 h-2.5 stroke-3" /> Selected
                         </span>
                       )}
 
@@ -696,7 +696,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 >
                   {addedAnimation ? (
                     <>
-                      <Check className="w-4 h-4 stroke-[3]" />
+                      <Check className="w-4 h-4 stroke-3" />
                       <span>ADDED TO BAG!</span>
                     </>
                   ) : (
@@ -740,7 +740,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
               {pincodeStatus.checked && (
                 <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50/70 p-2 rounded-xl border border-emerald-200/60">
-                  <Check className="w-3.5 h-3.5 stroke-[3] text-emerald-600 shrink-0" />
+                  <Check className="w-3.5 h-3.5 stroke-3 text-emerald-600 shrink-0" />
                   <span>Delivery by <strong>{pincodeStatus.deliveryDate}</strong> • Free Express Shipping</span>
                 </div>
               )}
@@ -852,7 +852,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
         {/* 4. FREQUENTLY BOUGHT TOGETHER (ONE-CLICK CONVERTING COMBO) */}
         <section className="py-6">
-          <div className="bg-gradient-to-r from-emerald-50/90 via-white to-amber-50/90 rounded-3xl p-6 sm:p-8 border border-emerald-200/90 shadow-xs">
+          <div className="bg-linear-to-r from-emerald-50/90 via-white to-amber-50/90 rounded-3xl p-6 sm:p-8 border border-emerald-200/90 shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-500" />
@@ -923,7 +923,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   onClick={handleAddBundle}
                   className="w-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5"
                 >
-                  {bundleAdded ? <Check className="w-4 h-4 stroke-[3]" /> : <Plus className="w-4 h-4" />}
+                  {bundleAdded ? <Check className="w-4 h-4 stroke-3" /> : <Plus className="w-4 h-4" />}
                   <span>{bundleAdded ? 'ADDED BOTH TO BAG!' : 'ADD BOTH TO BAG (1-CLICK)'}</span>
                 </button>
               </div>
@@ -933,7 +933,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
         {/* 5. "HEALTHY HABITS START HERE..." & 4-STEP DAILY ROUTINE GUIDE (Right after purchase) */}
         <section className="py-6">
-          <div className="relative text-center bg-gradient-to-b from-amber-50/70 via-white to-orange-50/40 rounded-3xl p-6 sm:p-8 border border-orange-200/80 mb-6 shadow-xs overflow-hidden">
+          <div className="relative text-center bg-linear-to-b from-amber-50/70 via-white to-orange-50/40 rounded-3xl p-6 sm:p-8 border border-orange-200/80 mb-6 shadow-xs overflow-hidden">
             {/* Playful Floating Sun & Stars */}
             <SunDoodle className="w-9 h-9 text-amber-400 absolute top-4 left-6 hidden sm:block animate-pulse" />
             <MiniStarCluster className="text-amber-400 absolute top-5 right-8 hidden sm:inline-flex" />
@@ -1044,27 +1044,27 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
             {/* 5 Clean Ingredient Cards with Bigger Titles */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 text-center">
-              <div className="bg-[#FFF9F5] p-4 rounded-2xl border border-orange-100">
+              <div className="bg-brand-cream p-4 rounded-2xl border border-orange-100">
                 <span className="text-3xl block mb-2">🌾</span>
                 <span className="text-sm font-black text-slate-900 block">Sprouted Ragi</span>
                 <span className="text-xs text-slate-500 font-medium mt-0.5 block">High Calcium</span>
               </div>
-              <div className="bg-[#FFF9F5] p-4 rounded-2xl border border-orange-100">
+              <div className="bg-brand-cream p-4 rounded-2xl border border-orange-100">
                 <span className="text-3xl block mb-2">🍫</span>
                 <span className="text-sm font-black text-slate-900 block">Real Cocoa</span>
                 <span className="text-xs text-slate-500 font-medium mt-0.5 block">Brain Polyphenols</span>
               </div>
-              <div className="bg-[#FFF9F5] p-4 rounded-2xl border border-orange-100">
+              <div className="bg-brand-cream p-4 rounded-2xl border border-orange-100">
                 <span className="text-3xl block mb-2">🍯</span>
                 <span className="text-sm font-black text-slate-900 block">Dhampur Jaggery</span>
                 <span className="text-xs text-slate-500 font-medium mt-0.5 block">Zero White Sugar</span>
               </div>
-              <div className="bg-[#FFF9F5] p-4 rounded-2xl border border-orange-100">
+              <div className="bg-brand-cream p-4 rounded-2xl border border-orange-100">
                 <span className="text-3xl block mb-2">🥣</span>
                 <span className="text-sm font-black text-slate-900 block">Pearl Millet</span>
                 <span className="text-xs text-slate-500 font-medium mt-0.5 block">Iron &amp; Energy</span>
               </div>
-              <div className="bg-[#FFF9F5] p-4 rounded-2xl border border-orange-100 col-span-2 sm:col-span-1">
+              <div className="bg-brand-cream p-4 rounded-2xl border border-orange-100 col-span-2 sm:col-span-1">
                 <span className="text-3xl block mb-2">🥜</span>
                 <span className="text-sm font-black text-slate-900 block">Almonds &amp; Walnuts</span>
                 <span className="text-xs text-slate-500 font-medium mt-0.5 block">Healthy Brain Fats</span>
@@ -1181,7 +1181,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <>
                   <div 
                     onClick={() => setOpenScienceAccordion(openScienceAccordion === 0 ? null : 0)}
-                    className="p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
+                    className="p-4 rounded-2xl bg-brand-cream border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2.5">
@@ -1199,7 +1199,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
                   <div 
                     onClick={() => setOpenScienceAccordion(openScienceAccordion === 1 ? null : 1)}
-                    className="p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
+                    className="p-4 rounded-2xl bg-brand-cream border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2.5">
@@ -1217,7 +1217,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
                   <div 
                     onClick={() => setOpenScienceAccordion(openScienceAccordion === 2 ? null : 2)}
-                    className="p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
+                    className="p-4 rounded-2xl bg-brand-cream border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2.5">
@@ -1237,7 +1237,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <>
                   <div 
                     onClick={() => setOpenScienceAccordion(openScienceAccordion === 0 ? null : 0)}
-                    className="p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
+                    className="p-4 rounded-2xl bg-brand-cream border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2.5">
@@ -1255,7 +1255,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
                   <div 
                     onClick={() => setOpenScienceAccordion(openScienceAccordion === 1 ? null : 1)}
-                    className="p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
+                    className="p-4 rounded-2xl bg-brand-cream border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2.5">
@@ -1273,7 +1273,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
                   <div 
                     onClick={() => setOpenScienceAccordion(openScienceAccordion === 2 ? null : 2)}
-                    className="p-4 rounded-2xl bg-[#FFF9F5] border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
+                    className="p-4 rounded-2xl bg-brand-cream border border-orange-100/90 cursor-pointer hover:border-orange-300 transition-all"
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2.5">
@@ -1325,7 +1325,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
               {/* Rating Summary Block */}
               <div className="flex items-center gap-6">
-                <div className="text-center bg-[#FFF9F5] p-5 rounded-3xl border border-orange-100 shrink-0">
+                <div className="text-center bg-brand-cream p-5 rounded-3xl border border-orange-100 shrink-0">
                   <span className="text-4xl sm:text-5xl font-black text-slate-900 block">
                     {product.rating}
                   </span>
@@ -1478,7 +1478,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               const inCart = (cartItems || []).find((c) => c.id === p.id || c.slug === p.slug);
               return (
                 <div key={p.id} className="bg-white rounded-3xl p-3.5 sm:p-4 border border-orange-100 flex flex-col justify-between shadow-2xs hover:shadow-md transition-shadow">
-                  <Link to={`/product/${p.slug}`} className="block h-36 sm:h-44 bg-[#FFF9F5] rounded-2xl overflow-hidden p-2 mb-2">
+                  <Link to={`/product/${p.slug}`} className="block h-36 sm:h-44 bg-brand-cream rounded-2xl overflow-hidden p-2 mb-2">
                     <img src={p.image} alt={p.title} className="w-full h-full object-contain hover:scale-105 transition-transform" />
                   </Link>
 

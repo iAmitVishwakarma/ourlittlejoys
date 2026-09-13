@@ -66,7 +66,7 @@ export default function PaymentStep() {
   // If no items in cart, redirect back
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FFF9F5] py-12 px-4">
+      <div className="min-h-screen bg-brand-cream py-12 px-4">
         <SEO title="Checkout - Cart Empty | Little Joys" description="Your shopping cart is currently empty." />
         <div className="container mx-auto max-w-lg text-center bg-white rounded-3xl p-8 border border-orange-100 shadow-sm space-y-4">
           <h1 className="text-xl font-black text-slate-900">Your Cart is Empty</h1>
@@ -124,7 +124,7 @@ export default function PaymentStep() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF9F5] pb-24 md:pb-16">
+    <div className="min-h-screen bg-brand-cream pb-24 md:pb-16">
       <SEO title="Checkout - Payment Method | Little Joys" description="Complete payment securely for your Little Joys order." />
       {/* 1. Myntra-Style Step Navigation */}
       <CheckoutStepper currentStep="payment" />

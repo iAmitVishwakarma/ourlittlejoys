@@ -62,7 +62,7 @@ export default function OrderSuccessStep() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF9F5] pb-24 md:pb-16">
+    <div className="min-h-screen bg-brand-cream pb-24 md:pb-16">
       <SEO 
         title="Order Confirmed | Little Joys"
         description="Your Little Joys order has been placed successfully and is being packed with love."

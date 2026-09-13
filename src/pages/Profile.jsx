@@ -4,11 +4,10 @@ import { useAuthStore } from "../stores/authStore";
 import { useCartStore } from "../stores/cartStore";
 import { useWishlistStore } from "../stores/wishlistStore";
 import { resetAppSession } from "@/utils/session";
-import ProductVisual from "@/components/product/ProductVisual";
 import SEO from "@/components/common/SEO";
 import ChildCharacterIllustration from "@/components/graphics/ChildCharacterIllustration";
 import { HeartDoodle, SunDoodle, MiniStarCluster } from "@/components/graphics/KidsDoodles";
-import { OrderCardSkeleton, TableSkeleton } from "@/components/common/Skeleton";
+import { OrderCardSkeleton } from "@/components/common/Skeleton";
 import ProfileDetailsTab from "./profile/tabs/ProfileDetailsTab";
 import ChildProfileTab from "./profile/tabs/ChildProfileTab";
 import OrdersTab from "./profile/tabs/OrdersTab";
@@ -37,13 +36,15 @@ export default function Profile({ defaultTab }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const login = useAuthStore((s) => s.login);
   const updateChildProfile = useAuthStore((s) => s.updateChildProfile);
+  const updateProfile = useAuthStore((s) => s.updateProfile);
   const addToCart = useCartStore((s) => s.addToCart);
   const wishlistItems = useWishlistStore((s) => s.wishlistItems);
-  const removeFromWishlist = useWishlistStore((s) => s.removeFromWishlist);
   const navigate = useNavigate();
 
-  // Active dashboard tab: 'orders' | 'profile' | 'addresses' | 'wallet' | 'wishlist' | 'settings'
-  const [activeTab, setActiveTab] = useState(defaultTab || "orders");
+  // Active dashboard tab: 'orders' | 'profile' | 'addresses' | 'wallet' | 'settings'
+  const [activeTab, setActiveTab] = useState(
+    defaultTab && defaultTab !== "wishlist" ? defaultTab : "orders",
+  );
   const [isTabLoading, setIsTabLoading] = useState(false);
 
   const handleTabSelect = (tabKey) => {
@@ -54,7 +55,7 @@ export default function Profile({ defaultTab }) {
   };
 
   useEffect(() => {
-    if (defaultTab) {
+    if (defaultTab && defaultTab !== "wishlist") {
       handleTabSelect(defaultTab);
     }
   }, [defaultTab]);
@@ -242,6 +243,11 @@ export default function Profile({ defaultTab }) {
     showToast("Child profile updated!", `${childName}'s nutrition roadmap refreshed.`);
   };
 
+  const handleSaveParentProfile = async (updatedData) => {
+    await updateProfile?.(updatedData);
+    showToast("Parent profile updated! 🎉", "Your profile details have been saved.");
+  };
+
   // Interactive "Buy Again" action at product level
   const handleBuyAgain = (item) => {
     addToCart({
@@ -283,7 +289,7 @@ export default function Profile({ defaultTab }) {
   // If NOT logged in, show sleek login view with 1-click Demo Login
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-[#FFF9F5]">
+      <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-brand-cream">
         <SEO
           title="Parent Account Login | Little Joys"
           description="Sign in to your Little Joys account to track orders, manage your child's nutrition profile, and view your LJ Wallet."
@@ -339,17 +345,17 @@ export default function Profile({ defaultTab }) {
 
               <button
                 type="submit"
-                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-[44px]"
+                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-11"
               >
                 Send OTP
               </button>
 
               <div className="relative flex py-1 items-center">
-                <div className="flex-grow border-t border-slate-200"></div>
-                <span className="flex-shrink mx-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <div className="grow border-t border-slate-200"></div>
+                <span className="shrink mx-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                   Or Instant Review
                 </span>
-                <div className="flex-grow border-t border-slate-200"></div>
+                <div className="grow border-t border-slate-200"></div>
               </div>
 
               <button
@@ -398,7 +404,7 @@ export default function Profile({ defaultTab }) {
 
               <button
                 type="submit"
-                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-[44px]"
+                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-11"
               >
                 Verify &amp; Login
               </button>
@@ -416,7 +422,7 @@ export default function Profile({ defaultTab }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-3 md:pt-5 font-sans selection:bg-pink-100 selection:text-pink-600">
+    <div className="min-h-screen bg-brand-cream pb-24 pt-3 md:pt-5 font-sans selection:bg-pink-100 selection:text-pink-600">
       <SEO
         title="Parent Account & Orders | Little Joys"
         description="Manage your Little Joys orders, child nutrition profile, saved delivery addresses, and LJ Wallet."
@@ -455,7 +461,7 @@ export default function Profile({ defaultTab }) {
             1. TOP PROFILE WELCOME BANNER (With Child Illustration & Wallet Card)
            ========================================================================= */}
         <section 
-          className="relative bg-gradient-to-r from-[#FFF4EE] via-[#FFF9F5] to-[#FFF6E9] rounded-3xl p-6 sm:p-7 md:p-8 border border-orange-100/90 shadow-xs overflow-hidden"
+          className="relative bg-linear-to-r from-[#FFF4EE] via-brand-cream to-[#FFF6E9] rounded-3xl p-6 sm:p-7 md:p-8 border border-orange-100/90 shadow-xs overflow-hidden"
           aria-label="Parent welcome banner"
         >
           {/* Subtle Ambient Decorative Doodles */}
@@ -472,7 +478,7 @@ export default function Profile({ defaultTab }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-1 min-w-0">
               {/* Initial Avatar */}
               <div 
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-[#FF2F92] via-pink-500 to-rose-400 text-white font-black text-2xl sm:text-3xl flex items-center justify-center shadow-md shadow-pink-500/20 border-3 border-white shrink-0"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-tr from-[#FF2F92] via-pink-500 to-rose-400 text-white font-black text-2xl sm:text-3xl flex items-center justify-center shadow-md shadow-pink-500/20 border-3 border-white shrink-0"
                 aria-label="Parent avatar"
               >
                 {initialLetter}
@@ -486,7 +492,7 @@ export default function Profile({ defaultTab }) {
                     {currentUserName}
                   </h1>
                   <span className="inline-flex items-center gap-1 text-[11px] font-extrabold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                    <Check className="w-3 h-3 stroke-[3]" />
+                    <Check className="w-3 h-3 stroke-3" />
                     <span>Verified Parent</span>
                   </span>
                 </div>
@@ -541,7 +547,7 @@ export default function Profile({ defaultTab }) {
 
               <Link
                 to="/wallet-recharge"
-                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs py-2.5 px-4 rounded-xl shadow-xs transition-transform active:scale-98 flex items-center justify-center gap-1.5"
+                className="w-full bg-linear-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs py-2.5 px-4 rounded-xl shadow-xs transition-transform active:scale-98 flex items-center justify-center gap-1.5"
               >
                 <span>Recharge &amp; Get 30% Extra</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -579,29 +585,25 @@ export default function Profile({ defaultTab }) {
             </div>
           </button>
 
-          {/* Stat 2: Wishlist */}
-          <button
-            onClick={() => setActiveTab("wishlist")}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all ${
-              activeTab === "wishlist"
-                ? "bg-white border-pink-300 shadow-xs ring-2 ring-pink-100"
-                : "bg-white border-slate-200/70 hover:border-slate-300 shadow-2xs"
-            }`}
+          {/* Stat 2: Wishlist (Dedicated Page Link) */}
+          <Link
+            to="/wishlist"
+            className="p-3.5 sm:p-4 rounded-2xl border text-left transition-all bg-white border-slate-200/70 hover:border-pink-300 hover:shadow-xs shadow-2xs group"
           >
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 border border-rose-100">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 border border-rose-100 group-hover:bg-rose-100 transition-colors">
                 <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
                 <span className="text-xs sm:text-sm font-black text-slate-900 block truncate">
-                  {wishlistItems.length || 4} Wishlist
+                  {wishlistItems.length} Wishlist
                 </span>
-                <span className="text-[10px] sm:text-xs text-slate-400 font-medium block truncate">
-                  Saved favorites
+                <span className="text-[10px] sm:text-xs text-slate-400 font-medium block truncate group-hover:text-pink-600 transition-colors">
+                  Saved favorites &rarr;
                 </span>
               </div>
             </div>
-          </button>
+          </Link>
 
           {/* Stat 3: Wallet */}
           <button
@@ -653,7 +655,7 @@ export default function Profile({ defaultTab }) {
                 role="tab"
                 aria-selected={activeTab === "orders"}
                 onClick={() => handleTabSelect("orders")}
-                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
+                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "orders"
                     ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
                     : "text-slate-700 hover:bg-orange-50/60"
@@ -677,7 +679,7 @@ export default function Profile({ defaultTab }) {
                 role="tab"
                 aria-selected={activeTab === "profile"}
                 onClick={() => handleTabSelect("profile")}
-                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
+                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "profile"
                     ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
                     : "text-slate-700 hover:bg-orange-50/60"
@@ -695,7 +697,7 @@ export default function Profile({ defaultTab }) {
                 role="tab"
                 aria-selected={activeTab === "addresses"}
                 onClick={() => handleTabSelect("addresses")}
-                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
+                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "addresses"
                     ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
                     : "text-slate-700 hover:bg-orange-50/60"
@@ -713,7 +715,7 @@ export default function Profile({ defaultTab }) {
                 role="tab"
                 aria-selected={activeTab === "wallet"}
                 onClick={() => handleTabSelect("wallet")}
-                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
+                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "wallet"
                     ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
                     : "text-slate-700 hover:bg-orange-50/60"
@@ -732,36 +734,12 @@ export default function Profile({ defaultTab }) {
                 </span>
               </button>
 
-              {/* 5. My Wishlist */}
-              <button
-                role="tab"
-                aria-selected={activeTab === "wishlist"}
-                onClick={() => handleTabSelect("wishlist")}
-                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
-                  activeTab === "wishlist"
-                    ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
-                    : "text-slate-700 hover:bg-orange-50/60"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Heart className={`w-4 h-4 ${activeTab === "wishlist" ? "text-white" : "text-slate-500"}`} />
-                  <span>My Wishlist</span>
-                </div>
-                <span
-                  className={`text-[11px] font-black px-2 py-0.5 rounded-full ${
-                    activeTab === "wishlist" ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
-                  }`}
-                >
-                  {wishlistItems.length}
-                </span>
-              </button>
-
-              {/* 6. Account Settings */}
+              {/* 5. Account Settings */}
               <button
                 role="tab"
                 aria-selected={activeTab === "settings"}
                 onClick={() => handleTabSelect("settings")}
-                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
+                className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "settings"
                     ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
                     : "text-slate-700 hover:bg-orange-50/60"
@@ -844,6 +822,7 @@ export default function Profile({ defaultTab }) {
                       userPhone={currentUserPhone}
                       userEmail={currentUserEmail}
                       childName={currentChildName}
+                      onSaveParentProfile={handleSaveParentProfile}
                     />
                   </div>
                 )}
@@ -880,85 +859,7 @@ export default function Profile({ defaultTab }) {
                 )}
 
             {/* ---------------------------------------------------------------------
-                TAB 5: MY WISHLIST
-               --------------------------------------------------------------------- */}
-            {activeTab === "wishlist" && (
-              <div className="space-y-5">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                    Saved Wishlist ({wishlistItems.length})
-                  </h2>
-                  <Link
-                    to="/shop/all"
-                    className="text-xs font-bold text-pink-600 hover:underline"
-                  >
-                    Browse Catalog &rarr;
-                  </Link>
-                </div>
-
-                {wishlistItems.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-10 text-center border border-orange-100 space-y-3 shadow-2xs">
-                    <div className="text-3xl">♡</div>
-                    <h3 className="text-base font-black text-slate-800">Your wishlist is waiting</h3>
-                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                      Save products you love for later. Tap the heart on any product to bookmark it.
-                    </p>
-                    <Link
-                      to="/shop/all"
-                      className="inline-block bg-[#FF2F92] text-white text-xs font-black px-5 py-2.5 rounded-full shadow-xs hover:bg-pink-600 transition-all"
-                    >
-                      Explore Products &rarr;
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {wishlistItems.map((item) => (
-                      <div
-                        key={item.id || item.slug}
-                        className="bg-white rounded-3xl p-4 shadow-2xs border border-orange-100 flex gap-4 items-center"
-                      >
-                        <div className="w-16 h-16 bg-orange-50 rounded-2xl p-1.5 flex items-center justify-center shrink-0">
-                          <ProductVisual
-                            visualType={item.visualType}
-                            flavor={item.flavor}
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-black text-slate-800 truncate">
-                            {item.title || item.name}
-                          </p>
-                          <p className="text-xs font-bold text-slate-900 mt-0.5">
-                            ₹{item.price}
-                          </p>
-                          <div className="flex gap-2 mt-2">
-                            <button
-                              onClick={() => {
-                                addToCart({ ...item, quantity: 1 });
-                                removeFromWishlist(item.id || item.slug);
-                                showToast(`${item.title || item.name} moved to bag!`);
-                              }}
-                              className="text-[11px] font-bold bg-[#FF2F92] hover:bg-pink-600 text-white px-3 py-1 rounded-lg transition-colors"
-                            >
-                              Move to Bag
-                            </button>
-                            <button
-                              onClick={() => removeFromWishlist(item.id || item.slug)}
-                              className="text-[11px] text-slate-400 hover:text-rose-500 font-semibold"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* ---------------------------------------------------------------------
-                TAB 6: ACCOUNT SETTINGS
+                TAB 5: ACCOUNT SETTINGS
                --------------------------------------------------------------------- */}
             {activeTab === "settings" && (
               <ProfileDetailsTab
@@ -966,6 +867,7 @@ export default function Profile({ defaultTab }) {
                 userPhone={currentUserPhone}
                 userEmail={currentUserEmail}
                 childName={currentChildName}
+                onSaveParentProfile={handleSaveParentProfile}
               />
             )}
               </>
@@ -988,7 +890,7 @@ export default function Profile({ defaultTab }) {
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-slate-900/60 via-transparent to-transparent" />
                 
                 {/* Floating handwritten brand doodle badge */}
                 <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white text-[11px] font-black drop-shadow-xs flex items-center gap-1">
@@ -1133,7 +1035,7 @@ export default function Profile({ defaultTab }) {
                 <span className="font-black text-slate-800 block">Items Purchased</span>
                 {selectedOrderDetail.items.map((item, idx) => (
                   <div key={idx} className="flex items-center justify-between p-2 rounded-xl bg-orange-50/50">
-                    <span className="font-bold text-slate-800 truncate max-w-[240px]">
+                    <span className="font-bold text-slate-800 truncate max-w-60">
                       {item.title} (x{item.quantity})
                     </span>
                     <span className="font-black text-slate-900">₹{item.price}</span>

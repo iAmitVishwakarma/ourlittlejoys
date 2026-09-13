@@ -99,7 +99,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="bg-[#FFF9F5] min-h-screen py-6 md:py-10">
+    <div className="bg-brand-cream min-h-screen py-6 md:py-10">
       <SEO
         title={`Shopping Cart (${cartItems.length} items) | Little Joys`}
         description="Review your Little Joys clean kids nutrition cart, apply coupons, and checkout securely."
@@ -130,7 +130,7 @@ export default function Cart() {
         </div>
 
         {/* Free Gift Progress Bar Banner */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-2xl p-4 mb-6 shadow-sm">
+        <div className="bg-linear-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-2xl p-4 mb-6 shadow-sm">
           <div className="flex items-center justify-between gap-3 mb-2">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-700">
@@ -155,7 +155,7 @@ export default function Cart() {
           <div className="w-full bg-amber-100 rounded-full h-2.5 overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
-                isFreeGiftUnlocked ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-pink-500'
+                isFreeGiftUnlocked ? 'bg-emerald-500' : 'bg-linear-to-r from-amber-400 to-pink-500'
               }`}
               style={{ width: `${freeGiftProgress}%` }}
             />

@@ -123,6 +123,16 @@ export const useAuthStore = create(
       },
 
       /**
+       * Update parent profile details
+       */
+      updateParentProfile: async ({ name, phone, email }) => {
+        const currentUser = get().user;
+        if (!currentUser) return;
+
+        await get().updateProfile({ name, phone, email });
+      },
+
+      /**
        * Fast OTP login simulation helper
        */
       loginWithOtp: async (phone) => {

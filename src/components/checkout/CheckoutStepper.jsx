@@ -69,7 +69,7 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
                     }`}
                   >
                     {isCompleted ? (
-                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      <Check className="w-3.5 h-3.5 stroke-3" />
                     ) : (
                       <span>{step.num}</span>
                     )}
@@ -91,7 +91,7 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
 
                 {/* Connecting Line */}
                 {idx < steps.length - 1 && (
-                  <div className="flex-1 min-w-[8px] max-w-[20px] sm:max-w-[45px] h-[2px] shrink-0">
+                  <div className="flex-1 min-w-2 max-w-5 sm:max-w-11.25 h-0.5 shrink-0">
                     <div
                       className={`h-full rounded-full transition-all duration-300 ${
                         idx < currentIndex ? 'bg-[#13805B]' : 'bg-slate-200'
