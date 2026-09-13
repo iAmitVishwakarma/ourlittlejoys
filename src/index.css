@@ -54,6 +54,7 @@ body {
 .testimonials-swiper .swiper-pagination-bullet {
   background: #CBD5E1 !important;
   opacity: 0.8 !important;
+
   width: 8px !important;
   height: 8px !important;
   border-radius: 9999px !important;
@@ -65,5 +66,87 @@ body {
   background: #13805B !important;
   transform: scaleX(3.2) !important;
   opacity: 1 !important;
+  margin: 0 10px !important;
 }
 
+/* Swiper Slide Flex fix */
+.swiper-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.swiper-slide {
+  height: auto !important;
+  display: flex !important;
+}
+
+/* Hero Swiper Custom Pagination */
+.hero-swiper-pagination {
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  z-index: 25 !important;
+  width: auto !important;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(251, 146, 60, 0.2);
+}
+.hero-swiper-pagination .swiper-pagination-bullet {
+  width: 6px !important;
+  height: 6px !important;
+  background: #CBD5E1 !important;
+  opacity: 0.8 !important;
+  border-radius: 9999px !important;
+  margin: 0 2px !important;
+  transition: all 0.3s ease !important;
+}
+.hero-swiper-pagination .swiper-pagination-bullet-active {
+  width: 24px !important;
+  background: #13805B !important;
+  opacity: 1 !important;
+  border-radius: 9999px !important;
+}
+
+/* 🌟 Shimmer Skeleton Loading Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #F1F5F9 0%,
+    #E2E8F0 25%,
+    #CBD5E1 50%,
+    #E2E8F0 75%,
+    #F1F5F9 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+.skeleton-shimmer-warm {
+  background: linear-gradient(
+    90deg,
+    #FFF7ED 0%,
+    #FFEDD5 25%,
+    #FED7AA 50%,
+    #FFEDD5 75%,
+    #FFF7ED 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}

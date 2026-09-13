@@ -342,3 +342,142 @@ export function ScienceNutritionSeal({ className = "w-28 h-28" }) {
   );
 }
 
+// 👑 Golden Hand-Drawn Crown Doodle
+export function CrownDoodle({ className = "w-10 h-8 text-amber-400" }) {
+  return (
+    <svg viewBox="0 0 48 36" fill="none" className={`inline-block ${className}`}>
+      <path
+        d="M 6 28 L 4 12 L 15 19 L 24 6 L 33 19 L 44 12 L 42 28 Z"
+        fill="#FCD34D"
+        stroke="#D97706"
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+      {/* Jewels on crown tips */}
+      <circle cx="4" cy="11" r="2.5" fill="#EF4444" stroke="#B91C1C" strokeWidth="1" />
+      <circle cx="24" cy="5" r="3" fill="#3B82F6" stroke="#1D4ED8" strokeWidth="1" />
+      <circle cx="44" cy="11" r="2.5" fill="#10B981" stroke="#047857" strokeWidth="1" />
+      {/* Crown base band */}
+      <path d="M 6 28 Q 24 32, 42 28" stroke="#D97706" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="16" cy="25" r="1.5" fill="#EF4444" />
+      <circle cx="24" cy="26" r="1.5" fill="#3B82F6" />
+      <circle cx="32" cy="25" r="1.5" fill="#10B981" />
+    </svg>
+  );
+}
+
+// ↪️ Hand-Drawn Whimsical Curly Arrow
+export function CurlyArrowDoodle({ className = "w-12 h-10 text-slate-700" }) {
+  return (
+    <svg viewBox="0 0 60 40" fill="none" className={`inline-block ${className}`}>
+      <path
+        d="M 6 30 C 14 36, 26 34, 32 24 C 38 14, 46 16, 52 22"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 44 20 L 52 22 L 50 14"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+// 💪 Cute Hand-Drawn Illustrated Champion Boy Flexing (Green shirt, smiling, golden crown)
+export function StrongBoyDoodle({ className = "w-44 h-48" }) {
+  return (
+    <svg viewBox="0 0 160 160" fill="none" className={`inline-block select-none ${className}`}>
+      {/* Golden Crown on Head */}
+      <g transform="translate(62, 8)">
+        <path
+          d="M 4 20 L 2 8 L 11 13 L 18 3 L 25 13 L 34 8 L 32 20 Z"
+          fill="#FBBF24"
+          stroke="#B45309"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+        <circle cx="2" cy="7" r="2" fill="#EF4444" />
+        <circle cx="18" cy="2" r="2.5" fill="#3B82F6" />
+        <circle cx="34" cy="7" r="2" fill="#10B981" />
+      </g>
+
+      {/* Boy Hair (Messy brown) */}
+      <path
+        d="M 52 48 C 50 28, 64 24, 80 24 C 96 24, 110 28, 108 48 C 105 38, 98 34, 88 34 C 74 34, 62 38, 52 48 Z"
+        fill="#78350F"
+        stroke="#451A03"
+        strokeWidth="2"
+      />
+      <path d="M 60 32 C 65 26, 75 28, 72 35" stroke="#451A03" strokeWidth="2" strokeLinecap="round" />
+      <path d="M 85 30 C 92 26, 100 29, 96 36" stroke="#451A03" strokeWidth="2" strokeLinecap="round" />
+
+      {/* Head / Face */}
+      <circle cx="80" cy="56" r="26" fill="#FED7AA" stroke="#451A03" strokeWidth="2.5" />
+
+      {/* Big Cheerful Eyes & Eyebrows */}
+      <path d="M 66 45 Q 72 42, 76 46" stroke="#451A03" strokeWidth="2" strokeLinecap="round" />
+      <path d="M 84 46 Q 88 42, 94 45" stroke="#451A03" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="71" cy="52" r="3" fill="#1E293B" />
+      <circle cx="89" cy="52" r="3" fill="#1E293B" />
+      {/* Eye highlights */}
+      <circle cx="72" cy="51" r="1" fill="#FFFFFF" />
+      <circle cx="90" cy="51" r="1" fill="#FFFFFF" />
+
+      {/* Rosy Cheeks */}
+      <circle cx="64" cy="58" r="4" fill="#FDA4AF" opacity="0.9" />
+      <circle cx="96" cy="58" r="4" fill="#FDA4AF" opacity="0.9" />
+
+      {/* Huge Joyful Smile */}
+      <path
+        d="M 68 60 C 72 72, 88 72, 92 60 Z"
+        fill="#BE123C"
+        stroke="#451A03"
+        strokeWidth="2"
+      />
+      {/* Tongue / teeth */}
+      <path d="M 72 61 Q 80 64, 88 61" stroke="#FFFFFF" strokeWidth="2" fill="none" />
+      <path d="M 74 67 Q 80 63, 86 67" fill="#FB7185" />
+
+      {/* Green Polo Shirt Body */}
+      <path
+        d="M 54 86 C 54 80, 68 78, 80 78 C 92 78, 106 80, 106 86 L 112 145 C 112 148, 48 148, 48 145 Z"
+        fill="#22C55E"
+        stroke="#15803D"
+        strokeWidth="2.5"
+      />
+      {/* White polo collar */}
+      <path d="M 70 78 L 80 92 L 72 92 Z" fill="#F8FAFC" stroke="#15803D" strokeWidth="1.5" />
+      <path d="M 90 78 L 80 92 L 88 92 Z" fill="#F8FAFC" stroke="#15803D" strokeWidth="1.5" />
+
+      {/* Left Arm Flexing Upward */}
+      {/* Shoulder to elbow */}
+      <path d="M 55 86 C 36 84, 26 78, 22 66" stroke="#15803D" strokeWidth="16" strokeLinecap="round" />
+      {/* Forearm upward with bicep */}
+      <path d="M 22 66 C 20 54, 28 42, 34 38" stroke="#FED7AA" strokeWidth="14" strokeLinecap="round" />
+      <path d="M 22 66 C 20 54, 28 42, 34 38" stroke="#451A03" strokeWidth="2" fill="none" />
+      {/* Left Fist */}
+      <circle cx="36" cy="35" r="9" fill="#FED7AA" stroke="#451A03" strokeWidth="2" />
+      <path d="M 32 35 C 34 38, 38 38, 40 35" stroke="#451A03" strokeWidth="1.5" strokeLinecap="round" />
+
+      {/* Right Arm Flexing Upward */}
+      {/* Shoulder to elbow */}
+      <path d="M 105 86 C 124 84, 134 78, 138 66" stroke="#15803D" strokeWidth="16" strokeLinecap="round" />
+      {/* Forearm upward with bicep */}
+      <path d="M 138 66 C 140 54, 132 42, 126 38" stroke="#FED7AA" strokeWidth="14" strokeLinecap="round" />
+      <path d="M 138 66 C 140 54, 132 42, 126 38" stroke="#451A03" strokeWidth="2" fill="none" />
+      {/* Right Fist */}
+      <circle cx="124" cy="35" r="9" fill="#FED7AA" stroke="#451A03" strokeWidth="2" />
+      <path d="M 120 35 C 122 38, 126 38, 128 35" stroke="#451A03" strokeWidth="1.5" strokeLinecap="round" />
+
+      {/* Energy Sparks around biceps */}
+      <path d="M 16 48 L 10 46 M 18 36 L 10 32 M 22 28 L 18 20" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
+      <path d="M 144 48 L 150 46 M 142 36 L 150 32 M 138 28 L 142 20" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+

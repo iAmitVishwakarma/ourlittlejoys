@@ -48,7 +48,7 @@ export default function ProductVisual({
         height={300}
         sizes="(max-width: 640px) 180px, 300px"
         onError={() => setImgError(true)}
-        className="w-full h-full object-contain drop-shadow-md transition-transform duration-500 ease-out group-hover:scale-105"
+        className="w-full h-full object-cover drop-shadow-md transition-transform duration-500 ease-out group-hover:scale-105"
       />
     </div>
   );

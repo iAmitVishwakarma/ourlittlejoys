@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import ProductCard from '@/components/product/ProductCard';
 import ScallopDivider from '@/components/common/ScallopDivider';
+import { ProductGridSkeleton } from '@/components/common/Skeleton';
 import { 
   SunDoodle, 
+  StarDoodle,
+  RainbowDoodle,
   MiniStarCluster, 
   WavyUnderline, 
   HeartDoodle, 
@@ -23,11 +31,7 @@ import {
 } from '@/components/graphics/CategorySVGs';
 const BrandPaymentSection = React.lazy(() => import('@/components/checkout/BrandPaymentSection'));
 import SEO from '@/components/common/SEO';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import ParentReviewsSection from '@/components/ParentReviewsSection';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import { HERO_SLIDES, ALL_PRODUCTS } from '@/data/products';
 import { 
@@ -56,33 +60,21 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
   const handleUpdateQty = onUpdateCartQuantity || ctxUpdateQty;
 
   const [activeCategory, setActiveCategory] = useState('All');
+  const [isCategoryLoading, setIsCategoryLoading] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
 
-  // Hero carousel state
+  // Swiper Hero Carousel Refs & State
   const slides = HERO_SLIDES;
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const autoPlayRef = useRef(null);
+  const heroPrevRef = useRef(null);
+  const heroNextRef = useRef(null);
 
-  // Auto-slide effect (changes slide every 4.5s unless hovered)
-  useEffect(() => {
-    if (!isAutoPlaying || slides.length <= 1) return;
-
-    autoPlayRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4500);
-
-    return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    };
-  }, [isAutoPlaying, slides.length]);
-
-  const handlePrevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const handleCategoryChange = (tab) => {
+    if (tab === activeCategory) return;
+    setIsCategoryLoading(true);
+    setActiveCategory(tab);
+    setTimeout(() => {
+      setIsCategoryLoading(false);
+    }, 220);
   };
 
   // 8 Dedicated Little Joys Categories with Custom Hand-Crafted SVGs
@@ -164,72 +156,6 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
   // Top-selling favourites matching the product catalog with real images
   const topFavourites = ALL_PRODUCTS.slice(0, 8);
 
-  // Emotional, authentic parent testimonials
-  const testimonials = [
-    {
-      title: "Milk time tantrums are finally over!",
-      quote: "My 4-year-old Kabir would run away from regular milk. Nutrimix chocolate smells like real roasted cocoa and he finishes his tumbler in 2 minutes flat! Knowing it has sprouted ragi and zero white sugar gives me total peace of mind.",
-      author: "Ritu Verma",
-      location: "Bhopal, MP",
-      child: "Mother of 4-year-old Kabir",
-      avatarBg: "bg-pink-100 text-[#FF2F92]",
-      product: "Nutrimix Chocolate (350g)",
-      avatar:"https://imgs.search.brave.com/OuURRpveRL_bEUxvaB3_As_VVRFU7pJbiMFPCpiRlH4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/MjM2NTQzOS9waG90/by9zb24taXMta2lz/c2luZy1oaXMtbW90/aGVyLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1qUGJtU3hz/QlJxY0pqQjF4d1Fu/eVJhTlU2OTY4S1Fu/Y2Y5Qmd2cUNIUENz/PQ"
-    },
-    {
-      title: "Clean formulation with zero heavy metals",
-      quote: "Being a pediatrician myself, I inspect lab reports religiously before giving anything to my daughter. Zero heavy metals, pectin-based, and no synthetic dyes. Ananya reminds me every single morning for her gummy!",
-      author: "Dr. Sameer Joshi",
-      location: "Mumbai, MH",
-      child: "Father of 5-year-old Ananya",
-      avatarBg: "bg-emerald-100 text-[#13805B]",
-      product: "Multivitamin Gummies 4+",
-      avatar:"https://imgs.search.brave.com/OuURRpveRL_bEUxvaB3_As_VVRFU7pJbiMFPCpiRlH4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/MjM2NTQzOS9waG90/by9zb24taXMta2lz/c2luZy1oaXMtbW90/aGVyLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1qUGJtU3hz/QlJxY0pqQjF4d1Fu/eVJhTlU2OTY4S1Fu/Y2Y5Qmd2cUNIUENz/PQ"
-    },
-    {
-      title: "Noticeable boost in immunity & school stamina",
-      quote: "Both my kids have been having the morning immunity duo for over 3 months now. They stay energized through school hours and handle weather changes without frequent coughs. Truly grateful for honest Indian nutrition.",
-      author: "Kavita Deshmukh",
-      location: "Pune, MH",
-      child: "Mother of 4 & 7 yr old",
-      avatarBg: "bg-amber-100 text-amber-800",
-      product: "Immunity Support Kit",
-      avatar:"https://imgs.search.brave.com/OuURRpveRL_bEUxvaB3_As_VVRFU7pJbiMFPCpiRlH4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/MjM2NTQzOS9waG90/by9zb24taXMta2lz/c2luZy1oaXMtbW90/aGVyLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1qUGJtU3hz/QlJxY0pqQjF4d1Fu/eVJhTlU2OTY4S1Fu/Y2Y5Qmd2cUNIUENz/PQ"
-    }
-  ,
-    {
-      title: "Milk time tantrums are finally over!",
-      quote: "My 4-year-old Kabir would run away from regular milk. Nutrimix chocolate smells like real roasted cocoa and he finishes his tumbler in 2 minutes flat! Knowing it has sprouted ragi and zero white sugar gives me total peace of mind.",
-      author: "Ritu Verma",
-      location: "Bhopal, MP",
-      child: "Mother of 4-year-old Kabir",
-      avatarBg: "bg-pink-100 text-[#FF2F92]",
-      product: "Nutrimix Chocolate (350g)",
-      avatar:"https://imgs.search.brave.com/OuURRpveRL_bEUxvaB3_As_VVRFU7pJbiMFPCpiRlH4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/MjM2NTQzOS9waG90/by9zb24taXMta2lz/c2luZy1oaXMtbW90/aGVyLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1qUGJtU3hz/QlJxY0pqQjF4d1Fu/eVJhTlU2OTY4S1Fu/Y2Y5Qmd2cUNIUENz/PQ"
-    },
-    {
-      title: "Clean formulation with zero heavy metals",
-      quote: "Being a pediatrician myself, I inspect lab reports religiously before giving anything to my daughter. Zero heavy metals, pectin-based, and no synthetic dyes. Ananya reminds me every single morning for her gummy!",
-      author: "Dr. Sameer Joshi",
-      location: "Mumbai, MH",
-      child: "Father of 5-year-old Ananya",
-      avatarBg: "bg-emerald-100 text-[#13805B]",
-      product: "Multivitamin Gummies 4+",
-      avatar:"https://imgs.search.brave.com/OuURRpveRL_bEUxvaB3_As_VVRFU7pJbiMFPCpiRlH4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/MjM2NTQzOS9waG90/by9zb24taXMta2lz/c2luZy1oaXMtbW90/aGVyLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1qUGJtU3hz/QlJxY0pqQjF4d1Fu/eVJhTlU2OTY4S1Fu/Y2Y5Qmd2cUNIUENz/PQ"
-    },
-    {
-      title: "Noticeable boost in immunity & school stamina",
-      quote: "Both my kids have been having the morning immunity duo for over 3 months now. They stay energized through school hours and handle weather changes without frequent coughs. Truly grateful for honest Indian nutrition.",
-      author: "Kavita Deshmukh",
-      location: "Pune, MH",
-      child: "Mother of 4 & 7 yr old",
-      avatarBg: "bg-amber-100 text-amber-800",
-      product: "Immunity Support Kit",
-      avatar:"https://imgs.search.brave.com/OuURRpveRL_bEUxvaB3_As_VVRFU7pJbiMFPCpiRlH4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/MjM2NTQzOS9waG90/by9zb24taXMta2lz/c2luZy1oaXMtbW90/aGVyLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1qUGJtU3hz/QlJxY0pqQjF4d1Fu/eVJhTlU2OTY4S1Fu/Y2Y5Qmd2cUNIUENz/PQ"
-    }
-  ];
-
-
   // FAQ list with clear, high-contrast answers
   const faqs = [
     {
@@ -291,168 +217,141 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
         Little Joys - Expert-Formulated Pediatric Nutrition &amp; Daily Wellness For Kids
       </h1>
 
-      {/* 1. HERO SLIDER SECTION (4-5 SLIDING PROMOTIONAL CARDS) */}
+      {/* 1. HERO SLIDER SECTION (PREMIUM EDITORIAL HERO POWERED BY SWIPER.JS) */}
       <section className="pt-4 md:pt-6 pb-2 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
-          <div 
-            className="relative overflow-hidden rounded-3xl md:rounded-[3rem] border border-orange-200/70 shadow-xs group"
-            onMouseEnter={() => setIsAutoPlaying(false)}
-            onMouseLeave={() => setIsAutoPlaying(true)}
-          >
-            {/* Sliding Track */}
-            <div 
-              className="flex transition-transform duration-700 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          <div className="relative group">
+            {/* Left Chevron Button (Subtle Translucent Swiper Nav) */}
+            <button 
+              ref={heroPrevRef}
+              aria-label="Previous Slide"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/75 hover:bg-white text-slate-700 backdrop-blur-xs border border-white/60 shadow-md flex items-center justify-center transition-all hover:scale-105 active:scale-95 z-20 cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4 text-slate-700" />
+            </button>
+
+            {/* Right Chevron Button (Subtle Translucent Swiper Nav) */}
+            <button 
+              ref={heroNextRef}
+              aria-label="Next Slide"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/75 hover:bg-white text-slate-700 backdrop-blur-xs border border-white/60 shadow-md flex items-center justify-center transition-all hover:scale-105 active:scale-95 z-20 cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4 text-slate-700" />
+            </button>
+
+            <Swiper
+              modules={[Autoplay, Pagination, Navigation]}
+              slidesPerView={1}
+              loop={true}
+              autoplay={{ delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              pagination={{ clickable: true, el: '.hero-swiper-pagination' }}
+              onBeforeInit={(swiper) => {
+                swiper.params.navigation.prevEl = heroPrevRef.current;
+                swiper.params.navigation.nextEl = heroNextRef.current;
+              }}
+              grabCursor={true}
+              className="hero-swiper rounded-3xl md:rounded-[2.5rem] border border-amber-200/60 shadow-xs overflow-hidden"
             >
               {slides.map((slide, idx) => (
-                <div 
-                  key={slide.id || idx}
-                  className="w-full shrink-0 bg-gradient-to-r from-pink-50/90 via-amber-50/50 to-orange-50/70 p-6 sm:p-8 md:p-12 relative"
-                >
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-                    {/* Left Text Content */}
-                    <div className="lg:col-span-7 text-center lg:text-left space-y-4">
-                      {/* Trust Badge */}
-                      <div className="inline-flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-orange-200/80 shadow-xs">
-                        <span className="text-base">{slide.badgeEmoji || "🌿"}</span>
-                        <span className="text-[11px] font-black uppercase tracking-wider text-slate-800">
-                          {slide.badge}
-                        </span>
-                        {slide.tag && (
-                          <span className="bg-[#13805B] text-white text-[9px] font-black px-2 py-0.5 rounded-full">
-                            {slide.tag}
+                <SwiperSlide key={slide.id || idx}>
+                  <div className="w-full bg-gradient-to-br from-[#FFFDF9] via-[#FAF4ED] to-[#F5ECE1] py-8 sm:py-10 md:py-12 px-6 sm:px-10 md:px-14 relative overflow-hidden">
+                    {/* Subtle Little Joys Doodles (2-3 elements only) */}
+                    <SunDoodle className="w-9 h-9 text-amber-400/70 absolute -top-1 -right-1 sm:top-3 sm:right-6 pointer-events-none" />
+                    <RainbowDoodle className="w-8 h-5 text-rose-300/60 opacity-60 absolute top-4 left-6 sm:left-8 pointer-events-none hidden sm:block" />
+                    <StarDoodle className="w-3.5 h-3.5 text-amber-400/60 absolute bottom-6 right-1/2 pointer-events-none hidden lg:block" />
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                      {/* Left Editorial Text Column */}
+                      <div className="lg:col-span-7 text-center lg:text-left space-y-3 sm:space-y-4">
+                        {/* Small Clean Badge */}
+                        <div className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs px-3 py-1 rounded-full border border-amber-200/70 shadow-2xs">
+                          <span className="text-xs">{slide.badgeEmoji || "🌿"}</span>
+                          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-800">
+                            {slide.badge}
                           </span>
-                        )}
-                      </div>
+                        </div>
 
-                      {/* Primary Headline */}
-                      <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
-                        {slide.title}<br />
-                        <span className="text-[#13805B] underline decoration-wavy decoration-pink-300">
-                          {slide.highlight}
-                        </span>
-                      </h2>
-
-                      {/* Description (14-16px readable body) */}
-                      <p className="text-sm sm:text-base text-slate-600 max-w-lg font-medium leading-relaxed">
-                        {slide.subtitle}
-                      </p>
-
-                      {/* Benefit Check Pills */}
-                      <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1 text-xs font-bold text-slate-700">
-                        {slide.benefits?.map((benefit, bIdx) => (
-                          <span key={bIdx} className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-orange-100 shadow-xs">
-                            <CheckCircle2 className="w-4 h-4 text-[#13805B]" /> {benefit}
+                        {/* Primary Headline: Dark Navy + Green highlight + Thin/Short Wavy Accent */}
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight leading-[1.12]">
+                          {slide.title}<br />
+                          <span className="text-[#13805B] relative inline-block">
+                            {slide.highlight}
+                            <WavyUnderline className="w-20 sm:w-24 h-1.5 text-pink-300/80 absolute -bottom-1 left-0 pointer-events-none" />
                           </span>
-                        ))}
+                        </h2>
+
+                        {/* 1 Short Readable Description */}
+                        <p className="text-sm sm:text-base text-slate-600 max-w-md font-medium leading-relaxed">
+                          {slide.subtitle}
+                        </p>
+
+                        {/* Clean Inline Proof Points (No heavy SaaS pills) */}
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 sm:gap-x-5 gap-y-1.5 pt-1 text-xs sm:text-sm font-semibold text-slate-700">
+                          {slide.benefits?.map((benefit, bIdx) => (
+                            <span key={bIdx} className="inline-flex items-center gap-1.5">
+                              <span className="text-[#13805B] font-black text-sm leading-none">✓</span>
+                              <span>{benefit}</span>
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Action CTAs */}
+                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+                          <Link
+                            to={slide.ctaLink || "/shop/all"}
+                            className="w-full sm:w-auto bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-3 px-7 rounded-full text-xs uppercase tracking-wider transition-all transform active:scale-95 shadow-md shadow-[#13805B]/20 flex items-center justify-center gap-2"
+                          >
+                            <span>{slide.ctaText || "Shop Breakfast"}</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+
+                          <Link
+                            to="/honest-report"
+                            className="w-full sm:w-auto bg-white/90 hover:bg-white text-slate-700 hover:text-slate-900 border border-slate-200/80 font-bold py-3 px-6 rounded-full text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-2xs"
+                          >
+                            <ShieldCheck className="w-4 h-4 text-[#13805B]" />
+                            <span>View Lab Report</span>
+                          </Link>
+                        </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
-                        <Link
-                          to={slide.ctaLink || "/shop/all"}
-                          className="w-full sm:w-auto bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-3.5 px-8 rounded-full text-xs uppercase tracking-wider transition-all transform active:scale-95 shadow-lg shadow-[#13805B]/25 flex items-center justify-center gap-2"
-                        >
-                          <span>{slide.ctaText || "Shop Now"}</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </Link>
+                      {/* Right Hero Product Showcase (Editorial Floating Composition) */}
+                      <div className="lg:col-span-5 flex justify-center items-center relative py-4 lg:py-0">
+                        {/* Soft Ambient Pedestal Glow */}
+                        <div className="absolute w-64 sm:w-72 h-64 sm:h-72 rounded-full bg-amber-200/35 blur-3xl pointer-events-none -z-0" />
 
-                        <Link
-                          to="/honest-report"
-                          className="w-full sm:w-auto bg-white hover:bg-orange-50 text-slate-800 border border-slate-200 font-bold py-3.5 px-6 rounded-full text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs"
-                        >
-                          <ShieldCheck className="w-4 h-4 text-[#13805B]" />
-                          <span>View Lab Reports</span>
-                        </Link>
-                      </div>
-                    </div>
+                        {/* Main Floating Product Showcase */}
+                        <div className="relative z-10 group/img flex flex-col items-center">
+                          <div className="relative overflow-hidden rounded-3xl sm:rounded-[2rem] shadow-xl shadow-amber-950/10 border border-amber-100/60 bg-white/40 backdrop-blur-xs">
+                            <ResponsiveImage 
+                              src={slide.image} 
+                              alt={slide.productName || slide.title}
+                              loading={idx === 0 ? "eager" : "lazy"}
+                              fetchPriority={idx === 0 ? "high" : "auto"}
+                              decoding={idx === 0 ? "sync" : "async"}
+                              width={380}
+                              height={340}
+                              sizes="(max-width: 640px) 280px, 360px"
+                              className="w-64 sm:w-72 md:w-80 h-60 sm:h-68 md:h-72 object-cover transition-transform duration-500 hover:scale-103"
+                            />
+                          </div>
 
-                    {/* Right Hero Product Showcase (Real-world presentation) */}
-                    <div className="lg:col-span-5 flex justify-center">
-                      <div className="relative w-full max-w-xs md:max-w-sm aspect-square bg-gradient-to-tr from-orange-100/90 via-white to-amber-100/80 rounded-[2.5rem] p-5 shadow-xl flex flex-col items-center justify-between border-4 border-white overflow-hidden group-hover:scale-101 transition-transform">
-                        
-                        {/* Rating pill top row */}
-                        <div className="w-full flex justify-between items-center z-10">
-                          <span className="bg-white/95 backdrop-blur-xs text-slate-800 text-[11px] font-black px-3 py-1 rounded-full shadow-xs border border-orange-100 flex items-center gap-1">
+                          {/* Floating Social Proof Badge */}
+                          <div className="absolute -bottom-3 sm:-bottom-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md border border-amber-100 flex items-center gap-1.5 z-20 whitespace-nowrap">
                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                            <span>{slide.rating || "4.8"}</span>
-                            <span className="text-slate-500 font-medium">({slide.reviewCount || "4.6k+"})</span>
-                          </span>
-
-                          <span className="bg-[#13805B] text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
-                            Verified
-                          </span>
-                        </div>
-
-                        {/* Real-World Product Showcase on soft pedestal */}
-                        <div className="w-full h-48 md:h-52 flex items-center justify-center my-auto overflow-hidden rounded-2xl relative">
-                          <div className="absolute inset-0 bg-radial from-amber-200/30 to-transparent rounded-full blur-xl pointer-events-none" />
-                          <ResponsiveImage 
-                            src={slide.image} 
-                            alt={slide.productName || slide.title}
-                            loading={idx === 0 ? "eager" : "lazy"}
-                            fetchPriority={idx === 0 ? "high" : "auto"}
-                            decoding={idx === 0 ? "sync" : "async"}
-                            width={320}
-                            height={320}
-                            sizes="(max-width: 640px) 280px, 320px"
-                            className="w-full h-full object-cover rounded-2xl shadow-md transition-transform duration-500 hover:scale-105 relative z-10"
-                          />
-                        </div>
-
-                        {/* Bottom product title & clean ingredient story */}
-                        <div className="mt-2 text-center bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl shadow-xs border border-orange-100 w-full z-10">
-                          <span className="text-[#13805B] font-black text-xs sm:text-sm block truncate">
-                            {slide.productName || "Little Joys Daily Nutrition"}
-                          </span>
-                          <span className="text-[11px] text-slate-500 font-bold block truncate">
-                            {slide.productMeta || "Zero Refined Sugar • Lab Tested"}
-                          </span>
+                            <span className="text-xs font-black text-slate-900">{slide.rating || "4.7"}</span>
+                            <span className="text-[11px] text-slate-500 font-medium">• {slide.reviewCount || "2,140+"} parents</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
 
-            {/* Left Chevron Button (44x44px touch target) */}
-            <button 
-              onClick={handlePrevSlide}
-              aria-label="Previous Slide"
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md border border-orange-100 flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-20 cursor-pointer"
-            >
-              <ChevronLeft className="w-5 h-5 text-slate-700" />
-            </button>
-
-            {/* Right Chevron Button (44x44px touch target) */}
-            <button 
-              onClick={handleNextSlide}
-              aria-label="Next Slide"
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md border border-orange-100 flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-20 cursor-pointer"
-            >
-              <ChevronRight className="w-5 h-5 text-slate-700" />
-            </button>
-
-            {/* Dot Pagination Indicator (44x44px accessible touch areas) */}
-            <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center z-20 bg-white/80 backdrop-blur-xs px-2 py-0.5 rounded-full border border-orange-100/70 shadow-xs">
-              {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentSlide(idx)}
-                  aria-label={`Go to slide ${idx + 1}`}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 cursor-pointer"
-                >
-                  <span
-                    className={`h-2 transition-all duration-300 rounded-full block ${
-                      currentSlide === idx 
-                        ? 'w-7 bg-[#13805B]' 
-                        : 'w-2 bg-slate-300 hover:bg-slate-400'
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
+            {/* Custom Bottom Pagination Container for Swiper */}
+            <div className="hero-swiper-pagination" />
           </div>
         </div>
       </section>
@@ -588,7 +487,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
               {categoryTabs.map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => setActiveCategory(tab)}
+                  onClick={() => handleCategoryChange(tab)}
                   className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
                     activeCategory === tab
                       ? 'bg-[#13805B] text-white shadow-md shadow-[#13805B]/25'
@@ -601,21 +500,25 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
             </div>
           </div>
 
-          {/* 2 Columns on Mobile, 4 Columns on Desktop with Enhanced Image Area */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {displayedProducts.map((product) => {
-              const inCart = effectiveCartItems.find((c) => c.id === product.id || c.slug === product.slug);
-              return (
-                <ProductCard
-                  key={product.id}
-                  {...product}
-                  cartQuantity={inCart ? inCart.quantity : 0}
-                  onAddToCart={handleAdd}
-                  onUpdateCartQuantity={handleUpdateQty}
-                />
-              );
-            })}
-          </div>
+          {/* 2 Columns on Mobile, 4 Columns on Desktop with Shimmer Skeleton Loading */}
+          {isCategoryLoading ? (
+            <ProductGridSkeleton count={4} cols="grid-cols-2 lg:grid-cols-4" />
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 animate-in fade-in duration-200">
+              {displayedProducts.map((product) => {
+                const inCart = effectiveCartItems.find((c) => c.id === product.id || c.slug === product.slug);
+                return (
+                  <ProductCard
+                    key={product.id}
+                    {...product}
+                    cartQuantity={inCart ? inCart.quantity : 0}
+                    onAddToCart={handleAdd}
+                    onUpdateCartQuantity={handleUpdateQty}
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -686,8 +589,8 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                 {/* Background Ambient Glow */}
                 <div className="absolute w-72 h-72 rounded-full bg-emerald-500/20 blur-3xl pointer-events-none -z-10" />
 
-                <React.Suspense fallback={<div className="w-full max-w-xs sm:max-w-sm lg:max-w-md h-64 bg-emerald-50/50 rounded-2xl animate-pulse" />}>
-                  <PediatricDoctorIllustration className="w-full max-w-xs sm:max-w-sm lg:max-w-md drop-shadow-2xl hover:scale-102 transition-transform duration-500" />
+                <React.Suspense fallback={<div className="w-full max-w-xs sm:max-w-sm lg:max-w-md h-64 skeleton-shimmer rounded-3xl" />}>
+                  <PediatricDoctorIllustration className="w-full max-w-xs sm:max-w-sm lg:max-w-md drop-shadow-2xl hover:scale-120 scale-118 md:translate-y-10 md:translate-x-1 transition-transform duration-500" />
                 </React.Suspense>
               </div>
 
@@ -804,105 +707,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </div>
 
       {/* 7. PARENT TESTIMONIALS & REVIEWS (EMOTIONAL WARMTH) */}
-      <section className="py-6 md:py-8 px-4 md:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
-            <span className="text-xs font-black uppercase tracking-widest text-[#FF2F92] bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
-              Happy Kids, Honest Reviews
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-              Hear from Real Parents
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Over 200,000+ mothers and fathers trust Little Joys for their child's daily nutrition.
-            </p>
-          </div>
-
-          <div className="relative">
-            {/* Custom Navigation buttons on header right (44x44px touch targets) */}
-            <div className="flex items-center justify-end gap-2 mb-4">
-              <button
-                id="testimonial-prev"
-                aria-label="Previous Testimonial"
-                className="w-11 h-11 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                id="testimonial-next"
-                aria-label="Next Testimonial"
-                className="w-11 h-11 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="min-h-[290px]">
-            <Swiper
-              modules={[Autoplay, Pagination, Navigation]}
-              spaceBetween={20}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 2, spaceBetween: 20 },
-                1024: { slidesPerView: 3, spaceBetween: 24 }
-              }}
-              autoplay={{ delay: 3800, disableOnInteraction: false, pauseOnMouseEnter: true }}
-              pagination={{ clickable: true }}
-              navigation={{
-                prevEl: '#testimonial-prev',
-                nextEl: '#testimonial-next'
-              }}
-              loop={true}
-              grabCursor={true}
-              className="testimonials-swiper !pb-12"
-            >
-              {testimonials.map((t, idx) => (
-                <SwiperSlide key={idx} className="!h-auto flex">
-                  <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs flex flex-col justify-between w-full h-full space-y-4 hover:shadow-md transition-shadow">
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-1 text-amber-400">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-amber-400" />
-                        ))}
-                      </div>
-
-                      <h3 className="text-base font-black text-slate-900 leading-snug">
-                        "{t.title}"
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                        {t.quote}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={t.avatar}
-                          alt={t.author}
-                          className="w-10 h-10 bg-amber-50 rounded-full object-cover shrink-0"
-                        />
-                        <div>
-                          <span className="text-xs sm:text-sm font-black text-slate-900 block truncate max-w-[130px]">
-                            {t.author}
-                          </span>
-                          <span className="text-[11px] text-slate-400 font-semibold block truncate max-w-[130px]">
-                            {t.child} • {t.location}
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-[10px] font-black text-[#13805B] bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shrink-0">
-                        Verified Buyer
-                      </span>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ParentReviewsSection />
 
       {/* 8. FAQ ACCORDION (QUIET & STRONG CONTRAST) */}
       <section className="py-8 px-4 md:px-6">
@@ -953,7 +758,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </section>
 
       {/* 9. PAYMENT PARTNERS & BRAND SIGNATURE WITH SVG BOY */}
-      <React.Suspense fallback={<div className="h-64 bg-white" />}>
+      <React.Suspense fallback={<div className="container mx-auto max-w-6xl px-4 py-8"><div className="w-full h-48 skeleton-shimmer rounded-3xl" /></div>}>
         <BrandPaymentSection />
       </React.Suspense>
     </div>

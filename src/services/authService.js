@@ -16,28 +16,28 @@ import { apiClient } from './apiClient';
 const FALLBACK_USERS = [
   {
     id: 'user_001',
-    name: 'Demo User',
-    email: 'demo@example.com',
-    phone: '9876543210',
+    name: 'Amit Vishwakarma',
+    email: 'iam.itvishwakarma03@gmail.com',
+    phone: '7772929755',
     password: 'demo123',
     role: 'parent',
-    walletBalance: 450,
-    childName: 'Kabir',
-    childAge: '4',
-    nutritionGoal: 'Immunity & Daily Growth',
+    walletBalance: 200,
+    childName: 'Shubh',
+    childAge: '7',
+    nutritionGoal: 'Growth & Immunity',
     createdAt: '2026-09-01T10:00:00Z'
   },
   {
     id: 'usr_001',
-    name: 'Pooja Sharma',
-    email: 'pooja.sharma@example.com',
-    phone: '9876543211',
+    name: 'Amit Vishwakarma',
+    email: 'iam.itvishwakarma03@gmail.com',
+    phone: '7772929755',
     password: 'password123',
     role: 'parent',
-    walletBalance: 450,
-    childName: 'Kabir',
-    childAge: '4',
-    nutritionGoal: 'Immunity & Daily Growth',
+    walletBalance: 200,
+    childName: 'Shubh',
+    childAge: '7',
+    nutritionGoal: 'Growth & Immunity',
     createdAt: '2026-09-01T10:00:00Z'
   }
 ];

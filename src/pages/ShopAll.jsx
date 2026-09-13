@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useParams, Link } from 'react-router-dom';
 import ProductCard from '@/components/product/ProductCard';
+import { ProductGridSkeleton } from '@/components/common/Skeleton';
 import { ALL_PRODUCTS } from '@/data/products';
 import { useCartStore } from '@/stores/cartStore';
 import SEO from '@/components/common/SEO';
-import { ShoppingBag, Filter, Sparkles, ArrowRight, Check } from 'lucide-react';
+import { ShoppingBag, Filter, Sparkles, ArrowRight, Check, ShieldCheck } from 'lucide-react';
+import { RainbowDoodle, SunDoodle, MiniStarCluster } from '@/components/graphics/KidsDoodles';
 
 const CATEGORY_SLUG_MAP = {
   'all': 'All',
@@ -47,6 +49,13 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
   const [selectedCategory, setSelectedCategory] = useState(getInitialCategory);
   const [selectedAge, setSelectedAge] = useState('All');
   const [sortBy, setSortBy] = useState('popular');
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  useEffect(() => {
+    setIsFiltering(true);
+    const timer = setTimeout(() => setIsFiltering(false), 240);
+    return () => clearTimeout(timer);
+  }, [selectedCategory, selectedAge, sortBy]);
 
   const categories = [
     "All",
@@ -138,38 +147,134 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
         title={pageTitle}
         description={pageDescription}
       />
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-pink-100 via-amber-50 to-rose-100 border-b border-pink-100/80 py-8 px-4 md:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-pink-600 font-extrabold text-xs uppercase tracking-wider mb-1">
-                <Sparkles className="w-4 h-4" />
-                <span>100% Honest Nutrition • Doctor Formulated</span>
-              </div>
-              <h1 className="text-3xl md:text-4xl font-black text-slate-800">
-                {selectedCategory === 'New Launches' ? 'New Launches! 🚀' : 'Shop All Nutrition Essentials'}
-              </h1>
-              <p className="text-sm text-slate-500 mt-1">
-                Explore pediatrician-recommended daily nutrition for toddlers, kids, teenagers, and mothers.
-              </p>
+      {/* Premium Whimsical Illustrated Hero Canvas */}
+      <section className="relative overflow-hidden bg-[#FFF5EE] border-b border-orange-100/80 py-10 md:py-14 px-4 md:px-6">
+        {/* Playful Dot Grid Texture Background */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-40"
+          style={{
+            backgroundImage: 'radial-gradient(#FDBA74 1.2px, transparent 1.2px)',
+            backgroundSize: '24px 24px'
+          }}
+        />
+
+        {/* Ambient Soft Color Halos */}
+        <div className="absolute -top-16 -left-16 w-72 h-72 bg-pink-200/50 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -right-16 w-72 h-72 bg-amber-200/50 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Playful Floating Doodles */}
+        <div className="hidden lg:block absolute top-6 left-12 animate-bounce duration-1000">
+          <RainbowDoodle className="w-16 h-10 opacity-80" />
+        </div>
+        <div className="hidden lg:block absolute top-8 right-16">
+          <SunDoodle className="w-12 h-12 text-amber-400 animate-pulse" />
+        </div>
+        <div className="hidden xl:block absolute bottom-8 left-20">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-emerald-200 shadow-xs text-[11px] font-black text-emerald-800 rotate-[-4deg]">
+            <span>🌱</span> 100% Sprouted Ragi
+          </span>
+        </div>
+        <div className="hidden xl:block absolute bottom-10 right-28">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-pink-200 shadow-xs text-[11px] font-black text-pink-700 rotate-[3deg]">
+            <span>🍓</span> Real Fruit Pectin
+          </span>
+        </div>
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          {/* Central Header */}
+          <div className="text-center max-w-3xl mx-auto mb-8">
+            {/* Eyebrow Pill */}
+            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-pink-200 shadow-xs mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-pink-500 animate-spin duration-3000" />
+              <span className="text-[11px] md:text-xs font-black uppercase tracking-wider text-slate-800">
+                100% Honest Nutrition • Doctor Formulated
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
             </div>
 
-            {/* Quick stats */}
-            <div className="flex items-center gap-4 text-xs font-bold text-slate-700 bg-white/80 backdrop-blur-xs p-3 rounded-2xl border border-pink-200/60 shadow-xs">
-              <div>
-                <span className="text-pink-600 font-black text-sm block">0% Sugar</span>
-                <span className="text-[10px] text-slate-400 uppercase">Refined Sugar Free</span>
+            {/* Main Heading */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              {selectedCategory === 'New Launches' ? (
+                <>New Launches for Little Champions! 🚀</>
+              ) : (
+                <>Shop All Nutrition Essentials</>
+              )}
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-sm md:text-base text-slate-600 mt-2.5 max-w-2xl mx-auto leading-relaxed font-medium">
+              Explore pediatrician-recommended daily nutrition for toddlers, kids, teenagers, and mothers.
+            </p>
+          </div>
+
+          {/* 4 Shadcn-Style Glassmorphic Feature Badges */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
+            {/* Card 1: 0% Sugar */}
+            <div className="bg-white/85 backdrop-blur-sm p-3.5 rounded-2xl border border-rose-100 shadow-xs hover:shadow-md hover:border-rose-300 transition-all text-left flex items-start gap-2.5 group">
+              <div className="w-8 h-8 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 transition-transform">
+                <span className="text-base">🍓</span>
               </div>
-              <div className="h-6 w-[1px] bg-slate-200" />
               <div>
-                <span className="text-emerald-600 font-black text-sm block">NABL Tested</span>
-                <span className="text-[10px] text-slate-400 uppercase">Heavy Metal Safe</span>
+                <span className="text-xs md:text-sm font-black text-rose-600 block leading-tight">
+                  0% Sugar
+                </span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-600 block mt-0.5">
+                  Refined Sugar Free
+                </span>
+                <span className="text-[9px] text-slate-400 hidden sm:block">Sweetened with jaggery</span>
+              </div>
+            </div>
+
+            {/* Card 2: NABL Tested */}
+            <div className="bg-white/85 backdrop-blur-sm p-3.5 rounded-2xl border border-emerald-100 shadow-xs hover:shadow-md hover:border-emerald-300 transition-all text-left flex items-start gap-2.5 group">
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100 group-hover:scale-110 transition-transform">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              </div>
+              <div>
+                <span className="text-xs md:text-sm font-black text-emerald-700 block leading-tight">
+                  NABL Tested
+                </span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-600 block mt-0.5">
+                  Heavy Metal Safe
+                </span>
+                <span className="text-[9px] text-slate-400 hidden sm:block">Eurofins certified</span>
+              </div>
+            </div>
+
+            {/* Card 3: 100% Whole Millets */}
+            <div className="bg-white/85 backdrop-blur-sm p-3.5 rounded-2xl border border-amber-100 shadow-xs hover:shadow-md hover:border-amber-300 transition-all text-left flex items-start gap-2.5 group">
+              <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 group-hover:scale-110 transition-transform">
+                <span className="text-base">🌾</span>
+              </div>
+              <div>
+                <span className="text-xs md:text-sm font-black text-amber-800 block leading-tight">
+                  Zero Palm Oil
+                </span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-600 block mt-0.5">
+                  No Maida or Malt
+                </span>
+                <span className="text-[9px] text-slate-400 hidden sm:block">Ancient sprouted grains</span>
+              </div>
+            </div>
+
+            {/* Card 4: Doctor Formulated */}
+            <div className="bg-white/85 backdrop-blur-sm p-3.5 rounded-2xl border border-indigo-100 shadow-xs hover:shadow-md hover:border-indigo-300 transition-all text-left flex items-start gap-2.5 group">
+              <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100 group-hover:scale-110 transition-transform">
+                <span className="text-base">🩺</span>
+              </div>
+              <div>
+                <span className="text-xs md:text-sm font-black text-indigo-800 block leading-tight">
+                  Pediatrician Pick
+                </span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-600 block mt-0.5">
+                  Safe for 2-18 Yrs
+                </span>
+                <span className="text-[9px] text-slate-400 hidden sm:block">Tested by real kids</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Category Navigation Bar (Horizontal scrolling) */}
       <div className="sticky top-[86px] z-30 bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-xs py-3 px-4 md:px-6">
@@ -257,7 +362,9 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
           )}
         </div>
 
-        {filteredProducts.length === 0 ? (
+        {isFiltering ? (
+          <ProductGridSkeleton count={8} />
+        ) : filteredProducts.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-orange-100 p-8">
             <div className="text-5xl mb-4" aria-hidden="true">🔍</div>
             <h2 className="text-lg font-black text-slate-800 mb-2">No products found for this filter</h2>
@@ -270,7 +377,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-200">
             {filteredProducts.map((product) => {
               const inCart = effectiveCartItems.find((c) => c.id === product.id || c.slug === product.slug);
               return (

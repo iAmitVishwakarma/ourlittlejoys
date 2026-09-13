@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import MobileBottomNav from "./components/layout/MobileBottomNav";
+import { PageSkeleton } from "./components/common/Skeleton";
 
 // Interaction-only components — lazy-loaded since they're hidden until user clicks
 const CartDrawer = React.lazy(() => import("./components/modals/CartDrawer"));
@@ -97,13 +98,7 @@ function AppContent() {
       <main
         className={`flex-grow ${isCheckoutRoute ? "pt-0" : "pt-[90px] md:pt-[98px]"}`}
       >
-        <React.Suspense
-          fallback={
-            <div className="flex items-center justify-center min-h-[50vh]">
-              <div className="w-9 h-9 border-3 border-[#13805B] border-t-transparent rounded-full animate-spin" />
-            </div>
-          }
-        >
+        <React.Suspense fallback={<PageSkeleton />}>
           <Routes>
             {/* Home Page */}
             <Route

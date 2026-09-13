@@ -42,6 +42,7 @@ export default function ResponsiveImage({
   ...rest
 }) {
   const [imgError, setImgError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   if (!src) return null;
 
@@ -73,8 +74,11 @@ export default function ResponsiveImage({
       fetchPriority={fetchPriority}
       decoding={decoding}
       onError={() => setImgError(true)}
-      onLoad={onLoad}
-      className={className}
+      onLoad={(e) => {
+        setIsLoaded(true);
+        if (onLoad) onLoad(e);
+      }}
+      className={`${!isLoaded ? 'skeleton-shimmer' : ''} ${className}`}
       style={{
         aspectRatio: `${width} / ${height}`,
         ...style

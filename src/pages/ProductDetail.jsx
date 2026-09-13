@@ -21,6 +21,7 @@ import { useWishlistStore } from '@/stores/wishlistStore';
 import { useAuthStore } from '@/stores/authStore';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import SEO from '@/components/common/SEO';
+import { ProductDetailSkeleton } from '@/components/common/Skeleton';
 import { 
   Star, 
   ArrowRight, 
@@ -80,6 +81,13 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const [includeBundleItem2, setIncludeBundleItem2] = useState(true);
   const [scienceTab, setScienceTab] = useState('vitamins'); // 'vitamins' | 'ingredients'
   const [openScienceAccordion, setOpenScienceAccordion] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 240);
+    return () => clearTimeout(timer);
+  }, [slug]);
 
   // Interactive Pincode Delivery Checker
   const [pincode, setPincode] = useState("462016");
@@ -267,6 +275,10 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
       a: "Radical transparency is our core promise. Every batch is tested by third-party NABL-accredited labs for heavy metals (Lead, Mercury, Arsenic, Cadmium). You can download the certified lab report anytime under our 'Honest Reports' section."
     }
   ];
+
+  if (isLoading) {
+    return <ProductDetailSkeleton />;
+  }
 
   return (
     <div className="bg-[#FFF9F5] min-h-screen pb-24 pt-4 md:pt-6">

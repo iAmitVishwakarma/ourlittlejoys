@@ -16,8 +16,7 @@ import {
   ChevronDown, 
   Heart, 
   LogOut, 
-  Package,
-  Clock
+  Package
 } from 'lucide-react';
 
 export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAccount }) {
@@ -84,16 +83,6 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
     setIsMobileMenuOpen(false);
     logout();
     navigate('/');
-  };
-
-  const handleUserClick = () => {
-    if (isAuthenticated) {
-      navigate('/profile');
-    } else if (onOpenAuth) {
-      onOpenAuth();
-    } else {
-      navigate('/login');
-    }
   };
 
   return (
