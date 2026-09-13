@@ -2,121 +2,343 @@
  * ============================================================================
  * AUTHENTICATION SERVICE - OUR LITTLE JOYS
  * ============================================================================
+ * Production-ready frontend auth service interacting with backend / json-server.
+ * Handles Email/Password login, Signup, Phone OTP verification, Session validation,
+ * Profile updates, and token management.
  * 
- * GUIDE FOR BACKEND DEVELOPER:
- * ----------------------------------------------------------------------------
- * 1. OTP AUTHENTICATION FLOW:
- *    - Client enters 10-digit mobile number.
- *    - Client calls `POST /api/auth/send-otp` with `{ phone: "9876543210" }`.
- *    - Backend generates a secure 6-digit OTP (e.g., using Redis with 5-minute TTL)
- *      and sends SMS via Indian SMS gateway (Fast2SMS, Gupshup, Exotel, Twilio).
- *    - Client submits OTP via `POST /api/auth/verify-otp` with `{ phone, otp }`.
- *    - Backend verifies OTP. If new user, creates user record with ₹200 welcome wallet credit.
- *    - Backend returns `{ token: "jwt_token_here", user: { id, name, phone, walletBalance: 200 } }`.
- *    - Client stores token in localStorage ('lj_auth_token') for subsequent requests.
- * 
- * 2. PROFILE MANAGEMENT:
- *    - Little Joys personalizes nutrition based on child age:
- *      `PUT /api/auth/profile` with `{ name, childName, childAge, address, pincode }`.
+ * Note: Clearly separated for easy swap when switching to a live production backend.
  * ============================================================================
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+import { apiClient } from './apiClient';
+
+// Fallback demo users when json-server is not reachable
+const FALLBACK_USERS = [
+  {
+    id: 'user_001',
+    name: 'Demo User',
+    email: 'demo@example.com',
+    phone: '9876543210',
+    password: 'demo123',
+    role: 'parent',
+    walletBalance: 450,
+    childName: 'Kabir',
+    childAge: '4',
+    nutritionGoal: 'Immunity & Daily Growth',
+    createdAt: '2026-09-01T10:00:00Z'
+  },
+  {
+    id: 'usr_001',
+    name: 'Pooja Sharma',
+    email: 'pooja.sharma@example.com',
+    phone: '9876543211',
+    password: 'password123',
+    role: 'parent',
+    walletBalance: 450,
+    childName: 'Kabir',
+    childAge: '4',
+    nutritionGoal: 'Immunity & Daily Growth',
+    createdAt: '2026-09-01T10:00:00Z'
+  }
+];
+
+function getCustomUsers() {
+  try {
+    const raw = localStorage.getItem('lj_custom_users');
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCustomUser(user) {
+  try {
+    const existing = getCustomUsers();
+    const filtered = existing.filter((u) => u.id !== user.id && u.email !== user.email && u.phone !== user.phone);
+    filtered.push(user);
+    localStorage.setItem('lj_custom_users', JSON.stringify(filtered));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function findUserByEmail(email) {
+  const normalized = email.trim().toLowerCase();
+  // 1. Check backend / json-server
+  try {
+    const res = await apiClient.get('/users', { email: normalized });
+    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+      return res.data[0];
+    }
+  } catch (err) {
+    console.warn('[authService] apiClient.get error:', err);
+  }
+
+  // 2. Check local registered custom users
+  const custom = getCustomUsers().find((u) => u.email?.toLowerCase() === normalized);
+  if (custom) return custom;
+
+  // 3. Check fallback demo users
+  const fallback = FALLBACK_USERS.find((u) => u.email?.toLowerCase() === normalized);
+  if (fallback) return fallback;
+
+  return null;
+}
+
+async function findUserByPhone(phone) {
+  const cleanPhone = phone.replace(/\D/g, '').slice(-10);
+  // 1. Check backend / json-server
+  try {
+    const res = await apiClient.get('/users', { phone: cleanPhone });
+    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+      return res.data[0];
+    }
+  } catch (err) {
+    console.warn('[authService] apiClient.get error:', err);
+  }
+
+  // 2. Check local registered custom users
+  const custom = getCustomUsers().find((u) => u.phone?.replace(/\D/g, '').slice(-10) === cleanPhone);
+  if (custom) return custom;
+
+  // 3. Check fallback demo users
+  const fallback = FALLBACK_USERS.find((u) => u.phone?.replace(/\D/g, '').slice(-10) === cleanPhone);
+  if (fallback) return fallback;
+
+  return null;
+}
 
 export const authService = {
   /**
-   * BACKEND ENDPOINT: POST /api/auth/send-otp
+   * Login with Email & Password or Phone
+   * @param {{ email?: string, password?: string, phone?: string, otp?: string }} credentials
    */
-  async sendOtp(phone) {
+  async loginUser({ email, password, phone, otp }) {
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/send-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone })
-      });
-      if (res.ok) return await res.json();
-    } catch (e) {
-      console.warn('[Auth] Real send-otp unreachable, simulating OTP send.', e.message);
-    }
-
-    // Mock response for instant local demo
-    return {
-      success: true,
-      message: `OTP sent successfully to +91 ${phone}`,
-      mockOtp: '1234' // In mock mode, any 4-digit OTP or '1234' is accepted
-    };
-  },
-
-  /**
-   * BACKEND ENDPOINT: POST /api/auth/verify-otp
-   */
-  async verifyOtp(phone, otp) {
-    try {
-      const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, otp })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.token) {
-          localStorage.setItem('lj_auth_token', data.token);
+      // 1. Email + Password Flow
+      if (email !== undefined) {
+        const normalizedEmail = (email || '').trim().toLowerCase();
+        if (!normalizedEmail) {
+          return { success: false, message: 'Please enter your email address.' };
         }
-        return data;
+        if (!password) {
+          return { success: false, message: 'Please enter your password.' };
+        }
+
+        const user = await findUserByEmail(normalizedEmail);
+        if (!user) {
+          return {
+            success: false,
+            message: 'No account found with this email. Please check your spelling or sign up.'
+          };
+        }
+
+        if (user.password !== password) {
+          return {
+            success: false,
+            message: 'Incorrect password. Please verify and try again.'
+          };
+        }
+
+        const token = `mock_token_${user.id}_${Date.now()}`;
+        this.setToken(token);
+        this.setUserData(user);
+
+        return {
+          success: true,
+          user,
+          token,
+          message: 'Login successful!'
+        };
       }
-    } catch (e) {
-      console.warn('[Auth] Real verify-otp unreachable, simulating login.', e.message);
+
+      // 2. Phone + OTP Flow
+      if (phone !== undefined) {
+        const cleanPhone = (phone || '').replace(/\D/g, '').slice(-10);
+        if (cleanPhone.length < 10) {
+          return { success: false, message: 'Please enter a valid 10-digit mobile number.' };
+        }
+
+        const user = await findUserByPhone(cleanPhone);
+        if (!user) {
+          return {
+            success: false,
+            message: `No account registered with +91 ${cleanPhone}. Please switch to Sign Up to create your account.`
+          };
+        }
+
+        // Verify OTP (Requires '1234' for demo simulation)
+        const cleanOtp = (otp || '').trim();
+        if (!cleanOtp) {
+          return { success: false, message: 'Please enter the 4-digit OTP code sent to your mobile.' };
+        }
+
+        if (cleanOtp !== '1234') {
+          return {
+            success: false,
+            message: 'Invalid OTP code. Please enter the demo verification code: 1234'
+          };
+        }
+
+        const token = `mock_token_${user.id}_${Date.now()}`;
+        this.setToken(token);
+        this.setUserData(user);
+
+        return {
+          success: true,
+          user,
+          token,
+          message: 'Phone verified successfully!'
+        };
+      }
+
+      return {
+        success: false,
+        message: 'Please provide either email & password or mobile number.'
+      };
+    } catch (err) {
+      console.warn('[authService] loginUser error:', err);
+      return {
+        success: false,
+        message: 'Authentication failed due to an unexpected error. Please try again.'
+      };
     }
-
-    // Default mock user for offline demo
-    const mockUser = {
-      id: `user_${Date.now()}`,
-      phone,
-      name: 'Pooja Sharma',
-      email: 'pooja.sharma@example.com',
-      childName: 'Aarav',
-      childAge: '5 Yr',
-      walletBalance: 200,
-      createdAt: new Date().toISOString()
-    };
-
-    localStorage.setItem('lj_auth_token', `mock_jwt_token_${phone}`);
-    localStorage.setItem('lj_user_data', JSON.stringify(mockUser));
-
-    return {
-      success: true,
-      token: `mock_jwt_token_${phone}`,
-      user: mockUser
-    };
   },
 
   /**
-   * BACKEND ENDPOINT: PUT /api/auth/profile
+   * Register a new user with real database write
    */
-  async updateProfile(profileData) {
-    const token = localStorage.getItem('lj_auth_token');
+  async signupUser({ name, email, password, phone, childName, childAge, nutritionGoal }) {
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(profileData)
-      });
-      if (res.ok) return await res.json();
-    } catch (e) {
-      console.warn('[Auth] Real update-profile unreachable, updating local storage.', e.message);
-    }
+      // 1. Strict Validations
+      const trimmedName = (name || '').trim();
+      if (!trimmedName || trimmedName.length < 2) {
+        return { success: false, message: 'Please enter your full name (at least 2 characters).' };
+      }
 
-    const current = this.getCurrentUser() || {};
-    const updated = { ...current, ...profileData };
-    localStorage.setItem('lj_user_data', JSON.stringify(updated));
-    return { success: true, user: updated };
+      const normalizedEmail = (email || '').trim().toLowerCase();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!normalizedEmail || !emailRegex.test(normalizedEmail)) {
+        return { success: false, message: 'Please enter a valid email address (e.g. parent@example.com).' };
+      }
+
+      const cleanPhone = (phone || '').replace(/\D/g, '').slice(-10);
+      if (!cleanPhone || cleanPhone.length < 10) {
+        return { success: false, message: 'Please enter a valid 10-digit mobile number.' };
+      }
+
+      const trimmedPassword = (password || '').trim();
+      if (!trimmedPassword || trimmedPassword.length < 6) {
+        return { success: false, message: 'Password must be at least 6 characters long.' };
+      }
+
+      // 2. Check if already exists in json-server or fallbacks
+      const existingByEmail = await findUserByEmail(normalizedEmail);
+      if (existingByEmail) {
+        return {
+          success: false,
+          message: 'An account with this email address already exists. Please log in instead.'
+        };
+      }
+
+      const existingByPhone = await findUserByPhone(cleanPhone);
+      if (existingByPhone) {
+        return {
+          success: false,
+          message: 'An account with this mobile number already exists. Please log in instead.'
+        };
+      }
+
+      // 3. Construct user object
+      const newUser = {
+        id: `usr_${Date.now()}`,
+        name: trimmedName,
+        email: normalizedEmail,
+        phone: cleanPhone,
+        password: trimmedPassword,
+        role: 'parent',
+        walletBalance: 200, // ₹200 Welcome Bonus
+        childName: (childName || 'Little Joy').trim(),
+        childAge: childAge || '4',
+        nutritionGoal: nutritionGoal || 'Overall Growth & Immunity',
+        createdAt: new Date().toISOString()
+      };
+
+      // 4. Write to json-server backend
+      try {
+        const createRes = await apiClient.post('/users', newUser);
+        if (createRes.success && createRes.data) {
+          console.log('[authService] User persisted to json-server:', createRes.data.id);
+        }
+      } catch (e) {
+        console.warn('[authService] json-server write error:', e);
+      }
+
+      // 5. Save to local custom registry as reliable persistence
+      saveCustomUser(newUser);
+
+      const token = `mock_token_${newUser.id}_${Date.now()}`;
+      this.setToken(token);
+      this.setUserData(newUser);
+
+      return {
+        success: true,
+        user: newUser,
+        token,
+        message: 'Account created successfully! ₹200 welcome bonus added to your Little Joys Wallet.'
+      };
+    } catch (err) {
+      console.warn('[authService] signupUser error:', err.message);
+      return {
+        success: false,
+        message: 'Unable to create account. Please try again.'
+      };
+    }
   },
 
   /**
-   * Get current authenticated user from local storage
+   * Check / validate session
+   */
+  async checkSession(token) {
+    if (!token) return null;
+    try {
+      const localUser = this.getCurrentUser();
+      if (localUser && localUser.id) {
+        // Try verifying with backend
+        const res = await apiClient.get(`/users/${localUser.id}`);
+        if (res.success && res.data) {
+          this.setUserData(res.data);
+          return res.data;
+        }
+        return localUser;
+      }
+      return null;
+    } catch {
+      return this.getCurrentUser();
+    }
+  },
+
+  /**
+   * Update profile
+   */
+  async updateProfile(userId, profileData) {
+    try {
+      const res = await apiClient.patch(`/users/${userId}`, profileData);
+      const current = this.getCurrentUser() || {};
+      const updated = (res.success && res.data) ? res.data : { ...current, ...profileData };
+      this.setUserData(updated);
+      return { success: true, user: updated };
+    } catch (err) {
+      console.warn('[authService] updateProfile error:', err.message);
+      const current = this.getCurrentUser() || {};
+      const updated = { ...current, ...profileData };
+      this.setUserData(updated);
+      return { success: true, user: updated };
+    }
+  },
+
+  /**
+   * Get current authenticated user from storage
    */
   getCurrentUser() {
     try {
@@ -127,11 +349,30 @@ export const authService = {
     }
   },
 
-  /**
-   * Logout user
-   */
-  logout() {
-    localStorage.removeItem('lj_auth_token');
-    localStorage.removeItem('lj_user_data');
+  setUserData(user) {
+    try {
+      localStorage.setItem('lj_user_data', JSON.stringify(user));
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  setToken(token) {
+    try {
+      localStorage.setItem('lj_auth_token', token);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  logoutUser() {
+    try {
+      localStorage.removeItem('lj_auth_token');
+      localStorage.removeItem('lj_user_data');
+    } catch (e) {
+      console.error(e);
+    }
   }
 };
+
+export default authService;

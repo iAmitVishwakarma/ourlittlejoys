@@ -1,106 +1,109 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-const INITIAL_ADDRESSES = [
-  {
-    id: 'addr-1',
-    name: 'Amit Sharma',
-    mobile: '9876543210',
-    pincode: '462016',
-    addressLine: 'Flat 402, Sunshine Orchards, Arera Colony',
-    locality: 'Near 10 Number Market',
-    city: 'Bhopal',
-    state: 'Madhya Pradesh',
-    type: 'HOME',
-    isDefault: true
-  },
-  {
-    id: 'addr-2',
-    name: 'Amit Sharma',
-    mobile: '9876543210',
-    pincode: '452010',
-    addressLine: '4th Floor, Tech Park, Scheme 54',
-    locality: 'Near Meghdoot Garden, Vijay Nagar',
-    city: 'Indore',
-    state: 'Madhya Pradesh',
-    type: 'WORK',
-    isDefault: false
-  }
-];
+import { addressService } from '@/services/addressService';
+import { apiClient } from '@/services/apiClient';
 
 export const useCheckoutStore = create(
   persist(
     (set, get) => ({
-      savedAddresses: INITIAL_ADDRESSES,
-      selectedAddressId: 'addr-1',
+      savedAddresses: [],
+      selectedAddressId: null,
+      activeUserId: null,
       paymentMethod: 'UPI', // 'UPI' | 'CARD' | 'WALLET' | 'COD'
       upiApp: 'GPAY', // 'GPAY' | 'PHONEPE' | 'PAYTM' | 'CRED' | 'CUSTOM'
       customUpiId: '',
       useWalletBalance: false,
-      walletBalance: 350,
+      walletBalance: 450,
       orders: [],
       lastOrder: null,
 
-      // Address Actions
-      selectAddress: (id) => set({ selectedAddressId: id }),
-
-      addAddress: (addressData) => {
-        const newId = `addr-${Date.now()}`;
-        const isFirstOrSetDefault = addressData.isDefault || get().savedAddresses.length === 0;
-
-        const updatedAddresses = isFirstOrSetDefault
-          ? get().savedAddresses.map((a) => ({ ...a, isDefault: false }))
-          : [...get().savedAddresses];
-
-        const newAddress = {
-          ...addressData,
-          id: newId,
-          isDefault: isFirstOrSetDefault
-        };
-
+      /**
+       * Load addresses for active user
+       */
+      loadUserAddresses: async (userId) => {
+        if (!userId) return;
+        set({ activeUserId: userId });
+        const addresses = await addressService.getUserAddresses(userId);
+        const defaultAddr = addresses.find((a) => a.isDefault) || addresses[0];
         set({
-          savedAddresses: [newAddress, ...updatedAddresses],
-          selectedAddressId: newId
+          savedAddresses: addresses || [],
+          selectedAddressId: defaultAddr?.id || null
         });
 
-        return newId;
+        // Also fetch user-scoped orders
+        try {
+          const res = await apiClient.get('/orders', { userId });
+          if (res.success && Array.isArray(res.data)) {
+            set({ orders: res.data });
+          }
+        } catch (e) {
+          console.warn('[checkoutStore] loadUserOrders error:', e);
+        }
       },
 
-      updateAddress: (id, updatedData) => {
-        const isDefault = updatedData.isDefault;
-        set((state) => ({
-          savedAddresses: state.savedAddresses.map((a) => {
-            if (a.id === id) {
-              return { ...a, ...updatedData };
-            }
-            if (isDefault) {
-              return { ...a, isDefault: false };
-            }
-            return a;
-          })
-        }));
+      // Address Selection
+      selectAddress: (id) => set({ selectedAddressId: id }),
+
+      // Add Address
+      addAddress: async (addressData) => {
+        const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : 'user_001');
+        const updated = await addressService.addAddress(userId, addressData);
+        const newlyAdded = updated.find((a) => a.name === addressData.name && a.pincode === addressData.pincode) || updated[0];
+        
+        set({
+          savedAddresses: updated,
+          selectedAddressId: newlyAdded?.id || updated[0]?.id
+        });
+
+        return newlyAdded?.id || updated[0]?.id;
       },
 
-      removeAddress: (id) => {
+      // Update Address
+      updateAddress: async (id, updatedData) => {
+        const userId = get().activeUserId;
+        if (userId) {
+          const updated = await addressService.updateAddress(userId, id, updatedData);
+          set({ savedAddresses: updated });
+        } else {
+          set((state) => ({
+            savedAddresses: state.savedAddresses.map((a) => (a.id === id ? { ...a, ...updatedData } : a))
+          }));
+        }
+      },
+
+      // Remove Address
+      removeAddress: async (id) => {
+        const userId = get().activeUserId;
         const remaining = get().savedAddresses.filter((a) => a.id !== id);
         let nextSelectedId = get().selectedAddressId;
         if (get().selectedAddressId === id) {
           nextSelectedId = remaining[0]?.id || null;
         }
+
         set({
           savedAddresses: remaining,
           selectedAddressId: nextSelectedId
         });
+
+        if (userId) {
+          await addressService.deleteAddress(userId, id);
+        }
       },
 
-      setDefaultAddress: (id) => {
-        set((state) => ({
-          savedAddresses: state.savedAddresses.map((a) => ({
-            ...a,
-            isDefault: a.id === id
-          })),
-          selectedAddressId: id
+      // Set Default Address
+      setDefaultAddress: async (id) => {
+        const userId = get().activeUserId;
+        const updated = get().savedAddresses.map((a) => ({
+          ...a,
+          isDefault: a.id === id
         }));
+        set({
+          savedAddresses: updated,
+          selectedAddressId: id
+        });
+        if (userId) {
+          await addressService.updateAddress(userId, id, { isDefault: true });
+        }
       },
 
       // Payment Actions
@@ -110,7 +113,8 @@ export const useCheckoutStore = create(
       toggleUseWallet: () => set((state) => ({ useWalletBalance: !state.useWalletBalance })),
 
       // Order Placement
-      createOrder: (orderPayload) => {
+      createOrder: async (orderPayload) => {
+        const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : 'user_001');
         const orderId = `LJ${Math.floor(100000 + Math.random() * 900000)}`;
         const date = new Date();
         const estStart = new Date(date.getTime() + 4 * 24 * 60 * 60 * 1000);
@@ -120,12 +124,17 @@ export const useCheckoutStore = create(
         const estimatedDelivery = `${estStart.toLocaleDateString('en-IN', options)} – ${estEnd.toLocaleDateString('en-IN', options)}`;
 
         const newOrder = {
+          id: `order_${Date.now()}`,
           orderId,
+          userId,
           createdAt: date.toISOString(),
           estimatedDelivery,
           status: 'Confirmed',
           ...orderPayload
         };
+
+        // Post to backend/json-server
+        await apiClient.post('/orders', newOrder).catch(() => {});
 
         set((state) => ({
           lastOrder: newOrder,
@@ -136,7 +145,14 @@ export const useCheckoutStore = create(
       }
     }),
     {
-      name: 'littlejoys-checkout-storage'
+      name: 'littlejoys-checkout-storage-v3',
+      partialize: (state) => ({
+        paymentMethod: state.paymentMethod,
+        upiApp: state.upiApp,
+        lastOrder: state.lastOrder
+      })
     }
   )
 );
+
+export default useCheckoutStore;

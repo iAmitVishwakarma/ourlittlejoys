@@ -8,7 +8,11 @@
       "title": "Honest Nutrition.",
       "highlight": "Happy Kids.",
       "subtitle": "Doctor-formulated daily sprouted ragi & cocoa nutrition for healthy physical growth and strong immunity. Zero white sugar.",
-      "benefits": ["NABL Lab Tested & Certified", "Pediatrician Reviewed", "Rich in Calcium & Iron"],
+      "benefits": [
+        "NABL Lab Tested & Certified",
+        "Pediatrician Reviewed",
+        "Rich in Calcium & Iron"
+      ],
       "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80",
       "productName": "Nutrimix Chocolate Nutrition Powder",
       "productMeta": "Sprouted Ragi • Real Cocoa • Zero Sugar",
@@ -26,7 +30,11 @@
       "title": "Tiny Bites.",
       "highlight": "Giant Immunity.",
       "subtitle": "Delicious chewable gummy bears loaded with 12 essential vitamins (A, C, D3, E, B-Complex) & Zinc. Zero synthetic colors.",
-      "benefits": ["Fills micronutrient gaps", "Strengthens bones & teeth", "High natural Vitamin C"],
+      "benefits": [
+        "Fills micronutrient gaps",
+        "Strengthens bones & teeth",
+        "High natural Vitamin C"
+      ],
       "image": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=800&q=80",
       "productName": "Multivitamin Gummies 4+ (30N)",
       "productMeta": "Natural Strawberry • Pectin Base • No Gelatin",
@@ -44,7 +52,11 @@
       "title": "Crunchy Stars.",
       "highlight": "Pure Jaggery.",
       "subtitle": "Swap maida & palm oil cereals with crunchy roasted millet stars and 70% hazelnut spread sweetened exclusively with organic jaggery.",
-      "benefits": ["100% Whole Millet Flours", "Zero Refined Palm Oil", "High Natural Fibre"],
+      "benefits": [
+        "100% Whole Millet Flours",
+        "Zero Refined Palm Oil",
+        "High Natural Fibre"
+      ],
       "image": "https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=800&q=80",
       "productName": "Millet Crunch Stars & Choco Spread",
       "productMeta": "Ragi • Oats • Raw Honey • Hazelnuts",
@@ -62,7 +74,11 @@
       "title": "Sharper Focus.",
       "highlight": "Active Minds.",
       "subtitle": "Vegetarian algal DHA gummies paired with Nutrimix for cognitive development, school focus, and sharp eyesight without any fishy smell.",
-      "benefits": ["Plant Algae Vegetarian DHA", "Better Memory & Focus", "Zero Fishy Aftertaste"],
+      "benefits": [
+        "Plant Algae Vegetarian DHA",
+        "Better Memory & Focus",
+        "Zero Fishy Aftertaste"
+      ],
       "image": "https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&w=800&q=80",
       "productName": "Brain Development Duo (DHA + Nutrimix)",
       "productMeta": "100mg Algal DHA • Folate • Choline",
@@ -80,7 +96,11 @@
       "title": "Save Up To 30%",
       "highlight": "With LJ Wallet.",
       "subtitle": "Preload your parenting wellness balance and earn flat 30% bonus cashback on every repeat order. Plus free express courier delivery.",
-      "benefits": ["Instant Cashback on Recharges", "Free Shipping on All Orders", "Priority Doctor Consultations"],
+      "benefits": [
+        "Instant Cashback on Recharges",
+        "Free Shipping on All Orders",
+        "Priority Doctor Consultations"
+      ],
       "image": "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=800&q=80",
       "productName": "LJ Parenting Wallet & Bonus",
       "productMeta": "30% Instant Bonus • ₹0 Delivery Fee",
@@ -114,8 +134,21 @@
       "visualType": "nutrimix",
       "flavor": "chocolate",
       "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["Immunity booster", "Brain development", "Natural healthy weight gain", "Better digestion"],
-      "ingredients": ["Sprouted Ragi", "Bajra", "Oats", "Organic Cocoa", "Jaggery", "Almonds", "Walnuts"],
+      "benefits": [
+        "Immunity booster",
+        "Brain development",
+        "Natural healthy weight gain",
+        "Better digestion"
+      ],
+      "ingredients": [
+        "Sprouted Ragi",
+        "Bajra",
+        "Oats",
+        "Organic Cocoa",
+        "Jaggery",
+        "Almonds",
+        "Walnuts"
+      ],
       "stock": 120,
       "isBestSeller": true,
       "isNew": false,
@@ -143,8 +176,17 @@
       "visualType": "gummies",
       "flavor": "strawberry",
       "image": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["Fills micronutrient gaps", "Strengthens bones & teeth", "High natural Vitamin C"],
-      "ingredients": ["Pectin", "Natural Strawberry Extract", "Vitamin A, B-Complex, C, D3, E", "Zinc"],
+      "benefits": [
+        "Fills micronutrient gaps",
+        "Strengthens bones & teeth",
+        "High natural Vitamin C"
+      ],
+      "ingredients": [
+        "Pectin",
+        "Natural Strawberry Extract",
+        "Vitamin A, B-Complex, C, D3, E",
+        "Zinc"
+      ],
       "stock": 160,
       "isBestSeller": true,
       "isNew": false,
@@ -172,8 +214,15 @@
       "visualType": "combo",
       "flavor": "mixed",
       "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["Zinc & Vitamin C support", "Overall stamina", "Sprouted grain protein"],
-      "ingredients": ["Nutrimix chocolate 350g", "Multivitamin gummies 30N (Citrus & Strawberry)"],
+      "benefits": [
+        "Zinc & Vitamin C support",
+        "Overall stamina",
+        "Sprouted grain protein"
+      ],
+      "ingredients": [
+        "Nutrimix chocolate 350g",
+        "Multivitamin gummies 30N (Citrus & Strawberry)"
+      ],
       "stock": 85,
       "isBestSeller": true,
       "isNew": false,
@@ -201,8 +250,17 @@
       "visualType": "combo",
       "flavor": "tangy orange",
       "image": "https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["DHA from plant microalgae", "Better concentration", "Zero fishy aftertaste"],
-      "ingredients": ["Microalgal DHA oil", "Nutrimix", "Folate", "Choline"],
+      "benefits": [
+        "DHA from plant microalgae",
+        "Better concentration",
+        "Zero fishy aftertaste"
+      ],
+      "ingredients": [
+        "Microalgal DHA oil",
+        "Nutrimix",
+        "Folate",
+        "Choline"
+      ],
       "stock": 60,
       "isBestSeller": false,
       "isNew": true,
@@ -230,8 +288,17 @@
       "visualType": "sauce",
       "flavor": "hazelnut",
       "image": "https://images.unsplash.com/photo-1587830605990-eb887f8f902a?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["No refined sugar", "No palm oil", "Rich in healthy fats"],
-      "ingredients": ["Roasted Hazelnuts (70%)", "Organic Jaggery", "Cocoa Butter", "Real Cocoa Powder"],
+      "benefits": [
+        "No refined sugar",
+        "No palm oil",
+        "Rich in healthy fats"
+      ],
+      "ingredients": [
+        "Roasted Hazelnuts (70%)",
+        "Organic Jaggery",
+        "Cocoa Butter",
+        "Real Cocoa Powder"
+      ],
       "stock": 90,
       "isBestSeller": true,
       "isNew": false,
@@ -258,8 +325,18 @@
       "visualType": "sauce",
       "flavor": "tomato",
       "image": "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["Real Vine Tomatoes", "Sweetened with Dates", "Zero Artificial Vinegar"],
-      "ingredients": ["Tomato Paste", "Dates", "Apple Cider Vinegar", "Cumin", "Himalayan Salt"],
+      "benefits": [
+        "Real Vine Tomatoes",
+        "Sweetened with Dates",
+        "Zero Artificial Vinegar"
+      ],
+      "ingredients": [
+        "Tomato Paste",
+        "Dates",
+        "Apple Cider Vinegar",
+        "Cumin",
+        "Himalayan Salt"
+      ],
       "stock": 110,
       "isBestSeller": false,
       "isNew": false,
@@ -287,8 +364,18 @@
       "visualType": "cereal",
       "flavor": "strawberry",
       "image": "https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["High dietary fiber", "Crunchy & stays crisp in milk", "Iron rich"],
-      "ingredients": ["Ragi Flour", "Jowar Flour", "Oat Flour", "Freeze-dried Strawberry", "Honey"],
+      "benefits": [
+        "High dietary fiber",
+        "Crunchy & stays crisp in milk",
+        "Iron rich"
+      ],
+      "ingredients": [
+        "Ragi Flour",
+        "Jowar Flour",
+        "Oat Flour",
+        "Freeze-dried Strawberry",
+        "Honey"
+      ],
       "stock": 75,
       "isBestSeller": false,
       "isNew": true,
@@ -315,8 +402,17 @@
       "visualType": "gummies",
       "flavor": "strawberry",
       "image": "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["Ashwagandha KSM-66", "100% RDA Calcium & D3", "Relieves Fatigue"],
-      "ingredients": ["Magnesium Bisglycinate", "Ashwagandha KSM-66", "Vitamin B6", "Passionflower Extract"],
+      "benefits": [
+        "Ashwagandha KSM-66",
+        "100% RDA Calcium & D3",
+        "Relieves Fatigue"
+      ],
+      "ingredients": [
+        "Magnesium Bisglycinate",
+        "Ashwagandha KSM-66",
+        "Vitamin B6",
+        "Passionflower Extract"
+      ],
       "stock": 95,
       "isBestSeller": false,
       "isNew": true,
@@ -344,8 +440,17 @@
       "visualType": "electrolyte",
       "flavor": "berry",
       "image": "https://images.unsplash.com/photo-1622484216805-4c07914e6e66?auto=format&fit=crop&w=600&q=80",
-      "benefits": ["Coconut Water Powder", "5 Vital Electrolytes", "Instant Recharge"],
-      "ingredients": ["Coconut Water Powder", "Himalayan Pink Salt", "Potassium Citrate", "Magnesium Glycinate"],
+      "benefits": [
+        "Coconut Water Powder",
+        "5 Vital Electrolytes",
+        "Instant Recharge"
+      ],
+      "ingredients": [
+        "Coconut Water Powder",
+        "Himalayan Pink Salt",
+        "Potassium Citrate",
+        "Magnesium Glycinate"
+      ],
       "stock": 130,
       "isBestSeller": false,
       "isNew": true,
@@ -444,10 +549,24 @@
   ],
   "users": [
     {
+      "id": "user_001",
+      "name": "Demo User",
+      "email": "demo@example.com",
+      "phone": "9876543210",
+      "password": "demo123",
+      "walletBalance": 450,
+      "childName": "Kabir",
+      "childAge": "4",
+      "nutritionGoal": "Immunity & Daily Growth",
+      "createdAt": "2026-09-01T10:00:00Z"
+    },
+    {
       "id": "usr_001",
       "name": "Pooja Sharma",
       "email": "pooja.sharma@example.com",
-      "phone": "+91 98765 43210",
+      "phone": "9876543211",
+      "password": "password123",
+      "walletBalance": 450,
       "avatar": "https://ui-avatars.com/api/?name=Pooja+Sharma&background=FF5E8E&color=fff",
       "childName": "Kabir",
       "childAge": "4",
@@ -484,10 +603,41 @@
           }
         ]
       },
-      "orders": ["LJ-ORD-9824"],
-      "wishlist": ["nutrimix-nutrition-powder", "multivitamin-gummies"],
+      "orders": [
+        "LJ-ORD-9824"
+      ],
+      "wishlist": [
+        "nutrimix-nutrition-powder",
+        "multivitamin-gummies"
+      ],
       "createdAt": "2026-09-01T10:00:00Z",
       "updatedAt": "2026-09-10T15:30:00Z"
+    },
+    {
+      "id": "sCEyyIHRvs8",
+      "name": "Ananya Sharma",
+      "email": "test_parent_1789287294271@example.com",
+      "phone": "9892582464",
+      "password": "mypassword123",
+      "role": "parent",
+      "walletBalance": 200,
+      "childName": "Aarav",
+      "childAge": "3",
+      "nutritionGoal": "Height & Immunity",
+      "createdAt": "2026-09-13T08:14:54.553Z"
+    },
+    {
+      "id": "m2mnWc0vhss",
+      "name": "Amit Vishwakarma",
+      "email": "iam.itvishwakarma03@gmail.com",
+      "phone": "7772929755",
+      "password": "123456789",
+      "role": "parent",
+      "walletBalance": 200,
+      "childName": "shubh",
+      "childAge": "7",
+      "nutritionGoal": "Overall Growth & Immunity",
+      "createdAt": "2026-09-13T08:18:22.686Z"
     }
   ],
   "reviews": [
@@ -570,19 +720,63 @@
       "code": "JOY30",
       "discountPercent": 22,
       "minOrder": 499,
-      "description": "22% Flat Instant Joy Discount"
+      "description": "22% Flat Instant Joy Discount",
+      "id": "1Sc5QIlPtjo"
     },
     {
       "code": "FIRST100",
       "discountFlat": 100,
       "minOrder": 399,
-      "description": "Flat ₹100 Off on your first order"
+      "description": "Flat ₹100 Off on your first order",
+      "id": "8v3GzbMF8XY"
     },
     {
       "code": "LJWALLET",
       "discountPercent": 30,
       "minOrder": 899,
-      "description": "Extra 30% value with LJ Wallet balance"
+      "description": "Extra 30% value with LJ Wallet balance",
+      "id": "czj2orGDnho"
     }
-  ]
+  ],
+  "cart": [
+    {
+      "id": "cart_001",
+      "userId": "user_001",
+      "productId": "nutrimix-choc",
+      "title": "Nutrimix Chocolate Nutrition Powder (350g)",
+      "price": 599,
+      "originalPrice": 649,
+      "quantity": 1,
+      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
+      "slug": "nutrimix-nutrition-powder"
+    }
+  ],
+  "wishlist": [
+    {
+      "id": "wish_001",
+      "userId": "user_001",
+      "productId": "multivitamin-gummies",
+      "title": "Multivitamin Gummies 4+ (30N)",
+      "price": 499,
+      "originalPrice": 599,
+      "image": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=600&q=80",
+      "slug": "multivitamin-gummies"
+    }
+  ],
+  "addresses": [
+    {
+      "id": "addr_001",
+      "userId": "user_001",
+      "type": "Home",
+      "name": "Demo User",
+      "phone": "9999999999",
+      "line1": "123 Example Street",
+      "locality": "Vijay Nagar",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001",
+      "isDefault": true
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

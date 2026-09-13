@@ -18,6 +18,7 @@ import {
 } from '@/components/graphics/KidsDoodles';
 import { useCartStore } from '@/stores/cartStore';
 import { useWishlistStore } from '@/stores/wishlistStore';
+import { useAuthStore } from '@/stores/authStore';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import SEO from '@/components/common/SEO';
 import { 
@@ -52,6 +53,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const ctxAddToCart = useCartStore((s) => s.addToCart);
   const isInWishlist = useWishlistStore((s) => s.isInWishlist);
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   // Find product by slug or id
   const product = ALL_PRODUCTS.find((p) => p.slug === slug || p.id === slug) || ALL_PRODUCTS[0];
@@ -111,10 +113,18 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const isFavorite = isInWishlist(product.id || product.slug);
 
   const handleToggleWishlist = () => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/wishlist' } });
+      return;
+    }
     toggleWishlist(product);
   };
 
   const handleAdd = () => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/cart' } });
+      return;
+    }
     setAddedAnimation(true);
     if (effectiveAddToCart) {
       effectiveAddToCart({
@@ -129,6 +139,10 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   };
 
   const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/checkout' } });
+      return;
+    }
     if (effectiveAddToCart) {
       effectiveAddToCart({
         ...product,
@@ -138,10 +152,14 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
         quantity
       });
     }
-    navigate('/cart');
+    navigate('/checkout');
   };
 
   const handleAddBundle = () => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/cart' } });
+      return;
+    }
     setBundleAdded(true);
     if (effectiveAddToCart) {
       effectiveAddToCart({

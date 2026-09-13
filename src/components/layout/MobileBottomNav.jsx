@@ -10,9 +10,9 @@ export default function MobileBottomNav({ onOpenAuth }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const handleProfileClick = (e) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && onOpenAuth) {
       e.preventDefault();
-      onOpenAuth?.();
+      onOpenAuth();
     }
   };
 

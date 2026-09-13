@@ -64,23 +64,23 @@ export default function PaymentStep() {
   const walletDeduction = useWalletBalance ? Math.min(walletBalance, totalPayable) : 0;
   const finalPayable = Math.max(0, totalPayable - walletDeduction);
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     setIsProcessing(true);
 
     // Realistic banking authorization delay (1.2s)
-    setTimeout(() => {
-      const order = createOrder({
-        items: cartItems,
-        totalAmount: finalPayable,
-        address: selectedAddress,
-        paymentMethod,
-        paymentDetails: paymentMethod === 'UPI' ? { app: upiApp, upiId: customUpiId || 'instant_upi@bank' } : null
-      });
+    await new Promise((resolve) => setTimeout(resolve, 1200));
 
-      clearCart();
-      setIsProcessing(false);
-      navigate('/checkout/success');
-    }, 1200);
+    await createOrder({
+      items: cartItems,
+      totalAmount: finalPayable,
+      address: selectedAddress,
+      paymentMethod,
+      paymentDetails: paymentMethod === 'UPI' ? { app: upiApp, upiId: customUpiId || 'instant_upi@bank' } : null
+    });
+
+    clearCart();
+    setIsProcessing(false);
+    navigate('/checkout/success');
   };
 
   return (

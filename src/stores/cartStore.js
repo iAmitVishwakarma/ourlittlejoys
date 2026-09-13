@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { cartService } from '@/services/cartService';
 
 export const VALID_COUPONS = [
   { code: 'JOY30', type: 'percent', value: 22, minOrder: 499, description: '22% Flat Instant Joy Discount' },
@@ -7,79 +8,133 @@ export const VALID_COUPONS = [
   { code: 'LJWALLET', type: 'percent', value: 30, minOrder: 899, description: 'Extra 30% Value with LJ Wallet' }
 ];
 
-const DEFAULT_CART_ITEMS = [
-  {
-    id: "nutrimix-choc",
-    title: "Nutrimix Chocolate Nutrition Powder (350g)",
-    price: 599,
-    originalPrice: 649,
-    quantity: 1,
-    category: "Daily Nutrition",
-    subCategory: "DAILY NUTRITION",
-    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
-    visualType: "nutrimix",
-    flavor: "chocolate",
-    weight: "350g",
-    age: "2-6 Yr",
-    slug: "nutrimix-nutrition-powder"
-  }
-];
-
 export const useCartStore = create(
   persist(
     (set, get) => ({
-      cartItems: DEFAULT_CART_ITEMS,
+      cartItems: [],
+      activeUserId: null,
       appliedCoupon: { code: 'JOY30', type: 'percent', value: 22, description: '22% Flat Instant Joy Discount' },
 
-      addToCart: (product, quantity = 1) => {
+      /**
+       * Load cart for a specific authenticated user
+       */
+      loadUserCart: async (userId) => {
+        if (!userId) return;
+        set({ activeUserId: userId });
+        const items = await cartService.getUserCart(userId);
+        set({ cartItems: items || [] });
+      },
+
+      /**
+       * Add item to cart scoped to user
+       */
+      addToCart: async (product, quantity = 1) => {
+        const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : null);
         const qtyToAdd = product.quantity || quantity || 1;
+
+        // Optimistic update
         set((state) => {
           const existingIndex = state.cartItems.findIndex(
-            (item) => item.id === product.id || item.slug === product.slug
+            (item) => item.id === product.id || item.productId === product.id || item.slug === product.slug
           );
+
           if (existingIndex > -1) {
             const updated = [...state.cartItems];
             updated[existingIndex] = {
               ...updated[existingIndex],
-              quantity: updated[existingIndex].quantity + qtyToAdd
+              quantity: (updated[existingIndex].quantity || 1) + qtyToAdd
             };
             return { cartItems: updated };
           }
-          return { cartItems: [...state.cartItems, { ...product, quantity: qtyToAdd }] };
-        });
-      },
 
-      updateQuantity: (id, newQty) => {
-        if (newQty <= 0) {
-          get().removeFromCart(id);
-        } else {
-          set((state) => ({
-            cartItems: state.cartItems.map((item) =>
-              item.id === id || item.slug === id ? { ...item, quantity: newQty } : item
-            )
-          }));
+          const newItem = {
+            id: product.id || `cart_${Date.now()}`,
+            productId: product.id || product.slug,
+            title: product.title || product.name,
+            price: product.price,
+            originalPrice: product.originalPrice || product.mrp || product.price,
+            quantity: qtyToAdd,
+            image: product.image,
+            slug: product.slug,
+            flavor: product.flavor,
+            weight: product.weight
+          };
+          return { cartItems: [...state.cartItems, newItem] };
+        });
+
+        // Sync with service if userId is present
+        if (userId) {
+          const syncedItems = await cartService.addToCart(userId, product, qtyToAdd);
+          set({ cartItems: syncedItems, activeUserId: userId });
         }
       },
 
-      removeFromCart: (id) => {
+      /**
+       * Update item quantity
+       */
+      updateQuantity: async (id, newQty) => {
+        const userId = get().activeUserId;
+        if (newQty <= 0) {
+          get().removeFromCart(id);
+          return;
+        }
+
         set((state) => ({
-          cartItems: state.cartItems.filter((item) => item.id !== id && item.slug !== id)
+          cartItems: state.cartItems.map((item) =>
+            item.id === id || item.productId === id || item.slug === id
+              ? { ...item, quantity: newQty }
+              : item
+          )
         }));
+
+        if (userId) {
+          await cartService.updateQuantity(userId, id, newQty);
+        }
       },
 
+      /**
+       * Remove item from cart
+       */
+      removeFromCart: async (id) => {
+        const userId = get().activeUserId;
+        set((state) => ({
+          cartItems: state.cartItems.filter(
+            (item) => item.id !== id && item.productId !== id && item.slug !== id
+          )
+        }));
+
+        if (userId) {
+          await cartService.removeFromCart(userId, id);
+        }
+      },
+
+      /**
+       * Clean wipe cart upon logout
+       */
       clearCart: () => {
-        set({ cartItems: [], appliedCoupon: null });
+        set({ cartItems: [], activeUserId: null, appliedCoupon: null });
       },
 
+      /**
+       * Coupon actions
+       */
       applyCoupon: (code) => {
         const state = get();
-        const subtotal = state.cartItems.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
-        const found = VALID_COUPONS.find((c) => c.code.toUpperCase() === code.trim().toUpperCase());
+        const subtotal = state.cartItems.reduce(
+          (sum, item) => sum + item.price * (item.quantity || 1),
+          0
+        );
+        const found = VALID_COUPONS.find(
+          (c) => c.code.toUpperCase() === code.trim().toUpperCase()
+        );
         if (!found) {
           return { success: false, message: 'Invalid coupon code. Try JOY30, FIRST100, or LJWALLET.' };
         }
         if (subtotal < found.minOrder) {
-          return { success: false, message: `Minimum cart value of ₹${found.minOrder} required for ${found.code}.` };
+          return {
+            success: false,
+            message: `Minimum cart value of ₹${found.minOrder} required for ${found.code}.`
+          };
         }
         set({ appliedCoupon: found });
         return { success: true, message: `${found.code} applied successfully!` };
@@ -90,19 +145,22 @@ export const useCartStore = create(
       }
     }),
     {
-      name: 'lj_cart_store_v2'
+      name: 'lj_user_cart_store_v3'
     }
   )
 );
 
-// Derived selectors — use these in components that need computed cart values
+// Derived selectors for computed cart values
 export function useCartDerived() {
   const cartItems = useCartStore((s) => s.cartItems);
   const appliedCoupon = useCartStore((s) => s.appliedCoupon);
 
   const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
-  const mrpTotal = cartItems.reduce((sum, item) => sum + (item.originalPrice || item.price) * (item.quantity || 1), 0);
+  const mrpTotal = cartItems.reduce(
+    (sum, item) => sum + (item.originalPrice || item.price) * (item.quantity || 1),
+    0
+  );
 
   let couponDiscount = 0;
   if (appliedCoupon) {
@@ -115,7 +173,7 @@ export function useCartDerived() {
 
   const mrpSavings = Math.max(0, mrpTotal - subtotal);
   const totalSavings = mrpSavings + couponDiscount;
-  const deliveryFee = subtotal === 0 ? 0 : (subtotal >= 499 ? 0 : 49);
+  const deliveryFee = subtotal === 0 ? 0 : subtotal >= 499 ? 0 : 49;
   const totalPayable = subtotal === 0 ? 0 : Math.max(0, subtotal - couponDiscount + deliveryFee);
 
   const freeGiftThreshold = 999;
@@ -138,3 +196,5 @@ export function useCartDerived() {
     isFreeGiftUnlocked
   };
 }
+
+export default useCartStore;

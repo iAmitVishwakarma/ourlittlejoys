@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Star, Plus, Minus, Check } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Star, Plus, Minus, Check, Heart } from 'lucide-react';
 import ProductVisual from './ProductVisual';
+import { useAuthStore } from '@/stores/authStore';
+import { useWishlistStore } from '@/stores/wishlistStore';
 
 export default function ProductCard({
   id,
@@ -21,25 +23,53 @@ export default function ProductCard({
   flavor = "chocolate",
   image = null,
   slug,
-  description,
+  description: _description,
   benefits = [],
   onAddToCart,
   cartQuantity = 0,
   onUpdateCartQuantity
 }) {
   const [justAdded, setJustAdded] = useState(false);
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
+  const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
 
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
   const productSlug = slug || id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const isFavorite = isInWishlist(id || productSlug);
 
   // Short 1-line benefit for clean hierarchy (What is it? Why care?)
   const shortBenefit = (benefits && benefits.length > 0)
     ? benefits[0]
     : (subCategory || category || "Daily Clean Nutrition");
 
+  const handleToggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/wishlist' } });
+      return;
+    }
+    toggleWishlist({
+      id,
+      title,
+      price,
+      originalPrice,
+      image,
+      slug: productSlug
+    });
+  };
+
   const handleAdd = (e) => {
     e.preventDefault();
     if (isSoldOut) return;
+
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/cart' } });
+      return;
+    }
+
     setJustAdded(true);
     if (onAddToCart) {
       onAddToCart({
@@ -84,10 +114,25 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Age Indicator */}
-        <span className="bg-slate-100 text-slate-700 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-slate-200/80 shrink-0">
-          {age}
-        </span>
+        {/* Age Indicator and Wishlist button */}
+        <div className="flex items-center gap-1.5">
+          <span className="bg-slate-100 text-slate-700 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-slate-200/80 shrink-0">
+            {age}
+          </span>
+          <button
+            type="button"
+            onClick={handleToggleWishlist}
+            className={`p-1.5 rounded-full transition-all duration-200 border cursor-pointer ${
+              isFavorite
+                ? 'bg-rose-50 text-rose-500 border-rose-200 shadow-xs scale-105'
+                : 'bg-white/90 hover:bg-rose-50 text-slate-400 hover:text-rose-500 border-slate-200/80 shadow-2xs'
+            }`}
+            title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label="Wishlist"
+          >
+            <Heart size={13} className={isFavorite ? "fill-rose-500" : ""} />
+          </button>
+        </div>
       </div>
 
       {/* 2. LARGE PRODUCT IMAGE (+20% image area for immediate recognition) */}

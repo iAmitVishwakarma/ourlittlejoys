@@ -2,133 +2,118 @@
  * ============================================================================
  * EXTENSIBLE API CLIENT - OUR LITTLE JOYS
  * ============================================================================
- * Production-ready HTTP client wrapper for REST API communication.
+ * Production-ready HTTP client wrapper powered by Axios for REST API communication.
  * Handles JWT token injection, unified error parsing, timeout handling,
  * and standard response format { success, data, message }.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 const DEFAULT_TIMEOUT = 10000;
 
-class ApiError extends Error {
-  constructor(message, status, data = null) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-    this.data = data;
-  }
-}
-
-/**
- * Standard request dispatcher
- */
-async function sendRequest(endpoint, options = {}) {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('lj_auth_token') : null;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), options.timeout || DEFAULT_TIMEOUT);
-
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
-
-  const headers = {
+export const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: DEFAULT_TIMEOUT,
+  headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-    ...options.headers,
-  };
+  },
+});
 
+// Request Interceptor: Inject JWT token into Authorization header
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('lj_auth_token') : null;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptor: Uniform error handling
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // 401 Unauthorized handling if needed
+    if (error.response?.status === 401 && typeof window !== 'undefined') {
+      // Clear expired token if server explicitly rejects it
+      console.warn('[API Client] Unauthorized 401 received from server.');
+    }
+    return Promise.reject(error);
+  }
+);
+
+/**
+ * Standardized request helper
+ */
+async function executeRequest(fn) {
   try {
-    const response = await fetch(url, {
-      ...options,
-      headers,
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    // Handle 204 No Content
-    if (response.status === 204) {
-      return { success: true, data: null, message: 'Success' };
-    }
-
-    const payload = await response.json().catch(() => null);
-
-    if (!response.ok) {
-      const errorMsg = payload?.message || `HTTP ${response.status}: ${response.statusText}`;
-      throw new ApiError(errorMsg, response.status, payload);
-    }
-
+    const response = await fn();
     return {
       success: true,
-      data: payload?.data !== undefined ? payload.data : payload,
-      message: payload?.message || 'Success'
+      data: response.data !== undefined ? response.data : null,
+      message: 'Success',
+      status: response.status,
     };
   } catch (error) {
-    clearTimeout(timeoutId);
+    const status = error.response?.status || 500;
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      'An unexpected network error occurred.';
 
-    if (error.name === 'AbortError') {
-      console.warn(`[API Client] Request to "${endpoint}" timed out.`);
-      return {
-        success: false,
-        data: null,
-        message: 'Request timed out. Please check your connection and try again.'
-      };
-    }
-
-    console.warn(`[API Client] Request to "${endpoint}" failed:`, error.message);
+    console.warn(`[API Client] Request failed [${status}]:`, message);
     return {
       success: false,
       data: null,
-      message: error.message || 'An unexpected network error occurred.'
+      message,
+      status,
     };
   }
 }
 
 export const apiClient = {
+  instance: axiosInstance,
+
   /**
    * HTTP GET Request
-   * @param {string} endpoint - API path or absolute URL
-   * @param {Record<string, any>} [params] - Query parameters
-   * @param {RequestInit} [options] - Additional fetch options
    */
-  async get(endpoint, params = {}, options = {}) {
-    const query = new URLSearchParams(
-      Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== '')
-    ).toString();
-    const finalEndpoint = query ? `${endpoint}${endpoint.includes('?') ? '&' : '?'}${query}` : endpoint;
-    return sendRequest(finalEndpoint, { ...options, method: 'GET' });
+  async get(endpoint, params = {}, config = {}) {
+    return executeRequest(() =>
+      axiosInstance.get(endpoint, { ...config, params })
+    );
   },
 
   /**
    * HTTP POST Request
-   * @param {string} endpoint - API path or absolute URL
-   * @param {any} body - Request payload object
-   * @param {RequestInit} [options] - Additional fetch options
    */
-  async post(endpoint, body = {}, options = {}) {
-    return sendRequest(endpoint, {
-      ...options,
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
+  async post(endpoint, data = {}, config = {}) {
+    return executeRequest(() => axiosInstance.post(endpoint, data, config));
   },
 
   /**
    * HTTP PUT Request
    */
-  async put(endpoint, body = {}, options = {}) {
-    return sendRequest(endpoint, {
-      ...options,
-      method: 'PUT',
-      body: JSON.stringify(body)
-    });
+  async put(endpoint, data = {}, config = {}) {
+    return executeRequest(() => axiosInstance.put(endpoint, data, config));
+  },
+
+  /**
+   * HTTP PATCH Request
+   */
+  async patch(endpoint, data = {}, config = {}) {
+    return executeRequest(() => axiosInstance.patch(endpoint, data, config));
   },
 
   /**
    * HTTP DELETE Request
    */
-  async delete(endpoint, options = {}) {
-    return sendRequest(endpoint, { ...options, method: 'DELETE' });
-  }
+  async delete(endpoint, config = {}) {
+    return executeRequest(() => axiosInstance.delete(endpoint, config));
+  },
 };
 
 export default apiClient;
