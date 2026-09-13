@@ -148,33 +148,33 @@ export default function ProductCard({
             <button
               disabled
               aria-label={`${title} is currently sold out`}
-              className="bg-slate-200 text-slate-500 text-xs font-black px-4 py-2 rounded-full cursor-not-allowed uppercase"
+              className="bg-slate-200 text-slate-500 text-xs font-black px-4 py-2 rounded-full cursor-not-allowed uppercase min-h-[44px]"
             >
               Sold Out
             </button>
           ) : cartQuantity > 0 ? (
-            <div className="flex items-center bg-emerald-50 rounded-full border border-emerald-300 p-0.5 shadow-2xs">
+            <div className="flex items-center bg-emerald-50 rounded-full border border-emerald-300 p-1 shadow-2xs">
               <button
                 onClick={() => onUpdateCartQuantity && onUpdateCartQuantity(id, cartQuantity - 1)}
                 aria-label={`Decrease quantity of ${title}`}
-                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-[#13805B] hover:bg-emerald-100 font-black shadow-xs active:scale-90 cursor-pointer"
+                className="w-9 h-9 min-w-[40px] min-h-[40px] rounded-full bg-white flex items-center justify-center text-[#13805B] hover:bg-emerald-100 font-black shadow-xs active:scale-90 cursor-pointer"
               >
-                <Minus className="w-3.5 h-3.5" />
+                <Minus className="w-4 h-4" />
               </button>
-              <span className="w-7 text-center font-black text-xs text-[#13805B]">{cartQuantity}</span>
+              <span className="w-8 text-center font-black text-xs sm:text-sm text-[#13805B]">{cartQuantity}</span>
               <button
                 onClick={() => onUpdateCartQuantity && onUpdateCartQuantity(id, cartQuantity + 1)}
                 aria-label={`Increase quantity of ${title}`}
-                className="w-7 h-7 rounded-full bg-[#13805B] flex items-center justify-center text-white hover:bg-[#0E6346] font-black shadow-xs active:scale-90 cursor-pointer"
+                className="w-9 h-9 min-w-[40px] min-h-[40px] rounded-full bg-[#13805B] flex items-center justify-center text-white hover:bg-[#0E6346] font-black shadow-xs active:scale-90 cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-4 h-4" />
               </button>
             </div>
           ) : (
             <button
               onClick={handleAdd}
               aria-label={`Add ${title} to cart`}
-              className={`text-xs font-black px-5 sm:px-6 py-2 sm:py-2.5 rounded-full transition-all duration-200 flex items-center justify-center space-x-1 shadow-md active:scale-95 cursor-pointer ${
+              className={`text-xs font-black px-5 sm:px-6 py-2.5 sm:py-3 min-h-[44px] rounded-full transition-all duration-200 flex items-center justify-center space-x-1 shadow-md active:scale-95 cursor-pointer ${
                 justAdded
                   ? 'bg-emerald-700 text-white'
                   : 'bg-[#13805B] hover:bg-[#0E6346] text-white shadow-[#13805B]/20'

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useParams, Link } from 'react-router-dom';
-import ProductCard from '../components/ProductCard';
-import { ALL_PRODUCTS } from '../data/products';
-import { useCart } from '../context/CartContext';
+import ProductCard from '@/components/product/ProductCard';
+import { ALL_PRODUCTS } from '@/data/products';
+import { useCartStore } from '@/stores/cartStore';
+import SEO from '@/components/common/SEO';
 import { ShoppingBag, Filter, Sparkles, ArrowRight, Check } from 'lucide-react';
 
 const CATEGORY_SLUG_MAP = {
@@ -25,7 +26,9 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
   const [searchParams, setSearchParams] = useSearchParams();
   const { category: routeCategory } = useParams();
   
-  const { cartItems: ctxCartItems, addToCart: ctxAddToCart, updateQuantity: ctxUpdateQty } = useCart();
+  const ctxCartItems = useCartStore((s) => s.cartItems);
+  const ctxAddToCart = useCartStore((s) => s.addToCart);
+  const ctxUpdateQty = useCartStore((s) => s.updateQuantity);
   const effectiveCartItems = propCartItems || ctxCartItems || [];
   const handleAdd = onAddToCart || ctxAddToCart;
   const handleUpdateQty = onUpdateCartQuantity || ctxUpdateQty;
@@ -124,8 +127,17 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
   const totalCartCount = effectiveCartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
   const totalCartAmount = effectiveCartItems.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
 
+  const pageTitle = selectedCategory === 'All' 
+    ? 'Shop All Kids Nutrition Essentials | Little Joys'
+    : `${selectedCategory} for Kids Nutrition | Little Joys`;
+  const pageDescription = `Explore pediatrician-formulated ${selectedCategory.toLowerCase()} nutrition for toddlers, kids, and mothers. Zero refined sugar, 100% clean ingredients.`;
+
   return (
     <div className="bg-[#FFF9F5] min-h-screen pb-24">
+      <SEO 
+        title={pageTitle}
+        description={pageDescription}
+      />
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-pink-100 via-amber-50 to-rose-100 border-b border-pink-100/80 py-8 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
@@ -162,12 +174,14 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
       {/* Category Navigation Bar (Horizontal scrolling) */}
       <div className="sticky top-[86px] z-30 bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-xs py-3 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" role="tablist" aria-label="Product categories">
             {categories.map((cat) => (
               <button
                 key={cat}
+                role="tab"
+                aria-selected={selectedCategory === cat}
                 onClick={() => handleCategoryClick(cat)}
-                className={`px-4 py-2 rounded-full text-xs md:text-sm font-extrabold whitespace-nowrap transition-all ${
+                className={`px-4 py-2.5 min-h-[44px] rounded-full text-xs md:text-sm font-extrabold whitespace-nowrap transition-all flex items-center justify-center ${
                   selectedCategory === cat
                     ? 'bg-pink-500 text-white shadow-md shadow-pink-500/25 scale-105'
                     : 'bg-slate-100/80 text-slate-700 hover:bg-pink-50 hover:text-pink-600'
@@ -189,16 +203,17 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
               <Filter className="w-3.5 h-3.5" />
               <span>Age:</span>
             </span>
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0" role="group" aria-label="Filter by age">
               {ageFilters.map((age) => (
                 <button
                   key={age.value}
                   onClick={() => setSelectedAge(age.value)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  className={`px-3.5 py-2 min-h-[40px] rounded-xl text-xs font-bold transition-all ${
                     selectedAge === age.value
                       ? 'bg-slate-900 text-white shadow-xs'
                       : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/60'
                   }`}
+                  aria-pressed={selectedAge === age.value}
                 >
                   {age.label}
                 </button>
@@ -208,11 +223,13 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
 
           {/* Sort By */}
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <span className="text-xs font-bold text-slate-400">Sort by:</span>
+            <label htmlFor="shop-sort-by" className="text-xs font-bold text-slate-400">Sort by:</label>
             <select
+              id="shop-sort-by"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pink-400"
+              aria-label="Sort products by"
+              className="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 rounded-xl px-3 py-2 min-h-[40px] focus:outline-none focus:border-pink-400"
             >
               <option value="popular">Most Popular</option>
               <option value="rating">Highest Rated</option>
@@ -232,7 +249,8 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
           {selectedAge !== 'All' && (
             <button
               onClick={() => setSelectedAge('All')}
-              className="text-xs text-pink-600 hover:underline font-bold"
+              aria-label="Clear age filter"
+              className="text-xs text-pink-600 hover:underline font-bold min-h-[40px] px-2"
             >
               Clear Age Filter
             </button>
@@ -241,12 +259,12 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
 
         {filteredProducts.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-orange-100 p-8">
-            <div className="text-5xl mb-4">🔍</div>
-            <h3 className="text-lg font-black text-slate-800 mb-2">No products found for this filter</h3>
+            <div className="text-5xl mb-4" aria-hidden="true">🔍</div>
+            <h2 className="text-lg font-black text-slate-800 mb-2">No products found for this filter</h2>
             <p className="text-sm text-slate-500 mb-6">Try selecting "All" or a different age group.</p>
             <button
               onClick={() => { setSelectedCategory('All'); setSelectedAge('All'); }}
-              className="bg-pink-500 text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase"
+              className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3 min-h-[44px] rounded-full text-xs uppercase tracking-wider"
             >
               Reset All Filters
             </button>

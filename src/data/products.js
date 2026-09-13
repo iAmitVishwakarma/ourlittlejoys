@@ -1,6 +1,4 @@
-import dbData from '../../db.json';
-
-export const HERO_SLIDES = dbData.heroSlides || [
+export const HERO_SLIDES = [
   {
     id: "slide-1",
     tag: "DOCTOR FORMULATED",

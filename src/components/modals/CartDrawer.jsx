@@ -23,18 +23,24 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
       {/* Drawer */}
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300">
+        <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cart-drawer-title"
+          className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300"
+        >
           {/* Header */}
           <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-orange-50/50">
             <div>
-              <h2 className="text-xl font-black text-slate-800">Your Cart</h2>
+              <h2 id="cart-drawer-title" className="text-xl font-black text-slate-800">Your Cart</h2>
               <p className="text-xs text-slate-500 font-medium">
                 {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your bag
               </p>
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-white text-slate-500 hover:text-slate-800 transition-colors"
+              aria-label="Close shopping bag"
+              className="w-11 h-11 rounded-full hover:bg-white text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -78,7 +84,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                       <h4 className="font-bold text-sm text-slate-800 line-clamp-1">{item.title}</h4>
                       <button
                         onClick={() => onRemoveItem(item.id)}
-                        className="text-slate-400 hover:text-red-500 transition-colors p-1"
+                        aria-label={`Remove ${item.title} from cart`}
+                        className="text-slate-400 hover:text-red-500 transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center cursor-pointer"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -95,19 +102,21 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                       </div>
 
                       {/* Quantity Selector */}
-                      <div className="flex items-center space-x-2 bg-white rounded-full border border-slate-200 px-2 py-0.5">
+                      <div className="flex items-center space-x-1 bg-white rounded-full border border-slate-200 p-0.5">
                         <button
                           onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-                          className="p-1 text-slate-500 hover:text-slate-800"
+                          aria-label={`Decrease quantity of ${item.title}`}
+                          className="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-slate-800 cursor-pointer"
                         >
-                          <Minus className="w-3 h-3" />
+                          <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                        <span className="text-xs font-bold w-5 text-center">{item.quantity}</span>
                         <button
                           onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                          className="p-1 text-slate-500 hover:text-slate-800"
+                          aria-label={`Increase quantity of ${item.title}`}
+                          className="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-slate-800 cursor-pointer"
                         >
-                          <Plus className="w-3 h-3" />
+                          <Plus className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>

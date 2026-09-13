@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ResponsiveImage from '../common/ResponsiveImage';
 
 /**
  * Photographic Product Visual component displaying real high-definition product imagery
@@ -38,13 +39,14 @@ export default function ProductVisual({
   return (
     <div className={`relative w-full h-full flex items-center justify-center overflow-hidden p-1 group ${className}`}>
       {/* Real Product Photography Poster */}
-      <img
+      <ResponsiveImage
         src={resolvedSrc}
         alt={alt}
         loading="lazy"
         decoding="async"
-        width="300"
-        height="300"
+        width={300}
+        height={300}
+        sizes="(max-width: 640px) 180px, 300px"
         onError={() => setImgError(true)}
         className="w-full h-full object-contain drop-shadow-md transition-transform duration-500 ease-out group-hover:scale-105"
       />

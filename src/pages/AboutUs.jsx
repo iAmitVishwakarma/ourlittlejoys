@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sparkles, Heart, ShieldCheck, Award, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '@/components/common/SEO';
 
 export default function AboutUs() {
   const kidLeaders = [
@@ -44,9 +45,13 @@ export default function AboutUs() {
 
   return (
     <div className="bg-[#FFF9F5] min-h-screen pb-20">
-      {/* Poem / Intro Hero */}
-      <section className="bg-gradient-to-b from-pink-100 via-rose-50 to-[#FFF9F5] pt-12 pb-16 px-4 md:px-6">
-        <div className="container mx-auto max-w-3xl text-center">
+      <SEO
+        title="About Us - Our Story & Pediatric Nutrition Mission"
+        description="Learn how Little Joys crafts clean, pediatrician-formulated kids nutrition with zero refined sugar for 200,000+ families across India."
+      />
+      {/* HERO SECTION */}
+      <section className="container mx-auto max-w-4xl px-4 md:px-6 pt-8 pb-12 text-center relative">
+        <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-white/90 px-4 py-1.5 rounded-full mb-6 border border-pink-200 shadow-xs">
             <Sparkles className="w-4 h-4 text-pink-500" />
             <span className="text-xs font-black uppercase tracking-wider text-slate-800">
@@ -63,20 +68,18 @@ export default function AboutUs() {
             <p>Little innocent laughs, and mischievous smiles.</p>
             <p>Little words of kindness and little acts of love.</p>
             <p>Little tears that fall, and tantrums that follow.</p>
-            <p>Little stories in the mornings of all the funny things they dream of.</p>
-            <div className="pt-4 border-t border-pink-100 font-bold text-pink-600 text-lg md:text-xl">
-              Know that what we say is true.<br />
-              That these moments mean just as much to us as they do to you.
-            </div>
+            <p>Little jumps of excitement, and endless why’s and why not’s.</p>
+            <p>Little questions, little worries, and little discoveries.</p>
+            <p className="font-bold text-pink-600">Life is indeed full of little joys!</p>
           </div>
         </div>
       </section>
 
-      {/* Our Story Section */}
-      <section className="container mx-auto max-w-4xl px-4 md:px-6 my-16">
-        <div className="bg-white rounded-3xl p-8 md:p-14 border border-orange-100 shadow-sm grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      {/* OUR STORY / GENESIS Section */}
+      <section className="container mx-auto max-w-5xl px-4 md:px-6 my-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 md:p-12 border border-orange-100 shadow-sm">
           <div className="md:col-span-8 space-y-4">
-            <span className="text-xs font-black uppercase text-pink-600 tracking-wider">
+            <span className="text-xs font-black uppercase text-[#13805B] tracking-wider">
               The Genesis
             </span>
             <h2 className="text-2xl md:text-4xl font-black text-slate-800">Our Story</h2>
@@ -93,7 +96,7 @@ export default function AboutUs() {
 
           <div className="md:col-span-4 bg-gradient-to-br from-pink-100 to-amber-100 rounded-3xl p-6 text-center border border-pink-200/60 flex flex-col items-center justify-center">
             <span className="text-6xl mb-3">👨‍👩‍👧‍👦</span>
-            <h4 className="font-black text-slate-800 text-sm">200K+ Families</h4>
+            <p className="font-black text-slate-800 text-sm">200K+ Families</p>
             <p className="text-xs text-slate-500 mt-1">Trusting Little Joys every morning across India.</p>
           </div>
         </div>

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCheckoutStore } from '../../stores/checkoutStore';
-import CheckoutStepper from '../../components/CheckoutStepper';
+import { useCheckoutStore } from '@/stores/checkoutStore';
+import CheckoutStepper from '@/components/checkout/CheckoutStepper';
 import { 
   SunDoodle, 
   HeartDoodle, 
   KidStampBadge, 
   MiniStarCluster,
   FlyingKidDoodle
-} from '../../components/KidsDoodles';
+} from '@/components/graphics/KidsDoodles';
+import SEO from '@/components/common/SEO';
 import { 
   CheckCircle2, 
   Package, 
@@ -52,6 +53,10 @@ export default function OrderSuccessStep() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 md:pb-16">
+      <SEO 
+        title="Order Confirmed | Little Joys"
+        description="Your Little Joys order has been placed successfully and is being packed with love."
+      />
       {/* 1. Stepper with all 4 steps completed */}
       <CheckoutStepper currentStep="confirmation" />
 
@@ -99,9 +104,9 @@ export default function OrderSuccessStep() {
               <span className="text-xs font-black uppercase text-[#13805B] tracking-wider">
                 Estimated Delivery
               </span>
-              <h3 className="text-lg font-black text-slate-900 mt-0.5">
+              <h2 className="text-lg font-black text-slate-900 mt-0.5">
                 {activeOrder.estimatedDelivery || 'Thursday, 18 Sep – Saturday, 20 Sep'}
-              </h3>
+              </h2>
             </div>
 
             <span className="inline-flex items-center gap-1.5 text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full self-start sm:self-auto">

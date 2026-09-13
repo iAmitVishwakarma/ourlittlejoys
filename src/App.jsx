@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { CartProvider, useCart } from './context/CartContext';
-import { WishlistProvider } from './context/WishlistContext';
+import { useCartStore } from '@/stores/cartStore';
 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import CheckoutFooter from './components/CheckoutFooter';
-import MobileBottomNav from './components/MobileBottomNav';
-import CartDrawer from './components/CartDrawer';
-import AuthModal from './components/AuthModal';
-import UserAccountDrawer from './components/UserAccountDrawer';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import MobileBottomNav from '@/components/layout/MobileBottomNav';
 
-// Pages - Home is loaded immediately for critical initial render
-import Home from './pages/Home';
-const ShopAll = React.lazy(() => import('./pages/ShopAll'));
-const HonestReport = React.lazy(() => import('./pages/HonestReport'));
-const CheckoutV2 = React.lazy(() => import('./pages/CheckoutV2'));
-const AddressStep = React.lazy(() => import('./pages/checkout/AddressStep'));
-const PaymentStep = React.lazy(() => import('./pages/checkout/PaymentStep'));
-const OrderSuccessStep = React.lazy(() => import('./pages/checkout/OrderSuccessStep'));
-const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
-const AboutUs = React.lazy(() => import('./pages/AboutUs'));
-const WalletRecharge = React.lazy(() => import('./pages/WalletRecharge'));
-const Cart = React.lazy(() => import('./pages/Cart'));
-const Profile = React.lazy(() => import('./pages/Profile'));
-const FAQPage = React.lazy(() => import('./pages/StaticPages').then(m => ({ default: m.FAQPage })));
-const ContactPage = React.lazy(() => import('./pages/StaticPages').then(m => ({ default: m.ContactPage })));
-const LegalPage = React.lazy(() => import('./pages/StaticPages').then(m => ({ default: m.LegalPage })));
+// Interaction-only components — lazy-loaded since they're hidden until user clicks
+const CartDrawer = React.lazy(() => import('@/components/modals/CartDrawer'));
+const AuthModal = React.lazy(() => import('@/components/modals/AuthModal'));
+const UserAccountDrawer = React.lazy(() => import('@/components/modals/UserAccountDrawer'));
+const CheckoutFooter = React.lazy(() => import('@/components/layout/CheckoutFooter'));
+
+// Pages - All routes lazy-loaded for optimal code splitting
+const Home = React.lazy(() => import('@/pages/Home'));
+const ShopAll = React.lazy(() => import('@/pages/ShopAll'));
+const HonestReport = React.lazy(() => import('@/pages/HonestReport'));
+const AddressStep = React.lazy(() => import('@/pages/checkout/AddressStep'));
+const PaymentStep = React.lazy(() => import('@/pages/checkout/PaymentStep'));
+const OrderSuccessStep = React.lazy(() => import('@/pages/checkout/OrderSuccessStep'));
+const ProductDetail = React.lazy(() => import('@/pages/ProductDetail'));
+const AboutUs = React.lazy(() => import('@/pages/AboutUs'));
+const WalletRecharge = React.lazy(() => import('@/pages/WalletRecharge'));
+const Cart = React.lazy(() => import('@/pages/Cart'));
+const Profile = React.lazy(() => import('@/pages/Profile'));
+const FAQPage = React.lazy(() => import('@/pages/StaticPages').then(m => ({ default: m.FAQPage })));
+const ContactPage = React.lazy(() => import('@/pages/StaticPages').then(m => ({ default: m.ContactPage })));
+const LegalPage = React.lazy(() => import('@/pages/StaticPages').then(m => ({ default: m.LegalPage })));
 
 // Scroll to top helper on route change
 function ScrollToTop() {
@@ -39,7 +38,11 @@ function ScrollToTop() {
 }
 
 function AppContent() {
-  const { cartItems, cartCount, addToCart, updateQuantity, removeFromCart } = useCart();
+  const cartItems = useCartStore((s) => s.cartItems);
+  const addToCart = useCartStore((s) => s.addToCart);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeFromCart = useCartStore((s) => s.removeFromCart);
+  const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
@@ -238,7 +241,11 @@ function AppContent() {
       </main>
 
       {/* Footer with safety guarantees & page links (Switches to clean minimal CheckoutFooter on checkout) */}
-      {isCheckoutRoute ? <CheckoutFooter /> : <Footer />}
+      {isCheckoutRoute ? (
+        <React.Suspense fallback={<footer className="h-16 bg-white" />}>
+          <CheckoutFooter />
+        </React.Suspense>
+      ) : <Footer />}
 
       {/* Mobile Bottom Navigation (Hidden during checkout) */}
       {!isCheckoutRoute && (
@@ -248,39 +255,35 @@ function AppContent() {
       )}
 
       {/* Interactive Sliding Cart Drawer */}
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        onUpdateQuantity={updateQuantity}
-        onRemoveItem={removeFromCart}
-      />
+      <React.Suspense fallback={null}>
+        <CartDrawer
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          cartItems={cartItems}
+          onUpdateQuantity={updateQuantity}
+          onRemoveItem={removeFromCart}
+        />
 
-      {/* Auth & LJ Wallet Modal */}
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-      />
+        {/* Auth & LJ Wallet Modal */}
+        <AuthModal
+          isOpen={isAuthOpen}
+          onClose={() => setIsAuthOpen(false)}
+        />
 
-      {/* Logged in User Account & Wallet Drawer */}
-      <UserAccountDrawer
-        isOpen={isAccountOpen}
-        onClose={() => setIsAccountOpen(false)}
-      />
+        {/* Logged in User Account & Wallet Drawer */}
+        <UserAccountDrawer
+          isOpen={isAccountOpen}
+          onClose={() => setIsAccountOpen(false)}
+        />
+      </React.Suspense>
     </div>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <Router>
-            <AppContent />
-          </Router>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+    <Router>
+      <AppContent />
+    </Router>
   );
 }

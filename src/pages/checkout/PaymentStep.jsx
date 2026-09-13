@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useCheckoutStore } from '../../stores/checkoutStore';
-import { useCart } from '../../context/CartContext';
-import CheckoutStepper from '../../components/CheckoutStepper';
-import CheckoutOrderSummary from '../../components/CheckoutOrderSummary';
+import { useCheckoutStore } from '@/stores/checkoutStore';
+import { useCartStore, useCartDerived } from '@/stores/cartStore';
+import CheckoutStepper from '@/components/checkout/CheckoutStepper';
+import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
+import SEO from '@/components/common/SEO';
 import { 
   MapPin, 
   CreditCard, 
@@ -20,7 +21,8 @@ import {
 
 export default function PaymentStep() {
   const navigate = useNavigate();
-  const { cartItems, totalPayable, clearCart } = useCart();
+  const { cartItems, totalPayable } = useCartDerived();
+  const clearCart = useCartStore((s) => s.clearCart);
   const { 
     savedAddresses, 
     selectedAddressId, 
@@ -46,8 +48,9 @@ export default function PaymentStep() {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-[#FFF9F5] py-12 px-4">
+        <SEO title="Checkout - Cart Empty | Little Joys" description="Your shopping cart is currently empty." />
         <div className="container mx-auto max-w-lg text-center bg-white rounded-3xl p-8 border border-orange-100 shadow-sm space-y-4">
-          <h2 className="text-xl font-black text-slate-900">Your Cart is Empty</h2>
+          <h1 className="text-xl font-black text-slate-900">Your Cart is Empty</h1>
           <p className="text-xs text-slate-500 font-medium">Please add products to your cart before proceeding.</p>
           <Link to="/cart" className="inline-block bg-[#13805B] text-white text-xs font-black px-6 py-3 rounded-full uppercase">
             Go to Cart
@@ -82,6 +85,7 @@ export default function PaymentStep() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 md:pb-16">
+      <SEO title="Checkout - Payment Method | Little Joys" description="Complete payment securely for your Little Joys order." />
       {/* 1. Myntra-Style Step Navigation */}
       <CheckoutStepper currentStep="payment" />
 
@@ -120,9 +124,9 @@ export default function PaymentStep() {
           {/* Left Column: Selectable Payment Methods */}
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-black text-slate-900 tracking-tight">
+              <h1 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                 Select Payment Method
-              </h2>
+              </h1>
               <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
                 <Lock className="w-3 h-3 text-[#13805B]" /> 100% Safe
               </span>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart, VALID_COUPONS } from '../context/CartContext';
-import { CROSS_SELL_PRODUCTS } from '../data/products';
-import ProductVisual from '../components/ProductVisual';
+import { useCartStore, useCartDerived, VALID_COUPONS } from '@/stores/cartStore';
+import { CROSS_SELL_PRODUCTS } from '@/data/products';
+import ProductVisual from '@/components/product/ProductVisual';
+import SEO from '@/components/common/SEO';
 import { 
   ShoppingBag, 
   Trash2, 
@@ -35,13 +36,13 @@ export default function Cart() {
     appliedCoupon,
     freeGiftThreshold,
     freeGiftAmountLeft,
-    isFreeGiftUnlocked,
-    updateQuantity,
-    removeFromCart,
-    addToCart,
-    applyCoupon,
-    removeCoupon
-  } = useCart();
+    isFreeGiftUnlocked
+  } = useCartDerived();
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeFromCart = useCartStore((s) => s.removeFromCart);
+  const addToCart = useCartStore((s) => s.addToCart);
+  const applyCoupon = useCartStore((s) => s.applyCoupon);
+  const removeCoupon = useCartStore((s) => s.removeCoupon);
 
   const [couponInput, setCouponInput] = useState('');
   const [couponMessage, setCouponMessage] = useState(null);
@@ -67,12 +68,16 @@ export default function Cart() {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
+        <SEO
+          title="Your Cart is Empty | Little Joys"
+          description="Explore our pediatric-formulated kids nutrition, sprouted ragi Nutrimix, and multivitamin gummies."
+        />
         <div className="max-w-md w-full bg-white rounded-3xl shadow-sm border border-orange-100 p-8 text-center space-y-6">
           <div className="w-24 h-24 bg-pink-50 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-pink-100">
             🛒
           </div>
           <div className="space-y-2">
-            <h2 className="text-2xl font-black text-slate-800 tracking-tight">Your Cart is Empty!</h2>
+            <h1 className="text-2xl font-black text-slate-800 tracking-tight">Your Cart is Empty!</h1>
             <p className="text-sm text-slate-500 leading-relaxed">
               Explore our range of clean nutrition, sprouted millet Nutrimix, and gelatin-free gummies designed for growing kids.
             </p>
@@ -91,8 +96,12 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-4 md:pt-6">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+    <div className="bg-[#FFF9F5] min-h-screen py-6 md:py-10">
+      <SEO
+        title={`Shopping Cart (${cartItems.length} items) | Little Joys`}
+        description="Review your Little Joys clean kids nutrition cart, apply coupons, and checkout securely."
+      />
+      <div className="container mx-auto max-w-6xl px-4 md:px-6">
         {/* Breadcrumb & Header */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
@@ -271,9 +280,9 @@ export default function Cart() {
             <div className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-orange-100">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                <h3 className="text-sm md:text-base font-black text-slate-800">
+                <h2 className="text-sm md:text-base font-black text-slate-800">
                   Parents Also Add to Bag
-                </h3>
+                </h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {CROSS_SELL_PRODUCTS.map((prod) => (
@@ -312,7 +321,7 @@ export default function Cart() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-pink-500" />
-                  <h3 className="text-sm font-black text-slate-800">Apply Coupon Code</h3>
+                  <h2 className="text-sm font-black text-slate-800">Apply Coupon Code</h2>
                 </div>
                 {appliedCoupon && (
                   <button
@@ -331,6 +340,7 @@ export default function Cart() {
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                   placeholder="Enter coupon (e.g. JOY30)"
+                  aria-label="Enter coupon code"
                   className="flex-1 uppercase font-bold text-xs bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-pink-500 focus:bg-white"
                 />
                 <button
@@ -396,9 +406,9 @@ export default function Cart() {
 
             {/* Bill Summary Card */}
             <div className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-orange-100 space-y-4">
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-3">
+              <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-3">
                 Order Summary
-              </h3>
+              </h2>
 
               <div className="space-y-2.5 text-xs md:text-sm">
                 <div className="flex justify-between text-slate-600">

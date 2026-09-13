@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '@/stores/authStore';
 import { 
   X, 
   User, 
@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 
 export default function UserAccountDrawer({ isOpen, onClose }) {
-  const { user, logout } = useAuth();
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
   const [activeTab, setActiveTab] = useState('wallet'); // 'wallet', 'orders', 'child'
 
   if (!isOpen || !user) return null;
@@ -30,7 +31,12 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
 
       {/* Drawer */}
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300">
+        <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="account-drawer-title"
+          className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300"
+        >
           {/* Header */}
           <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-pink-50 to-amber-50 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -38,24 +44,27 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
                 {user.name ? user.name.charAt(0).toUpperCase() : 'P'}
               </div>
               <div>
-                <h3 className="font-black text-slate-800 text-base">{user.name || 'Parent'}</h3>
+                <h2 id="account-drawer-title" className="font-black text-slate-800 text-base">{user.name || 'Parent'}</h2>
                 <p className="text-xs text-slate-500 font-semibold">+91 {user.phone}</p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-white text-slate-400 hover:text-slate-700 transition-colors"
+              aria-label="Close account drawer"
+              className="w-11 h-11 rounded-full hover:bg-white text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-slate-100 px-6 pt-3 gap-6 text-xs font-black uppercase tracking-wider">
+          <div role="tablist" aria-label="Account Tabs" className="flex border-b border-slate-100 px-6 pt-3 gap-6 text-xs font-black uppercase tracking-wider">
             <button
+              role="tab"
+              aria-selected={activeTab === 'wallet'}
               onClick={() => setActiveTab('wallet')}
-              className={`pb-3 flex items-center gap-1.5 transition-colors border-b-2 ${
+              className={`pb-3 min-h-[44px] flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
                 activeTab === 'wallet'
                   ? 'border-pink-500 text-pink-600'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -66,8 +75,10 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
             </button>
 
             <button
+              role="tab"
+              aria-selected={activeTab === 'orders'}
               onClick={() => setActiveTab('orders')}
-              className={`pb-3 flex items-center gap-1.5 transition-colors border-b-2 ${
+              className={`pb-3 min-h-[44px] flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
                 activeTab === 'orders'
                   ? 'border-pink-500 text-pink-600'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -78,8 +89,10 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
             </button>
 
             <button
+              role="tab"
+              aria-selected={activeTab === 'child'}
               onClick={() => setActiveTab('child')}
-              className={`pb-3 flex items-center gap-1.5 transition-colors border-b-2 ${
+              className={`pb-3 min-h-[44px] flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
                 activeTab === 'child'
                   ? 'border-pink-500 text-pink-600'
                   : 'border-transparent text-slate-400 hover:text-slate-700'

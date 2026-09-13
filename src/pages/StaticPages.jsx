@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '@/components/common/SEO';
 import { 
   HelpCircle, 
   ChevronDown, 
@@ -42,6 +43,10 @@ export function FAQPage() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-8">
+      <SEO 
+        title="Frequently Asked Questions | Little Joys"
+        description="Everything you need to know about our clean ingredients, doctor formulations, shipping, and wallet savings."
+      />
       <div className="container mx-auto px-4 md:px-6 max-w-4xl">
         <div className="text-center space-y-3 mb-10">
           <span className="text-xs font-black uppercase tracking-widest text-pink-600 bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
@@ -59,22 +64,26 @@ export function FAQPage() {
           {faqs.map((faq, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-orange-100 transition-all cursor-pointer"
-              onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
+              className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-orange-100 transition-all"
             >
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-sm md:text-base font-black text-slate-800 flex items-center gap-3">
+              <button
+                type="button"
+                aria-expanded={openIdx === idx}
+                onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
+                className="w-full flex items-center justify-between gap-4 text-left min-h-[44px]"
+              >
+                <h2 className="text-sm md:text-base font-black text-slate-800 flex items-center gap-3">
                   <span className="w-7 h-7 rounded-xl bg-pink-50 text-pink-600 font-bold flex items-center justify-center text-xs shrink-0">
                     Q{idx + 1}
                   </span>
                   <span>{faq.q}</span>
-                </h3>
+                </h2>
                 <ChevronDown
                   className={`w-5 h-5 text-slate-400 transition-transform shrink-0 ${
                     openIdx === idx ? 'rotate-180 text-pink-600' : ''
                   }`}
                 />
-              </div>
+              </button>
               {openIdx === idx && (
                 <p className="mt-4 text-xs md:text-sm text-slate-600 pl-10 leading-relaxed border-t border-slate-100 pt-3">
                   {faq.a}
@@ -93,6 +102,10 @@ export function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-8">
+      <SEO 
+        title="Contact Pediatric Nutrition Team | Little Joys"
+        description="Reach out to Little Joys pediatric nutrition team for guidance on child diet, order help, and customer support."
+      />
       <div className="container mx-auto px-4 md:px-6 max-w-4xl">
         <div className="text-center space-y-3 mb-10">
           <span className="text-xs font-black uppercase tracking-widest text-pink-600 bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
@@ -110,7 +123,7 @@ export function ContactPage() {
           {/* Contact Details (5 cols) */}
           <div className="md:col-span-5 space-y-4">
             <div className="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 space-y-4">
-              <h3 className="text-base font-black text-slate-800">Support Channels</h3>
+              <h2 className="text-base font-black text-slate-800">Support Channels</h2>
               
               <div className="flex items-start gap-3 text-xs">
                 <div className="w-9 h-9 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center shrink-0">
@@ -160,7 +173,7 @@ export function ContactPage() {
                   <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto text-2xl">
                     ✓
                   </div>
-                  <h3 className="text-xl font-black text-slate-800">Message Received!</h3>
+                  <h2 className="text-xl font-black text-slate-800">Message Received!</h2>
                   <p className="text-xs text-slate-500 max-w-xs mx-auto">
                     Thank you for contacting us. A pediatric nutrition advisor will respond to you shortly.
                   </p>
@@ -169,8 +182,9 @@ export function ContactPage() {
                 <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-4 text-xs">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block font-bold text-slate-700 mb-1">Your Name</label>
+                      <label htmlFor="contact-name" className="block font-bold text-slate-700 mb-1">Your Name</label>
                       <input
+                        id="contact-name"
                         type="text"
                         required
                         placeholder="e.g. Pooja Sharma"
@@ -178,8 +192,9 @@ export function ContactPage() {
                       />
                     </div>
                     <div>
-                      <label className="block font-bold text-slate-700 mb-1">Mobile Number</label>
+                      <label htmlFor="contact-mobile" className="block font-bold text-slate-700 mb-1">Mobile Number</label>
                       <input
+                        id="contact-mobile"
                         type="tel"
                         required
                         placeholder="10-digit number"
@@ -189,8 +204,9 @@ export function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-700 mb-1">Subject / Order ID</label>
+                    <label htmlFor="contact-subject" className="block font-bold text-slate-700 mb-1">Subject / Order ID</label>
                     <input
+                      id="contact-subject"
                       type="text"
                       placeholder="e.g. Question regarding Nutrimix age recommendations"
                       className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500"
@@ -198,8 +214,9 @@ export function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-700 mb-1">Message</label>
+                    <label htmlFor="contact-message" className="block font-bold text-slate-700 mb-1">Message</label>
                     <textarea
+                      id="contact-message"
                       rows={4}
                       required
                       placeholder="Tell us how we can help..."
@@ -209,7 +226,7 @@ export function ContactPage() {
 
                   <button
                     type="submit"
-                    className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3 rounded-xl shadow-md transition-all active:scale-98 text-sm"
+                    className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3 rounded-xl shadow-md transition-all active:scale-98 text-sm min-h-[44px]"
                   >
                     Send Message
                   </button>
@@ -226,6 +243,10 @@ export function ContactPage() {
 export function LegalPage({ title, lastUpdated = "September 2026", content }) {
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-8">
+      <SEO 
+        title={`${title} | Little Joys`}
+        description={`Official Little Joys ${title.toLowerCase()} policy and guidelines.`}
+      />
       <div className="container mx-auto px-4 md:px-6 max-w-3xl">
         <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-orange-100 space-y-6">
           <div>

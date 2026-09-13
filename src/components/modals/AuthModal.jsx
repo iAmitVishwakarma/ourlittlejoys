@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { authService } from '../services/authService';
+import { useAuthStore } from '@/stores/authStore';
+import { authService } from '@/services/authService';
 import { 
   X, 
   Sparkles, 
@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose }) {
-  const { loginWithOtp, updateProfile } = useAuth();
+  const loginWithOtp = useAuthStore((s) => s.loginWithOtp);
+  const updateProfile = useAuthStore((s) => s.updateProfile);
 
   // Step: 1 = Phone input, 2 = OTP verification, 3 = Profile setup, 4 = Success
   const [step, setStep] = useState(1);
@@ -139,10 +140,16 @@ export default function AuthModal({ isOpen, onClose }) {
       />
 
       {/* Modal Dialog */}
-      <div className="relative bg-white rounded-3xl max-w-md w-full p-7 md:p-9 shadow-2xl z-10 border border-pink-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        className="relative bg-white rounded-3xl max-w-md w-full p-7 md:p-9 shadow-2xl z-10 border border-pink-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+      >
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+          aria-label="Close authentication dialog"
+          className="absolute top-4 right-4 w-11 h-11 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -155,16 +162,16 @@ export default function AuthModal({ isOpen, onClose }) {
               <span className="text-[11px] font-black uppercase tracking-wider">Welcome To Little Joys</span>
             </div>
 
-            <h3 className="text-2xl font-black text-slate-800 leading-snug mb-2">
+            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 leading-snug mb-2">
               Login or Register
-            </h3>
+            </h2>
             <p className="text-xs text-slate-500 mb-6 leading-relaxed">
               Enter your mobile number to unlock <strong>₹200 LJ Wallet Cash</strong>, track orders, and view honest batch reports.
             </p>
 
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-black text-slate-700 mb-1.5 uppercase tracking-wider">
+                <label htmlFor="auth-phone-input" className="block text-[11px] font-black text-slate-700 mb-1.5 uppercase tracking-wider">
                   Mobile Number
                 </label>
                 <div className="relative">
@@ -172,6 +179,7 @@ export default function AuthModal({ isOpen, onClose }) {
                     +91
                   </div>
                   <input
+                    id="auth-phone-input"
                     type="tel"
                     maxLength={10}
                     value={phoneNumber}
@@ -234,7 +242,7 @@ export default function AuthModal({ isOpen, onClose }) {
               </button>
             </div>
 
-            <h3 className="text-2xl font-black text-slate-800 mb-1">Enter 4-Digit Code</h3>
+            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 mb-1">Enter 4-Digit Code</h2>
             <p className="text-xs text-slate-500 mb-6">
               Sent via SMS to <strong>+91 {phoneNumber}</strong>
             </p>
@@ -248,6 +256,7 @@ export default function AuthModal({ isOpen, onClose }) {
                     type="text"
                     maxLength={1}
                     value={digit}
+                    aria-label={`Digit ${index + 1} of 4`}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     className="w-12 h-14 text-center text-xl font-black bg-[#FFF9F5] border-2 border-orange-200 rounded-2xl focus:outline-none focus:border-pink-500 text-slate-800 shadow-xs"
@@ -298,17 +307,18 @@ export default function AuthModal({ isOpen, onClose }) {
               <span className="text-[11px] font-black uppercase tracking-wider">Number Verified</span>
             </div>
 
-            <h3 className="text-2xl font-black text-slate-800 mb-1">Child's Profile</h3>
+            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 mb-1">Child's Profile</h2>
             <p className="text-xs text-slate-500 mb-6">
               Help our pediatric board personalize age-appropriate nutrition and honest batch reports.
             </p>
 
             <form onSubmit={handleSaveProfile} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-black text-slate-700 mb-1 uppercase tracking-wider">
+                <label htmlFor="auth-parent-name" className="block text-[11px] font-black text-slate-700 mb-1 uppercase tracking-wider">
                   Parent / Guardian Name
                 </label>
                 <input
+                  id="auth-parent-name"
                   type="text"
                   value={parentName}
                   onChange={(e) => setParentName(e.target.value)}
@@ -319,10 +329,11 @@ export default function AuthModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="block text-[11px] font-black text-slate-700 mb-1 uppercase tracking-wider">
+                <label htmlFor="auth-child-name" className="block text-[11px] font-black text-slate-700 mb-1 uppercase tracking-wider">
                   Child's First Name
                 </label>
                 <input
+                  id="auth-child-name"
                   type="text"
                   value={childName}
                   onChange={(e) => setChildName(e.target.value)}
@@ -333,16 +344,17 @@ export default function AuthModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="block text-[11px] font-black text-slate-700 mb-1 uppercase tracking-wider">
+                <span className="block text-[11px] font-black text-slate-700 mb-1 uppercase tracking-wider">
                   Child's Age Group
-                </label>
-                <div className="grid grid-cols-2 gap-2">
+                </span>
+                <div className="grid grid-cols-2 gap-2" role="group" aria-label="Select Child Age Group">
                   {['2-6 Yr', '4+ Yr', '7-12 Yr', '13-18 Yr'].map((age) => (
                     <button
                       type="button"
                       key={age}
                       onClick={() => setChildAge(age)}
-                      className={`p-2.5 rounded-xl text-xs font-bold border transition-all ${
+                      aria-pressed={childAge === age}
+                      className={`p-2.5 min-h-[44px] rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                         childAge === age
                           ? 'bg-pink-50 border-pink-500 text-pink-700 shadow-xs'
                           : 'bg-white border-slate-200 text-slate-700'
@@ -371,7 +383,7 @@ export default function AuthModal({ isOpen, onClose }) {
             <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-black text-slate-800 mb-1">Welcome to Little Joys!</h3>
+            <h2 id="auth-modal-title" className="text-xl font-black text-slate-800 mb-1">Welcome to Little Joys!</h2>
             <p className="text-xs text-slate-500 mb-4">
               ₹200 has been credited to your LJ Wallet.
             </p>

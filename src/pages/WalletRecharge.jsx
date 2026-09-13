@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '@/stores/authStore';
+import SEO from '@/components/common/SEO';
 import { 
   ChevronRight, 
   ShoppingCart, 
@@ -12,7 +13,8 @@ import {
 
 export default function WalletRecharge() {
   const navigate = useNavigate();
-  const { user, updateProfile } = useAuth();
+  const user = useAuthStore((s) => s.user);
+  const updateProfile = useAuthStore((s) => s.updateProfile);
   const [selectedPlan, setSelectedPlan] = useState(1001);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -50,19 +52,24 @@ export default function WalletRecharge() {
 
   return (
     <div className="bg-white min-h-screen py-10 px-4 md:px-6">
+      <SEO 
+        title="Recharge LJ Wallet | Little Joys"
+        description="Top up your Little Joys wallet and unlock up to 30% instant bonus credit for your child's nutrition orders."
+      />
       <div className="container mx-auto max-w-xl">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-1 text-slate-600 hover:text-slate-900 text-xs font-bold mb-6"
+          aria-label="Back to previous page"
+          className="flex items-center gap-1 text-slate-600 hover:text-slate-900 text-xs font-bold mb-6 min-h-[44px] min-w-[44px]"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
         </button>
 
-        {/* Current Balance Banner matching Screenshot 3 */}
+        {/* Current Balance Banner */}
         <div className="bg-slate-50 border border-slate-200 rounded-full py-2.5 px-6 max-w-xs mx-auto flex items-center justify-between mb-8 shadow-xs">
           <div className="flex items-center gap-3">
-            <span className="text-xl">👛</span>
+            <span className="text-xl" aria-hidden="true">👛</span>
             <div>
               <span className="text-[11px] text-slate-400 block font-semibold">Your LJ Wallet balance</span>
               <span className="text-sm font-black text-slate-900">₹{user?.walletBalance || 0}</span>
@@ -71,9 +78,12 @@ export default function WalletRecharge() {
           <ChevronRight className="w-4 h-4 text-slate-400" />
         </div>
 
-        {/* Enter Amount Display matching Screenshot 3 */}
+        {/* Header & Enter Amount Display */}
         <div className="text-center mb-8">
-          <span className="text-xs font-bold text-slate-400 block mb-2">Enter Amount</span>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-2">
+            Recharge LJ Wallet
+          </h1>
+          <span className="text-xs font-bold text-slate-400 block mb-2">Select Top-Up Amount</span>
           <div className="inline-block bg-slate-50 border border-slate-200 rounded-2xl px-8 py-3 text-3xl md:text-4xl font-black text-slate-900 mb-2">
             ₹{selectedPlan.toLocaleString()}
           </div>
@@ -82,23 +92,26 @@ export default function WalletRecharge() {
           </div>
         </div>
 
-        {/* 3 Bonus Option Cards matching Screenshot 3 */}
-        <div className="grid grid-cols-3 gap-3 mb-10">
+        {/* 3 Bonus Option Cards */}
+        <div className="grid grid-cols-3 gap-3 mb-10" role="radiogroup" aria-label="Wallet top-up plans">
           {plans.map((p) => (
-            <div
+            <button
               key={p.amount}
+              type="button"
+              role="radio"
+              aria-checked={selectedPlan === p.amount}
               onClick={() => setSelectedPlan(p.amount)}
-              className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all ${
+              className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all min-h-[44px] ${
                 selectedPlan === p.amount
-                  ? 'border-emerald-500 bg-emerald-50/40 shadow-xs scale-102'
+                  ? 'border-emerald-500 bg-emerald-50/40 shadow-xs scale-102 ring-2 ring-emerald-500/20'
                   : 'border-slate-200 bg-white hover:border-slate-300'
               }`}
             >
               <span className="text-[10px] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full block mb-2">
                 {p.bonus}
               </span>
-              <div className="text-base font-black text-slate-900">{p.amount}</div>
-              <div className="text-[11px] font-bold text-slate-500 mt-1">Get {p.getAmount}</div>
+              <div className="text-base font-black text-slate-900">₹{p.amount}</div>
+              <div className="text-[11px] font-bold text-slate-500 mt-1">Get ₹{p.getAmount}</div>
               {p.tag && (
                 <span className={`text-[9px] font-extrabold block mt-2 ${
                   p.tag.includes('Best') ? 'text-amber-600' : 'text-[#13805B]'
@@ -106,7 +119,7 @@ export default function WalletRecharge() {
                   {p.tag}
                 </span>
               )}
-            </div>
+            </button>
           ))}
         </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BATCH_REPORTS } from '../data/reports';
+import { BATCH_REPORTS } from '@/data/reports';
+import SEO from '@/components/common/SEO';
 import { 
   ShieldCheck, 
   FileCheck, 
@@ -86,6 +87,11 @@ export default function HonestReport() {
 
   return (
     <div className="bg-[#FFF9F5] min-h-screen pb-20">
+      <SEO 
+        title="Nutrimix Honest Lab Reports | Verified NABL Third-Party Testing"
+        description="View independent NABL lab test results for Little Joys batches. Certified heavy-metal safe, 100% protein assay verified, 0% refined sugar."
+        keywords="NABL lab reports, Little Joys test results, heavy metal test kids nutrition, honest nutrition certificate"
+      />
       {/* Header Banner */}
       <section className="bg-gradient-to-br from-pink-100 via-rose-50 to-amber-100 border-b border-pink-200/60 py-12 px-4 md:px-6">
         <div className="container mx-auto max-w-4xl text-center">
@@ -112,11 +118,12 @@ export default function HonestReport() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Step 1: Age Range */}
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700">
+                <label htmlFor="honest-age-select" className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700">
                   <span className="w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center text-[10px]">1</span>
                   <span>Age Range</span>
                 </label>
                 <select
+                  id="honest-age-select"
                   value={selectedAge}
                   onChange={(e) => setSelectedAge(e.target.value)}
                   className="w-full bg-[#FFF9F5] border border-orange-200 rounded-2xl p-3 text-sm font-bold text-slate-800 focus:outline-none focus:border-pink-500 transition-colors"
@@ -129,11 +136,12 @@ export default function HonestReport() {
 
               {/* Step 2: Flavour */}
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700">
+                <label htmlFor="honest-flavour-select" className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700">
                   <span className="w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center text-[10px]">2</span>
                   <span>Flavour</span>
                 </label>
                 <select
+                  id="honest-flavour-select"
                   value={selectedFlavour}
                   onChange={(e) => setSelectedFlavour(e.target.value)}
                   className="w-full bg-[#FFF9F5] border border-orange-200 rounded-2xl p-3 text-sm font-bold text-slate-800 focus:outline-none focus:border-pink-500 transition-colors"
@@ -146,11 +154,12 @@ export default function HonestReport() {
 
               {/* Step 3: Batch Number */}
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700">
+                <label htmlFor="honest-batch-select" className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700">
                   <span className="w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center text-[10px]">3</span>
                   <span>Batch Number</span>
                 </label>
                 <select
+                  id="honest-batch-select"
                   value={selectedBatch}
                   onChange={(e) => { setSelectedBatch(e.target.value); setManualBatch(''); }}
                   className="w-full bg-[#FFF9F5] border border-orange-200 rounded-2xl p-3 text-sm font-bold text-slate-800 focus:outline-none focus:border-pink-500 transition-colors"
@@ -164,8 +173,9 @@ export default function HonestReport() {
 
             {/* Manual input option */}
             <div className="pt-2 flex flex-col sm:flex-row items-center gap-4 text-xs">
-              <span className="text-slate-400 font-bold uppercase tracking-wider">OR Enter Manually:</span>
+              <label htmlFor="honest-manual-batch" className="text-slate-400 font-bold uppercase tracking-wider">OR Enter Manually:</label>
               <input
+                id="honest-manual-batch"
                 type="text"
                 placeholder="Enter Batch Number (Starts with 'SL')"
                 value={manualBatch}
@@ -216,6 +226,7 @@ export default function HonestReport() {
 
             <button
               onClick={handleDownloadPdf}
+              aria-label="Download Official NABL Lab Certificate PDF"
               className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow-xs shrink-0"
             >
               <Download className="w-4 h-4" />
@@ -333,7 +344,7 @@ export default function HonestReport() {
             <div className="bg-white/10 backdrop-blur-xs p-4 rounded-2xl border border-white/10 flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
               <div>
-                <h4 className="font-bold text-sm">Doctor &amp; Pediatrician Approved</h4>
+                <h3 className="font-bold text-sm">Doctor &amp; Pediatrician Approved</h3>
                 <p className="text-xs text-slate-300 mt-0.5">Scientifically calibrated to meet daily ICMR RDA.</p>
               </div>
             </div>
@@ -341,7 +352,7 @@ export default function HonestReport() {
             <div className="bg-white/10 backdrop-blur-xs p-4 rounded-2xl border border-white/10 flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
               <div>
-                <h4 className="font-bold text-sm">Lab-Tested For Heavy Metal Safety</h4>
+                <h3 className="font-bold text-sm">Lab-Tested For Heavy Metal Safety</h3>
                 <p className="text-xs text-slate-300 mt-0.5">Every batch tested at certified independent NABL labs.</p>
               </div>
             </div>
@@ -373,6 +384,7 @@ export default function HonestReport() {
             >
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                aria-expanded={openFaq === idx}
                 className="w-full text-left p-5 flex justify-between items-center font-bold text-sm text-slate-800 hover:text-pink-600 transition-colors"
               >
                 <span>{faq.q}</span>

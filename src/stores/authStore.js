@@ -47,6 +47,11 @@ export const useAuthStore = create(
         set((state) => ({
           user: state.user ? { ...state.user, childName, childAge, nutritionGoal } : null
         }));
+      },
+
+      loginWithOtp: async (phone) => {
+        get().login({ phone });
+        return { success: true, user: { phone } };
       }
     }),
     {

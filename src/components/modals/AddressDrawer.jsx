@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, MapPin, Building, Home, Briefcase, Check, Sparkles } from 'lucide-react';
-import { useCheckoutStore } from '../stores/checkoutStore';
+import { useCheckoutStore } from '@/stores/checkoutStore';
 
 export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
   const { addAddress, updateAddress } = useCheckoutStore();
@@ -110,7 +110,12 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
       {/* Slide-over Side Drawer Container */}
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full animate-in slide-in-from-right duration-300">
+        <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="address-drawer-title"
+          className="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full animate-in slide-in-from-right duration-300"
+        >
           
           {/* Drawer Header */}
           <div className="p-5 sm:p-6 border-b border-orange-100 flex items-center justify-between bg-gradient-to-r from-orange-50/40 to-white">
@@ -119,9 +124,9 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900">
+                <h2 id="address-drawer-title" className="text-base sm:text-lg font-black text-slate-900">
                   {initialData ? 'Edit Delivery Address' : 'Add New Delivery Address'}
-                </h3>
+                </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   We deliver across 19,000+ pincodes in India
                 </p>
@@ -130,9 +135,10 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200 flex items-center justify-center transition-colors"
+              aria-label="Close address drawer"
+              className="w-11 h-11 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
 
@@ -147,10 +153,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
               {/* Full Name */}
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label htmlFor="address-name" className="text-xs font-bold text-slate-700 block mb-1">
                   Full Name <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="address-name"
                   type="text"
                   placeholder="e.g. Amit Sharma"
                   value={formData.name}
@@ -164,7 +171,7 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
               {/* Mobile Number */}
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label htmlFor="address-mobile" className="text-xs font-bold text-slate-700 block mb-1">
                   Mobile Number <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
@@ -172,6 +179,7 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
                     +91
                   </span>
                   <input
+                    id="address-mobile"
                     type="tel"
                     maxLength={10}
                     placeholder="9876543210"
@@ -194,10 +202,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
               {/* Pincode */}
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label htmlFor="address-pincode" className="text-xs font-bold text-slate-700 block mb-1">
                   Pincode <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="address-pincode"
                   type="text"
                   maxLength={6}
                   placeholder="e.g. 462016"
@@ -212,10 +221,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
               {/* Flat / House No. */}
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label htmlFor="address-line" className="text-xs font-bold text-slate-700 block mb-1">
                   Flat, House No., Building, Apartment <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="address-line"
                   type="text"
                   placeholder="e.g. Flat 402, Sunshine Orchards"
                   value={formData.addressLine}
@@ -229,10 +239,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
 
               {/* Area / Street / Colony */}
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label htmlFor="address-locality" className="text-xs font-bold text-slate-700 block mb-1">
                   Area, Street, Sector, Landmark <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="address-locality"
                   type="text"
                   placeholder="e.g. Arera Colony, Near 10 No. Market"
                   value={formData.locality}
@@ -247,10 +258,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
               {/* City & State Row */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label htmlFor="address-city" className="text-xs font-bold text-slate-700 block mb-1">
                     Town / City <span className="text-rose-500">*</span>
                   </label>
                   <input
+                    id="address-city"
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
@@ -262,10 +274,11 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label htmlFor="address-state" className="text-xs font-bold text-slate-700 block mb-1">
                     State <span className="text-rose-500">*</span>
                   </label>
                   <input
+                    id="address-state"
                     type="text"
                     value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}

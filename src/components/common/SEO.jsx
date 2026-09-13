@@ -23,7 +23,7 @@ export default function SEO({
       let element = document.querySelector(selector);
       if (!element) {
         element = document.createElement('meta');
-        const [attrName] = selector.replace(/[\[\]]/g, '').split('=');
+        const [attrName] = selector.replace(/[[\]]/g, '').split('=');
         element.setAttribute(attrName, selector.split('=')[1].replace(/['"]/g, ''));
         document.head.appendChild(element);
       }

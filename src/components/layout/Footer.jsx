@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Heart } from 'lucide-react';
-import ScallopDivider from './ScallopDivider';
+import ScallopDivider from '../common/ScallopDivider';
 
 export default function Footer() {
   return (
@@ -31,7 +31,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-black uppercase tracking-wider text-pink-400 mb-4">Quick Links</h4>
+            <p className="text-xs font-black uppercase tracking-wider text-pink-400 mb-4">Quick Links</p>
             <ul className="space-y-2.5 text-xs md:text-sm text-slate-400 font-medium">
               <li><Link to="/aboutus" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link to="/shop/all" className="hover:text-white transition-colors">Shop All</Link></li>
@@ -44,7 +44,7 @@ export default function Footer() {
 
           {/* Legal & Policies */}
           <div>
-            <h4 className="text-xs font-black uppercase tracking-wider text-pink-400 mb-4">Policies &amp; Legal</h4>
+            <p className="text-xs font-black uppercase tracking-wider text-pink-400 mb-4">Policies &amp; Legal</p>
             <ul className="space-y-2.5 text-xs md:text-sm text-slate-400 font-medium">
               <li><Link to="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link></li>
               <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
@@ -54,8 +54,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom copyright line exactly matching ourlittlejoys.com */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+        {/* Bottom copyright line */}
+        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-4">
           <p>© 2020-2026 Little Joys by Mosaic Wellness PVT LTD. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <span>Crafted with</span>

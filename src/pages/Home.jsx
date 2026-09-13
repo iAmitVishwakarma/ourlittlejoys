@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ProductCard from '../components/ProductCard';
-import ScallopDivider from '../components/ScallopDivider';
+import ProductCard from '@/components/product/ProductCard';
+import ScallopDivider from '@/components/common/ScallopDivider';
 import { 
   SunDoodle, 
   MiniStarCluster, 
   WavyUnderline, 
   HeartDoodle, 
   KidStampBadge 
-} from '../components/KidsDoodles';
-import { useCart } from '../context/CartContext';
-import PediatricDoctorIllustration from '../components/PediatricDoctorIllustration';
+} from '@/components/graphics/KidsDoodles';
+import { useCartStore } from '@/stores/cartStore';
+const PediatricDoctorIllustration = React.lazy(() => import('@/components/graphics/PediatricDoctorIllustration'));
 import {
   NutrimixCategorySVG,
   GummiesCategorySVG,
@@ -20,16 +20,16 @@ import {
   BrainHealthCategorySVG,
   ForMomsCategorySVG,
   BestValueCategorySVG
-} from '../components/CategorySVGs';
-import BrandPaymentSection from '../components/BrandPaymentSection';
-import SEO from '../components/SEO';
+} from '@/components/graphics/CategorySVGs';
+const BrandPaymentSection = React.lazy(() => import('@/components/checkout/BrandPaymentSection'));
+import SEO from '@/components/common/SEO';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { HERO_SLIDES, ALL_PRODUCTS } from '../data/products';
-import dbService from '../services/dbService';
+import ResponsiveImage from '@/components/common/ResponsiveImage';
+import { HERO_SLIDES, ALL_PRODUCTS } from '@/data/products';
 import { 
   ArrowRight, 
   ShieldCheck, 
@@ -48,7 +48,9 @@ import {
 
 export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity }) {
   const navigate = useNavigate();
-  const { cartItems: ctxCartItems, addToCart: ctxAddToCart, updateQuantity: ctxUpdateQty } = useCart();
+  const ctxCartItems = useCartStore((s) => s.cartItems);
+  const ctxAddToCart = useCartStore((s) => s.addToCart);
+  const ctxUpdateQty = useCartStore((s) => s.updateQuantity);
   const effectiveCartItems = cartItems?.length ? cartItems : ctxCartItems || [];
   const handleAdd = onAddToCart || ctxAddToCart;
   const handleUpdateQty = onUpdateCartQuantity || ctxUpdateQty;
@@ -57,7 +59,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
   const [openFaq, setOpenFaq] = useState(0);
 
   // Hero carousel state
-  const slides = HERO_SLIDES.length ? HERO_SLIDES : dbService.getHeroSlides();
+  const slides = HERO_SLIDES;
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const autoPlayRef = useRef(null);
@@ -385,14 +387,15 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                         {/* Real-World Product Showcase on soft pedestal */}
                         <div className="w-full h-48 md:h-52 flex items-center justify-center my-auto overflow-hidden rounded-2xl relative">
                           <div className="absolute inset-0 bg-radial from-amber-200/30 to-transparent rounded-full blur-xl pointer-events-none" />
-                          <img 
+                          <ResponsiveImage 
                             src={slide.image} 
                             alt={slide.productName || slide.title}
                             loading={idx === 0 ? "eager" : "lazy"}
                             fetchPriority={idx === 0 ? "high" : "auto"}
                             decoding={idx === 0 ? "sync" : "async"}
-                            width="320"
-                            height="320"
+                            width={320}
+                            height={320}
+                            sizes="(max-width: 640px) 280px, 320px"
                             className="w-full h-full object-cover rounded-2xl shadow-md transition-transform duration-500 hover:scale-105 relative z-10"
                           />
                         </div>
@@ -413,37 +416,41 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
               ))}
             </div>
 
-            {/* Left Chevron Button */}
+            {/* Left Chevron Button (44x44px touch target) */}
             <button 
               onClick={handlePrevSlide}
               aria-label="Previous Slide"
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md border border-orange-100 flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-20"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md border border-orange-100 flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-20 cursor-pointer"
             >
               <ChevronLeft className="w-5 h-5 text-slate-700" />
             </button>
 
-            {/* Right Chevron Button */}
+            {/* Right Chevron Button (44x44px touch target) */}
             <button 
               onClick={handleNextSlide}
               aria-label="Next Slide"
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md border border-orange-100 flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-20"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md border border-orange-100 flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-20 cursor-pointer"
             >
               <ChevronRight className="w-5 h-5 text-slate-700" />
             </button>
 
-            {/* Dot Pagination Indicator */}
-            <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20 bg-white/80 backdrop-blur-xs px-3 py-1.5 rounded-full border border-orange-100/70 shadow-xs">
+            {/* Dot Pagination Indicator (44x44px accessible touch areas) */}
+            <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center z-20 bg-white/80 backdrop-blur-xs px-2 py-0.5 rounded-full border border-orange-100/70 shadow-xs">
               {slides.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentSlide(idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`h-2 transition-all duration-300 rounded-full ${
-                    currentSlide === idx 
-                      ? 'w-7 bg-[#13805B]' 
-                      : 'w-2 bg-slate-300 hover:bg-slate-400'
-                  }`}
-                />
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 cursor-pointer"
+                >
+                  <span
+                    className={`h-2 transition-all duration-300 rounded-full block ${
+                      currentSlide === idx 
+                        ? 'w-7 bg-[#13805B]' 
+                        : 'w-2 bg-slate-300 hover:bg-slate-400'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -679,7 +686,9 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                 {/* Background Ambient Glow */}
                 <div className="absolute w-72 h-72 rounded-full bg-emerald-500/20 blur-3xl pointer-events-none -z-10" />
 
-                <PediatricDoctorIllustration className="w-full max-w-xs sm:max-w-sm lg:max-w-md drop-shadow-2xl hover:scale-102 transition-transform duration-500" />
+                <React.Suspense fallback={<div className="w-full max-w-xs sm:max-w-sm lg:max-w-md h-64 bg-emerald-50/50 rounded-2xl animate-pulse" />}>
+                  <PediatricDoctorIllustration className="w-full max-w-xs sm:max-w-sm lg:max-w-md drop-shadow-2xl hover:scale-102 transition-transform duration-500" />
+                </React.Suspense>
               </div>
 
             </div>
@@ -810,24 +819,25 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
           </div>
 
           <div className="relative">
-            {/* Custom Navigation buttons on header right */}
+            {/* Custom Navigation buttons on header right (44x44px touch targets) */}
             <div className="flex items-center justify-end gap-2 mb-4">
               <button
                 id="testimonial-prev"
                 aria-label="Previous Testimonial"
-                className="w-10 h-10 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer"
+                className="w-11 h-11 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 id="testimonial-next"
                 aria-label="Next Testimonial"
-                className="w-10 h-10 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer"
+                className="w-11 h-11 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
+            <div className="min-h-[290px]">
             <Swiper
               modules={[Autoplay, Pagination, Navigation]}
               spaceBetween={20}
@@ -889,6 +899,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                 </SwiperSlide>
               ))}
             </Swiper>
+            </div>
           </div>
         </div>
       </section>
@@ -942,7 +953,9 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </section>
 
       {/* 9. PAYMENT PARTNERS & BRAND SIGNATURE WITH SVG BOY */}
-      <BrandPaymentSection />
+      <React.Suspense fallback={<div className="h-64 bg-white" />}>
+        <BrandPaymentSection />
+      </React.Suspense>
     </div>
   );
 }

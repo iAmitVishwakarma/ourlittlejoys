@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ALL_PRODUCTS } from '../data/products';
-import ScallopDivider from '../components/ScallopDivider';
+import { ALL_PRODUCTS } from '@/data/products';
+import ScallopDivider from '@/components/common/ScallopDivider';
 import { 
   SunDoodle, 
   MiniStarCluster, 
@@ -15,9 +15,11 @@ import {
   SprigDoodle,
   AppleFruitDoodle,
   ScienceNutritionSeal
-} from '../components/KidsDoodles';
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
+} from '@/components/graphics/KidsDoodles';
+import { useCartStore } from '@/stores/cartStore';
+import { useWishlistStore } from '@/stores/wishlistStore';
+import ResponsiveImage from '@/components/common/ResponsiveImage';
+import SEO from '@/components/common/SEO';
 import { 
   Star, 
   ArrowRight, 
@@ -47,8 +49,9 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const { addToCart: ctxAddToCart } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
+  const ctxAddToCart = useCartStore((s) => s.addToCart);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
+  const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
 
   // Find product by slug or id
   const product = ALL_PRODUCTS.find((p) => p.slug === slug || p.id === slug) || ALL_PRODUCTS[0];
@@ -257,12 +260,14 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               <img 
                 src={product.image} 
                 alt={product.title} 
+                width={44}
+                height={44}
                 className="w-11 h-11 object-cover rounded-xl border border-orange-100 shrink-0" 
               />
               <div className="min-w-0">
-                <h4 className="text-xs sm:text-sm font-black text-slate-900 truncate">
+                <p className="text-xs sm:text-sm font-black text-slate-900 truncate">
                   {product.title}
-                </h4>
+                </p>
                 <div className="flex items-center gap-2 text-[11px] text-slate-500">
                   <span className="font-extrabold text-[#13805B]">₹{currentPack.price}</span>
                   <span>•</span>
@@ -309,6 +314,27 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
         </div>
       )}
 
+      <SEO
+        title={`${product.title} - Pediatrician Formulated Kids Nutrition`}
+        description={product.description || `Shop ${product.title} at Little Joys. 100% lab tested clean nutrition with zero refined sugar.`}
+        ogImage={product.image}
+        ogType="product"
+        schemaData={{
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": product.title,
+          "image": [product.image],
+          "description": product.description,
+          "sku": product.id || product.slug,
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "INR",
+            "price": product.price,
+            "availability": "https://schema.org/InStock"
+          }
+        }}
+      />
+
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
         {/* 1. BREADCRUMBS & SHARE */}
         <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-5">
@@ -349,9 +375,15 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
           <div className="lg:col-span-6 flex flex-col items-center">
             {/* Big Main Image Showcase */}
             <div className="relative w-full aspect-square max-w-md bg-gradient-to-tr from-[#FFF9F5] via-white to-amber-50/40 rounded-3xl p-6 flex items-center justify-center border border-orange-100 shadow-inner overflow-hidden group">
-              <img
+              <ResponsiveImage
                 src={galleryImages[selectedThumbnail]}
                 alt={product.title}
+                width={420}
+                height={420}
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                sizes="(max-width: 640px) 320px, 420px"
                 className="w-full h-full object-contain drop-shadow-md transition-transform duration-500 group-hover:scale-105"
               />
 
@@ -367,21 +399,22 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 </span>
               </div>
 
-              {/* Top Right: Age Pill & Wishlist Button */}
+              {/* Top Right: Age Pill & Wishlist Button (44x44px touch target) */}
               <div className="absolute top-4 right-4 flex items-center gap-2">
                 <span className="bg-slate-900 text-white text-[11px] font-black px-3 py-1 rounded-full uppercase">
                   {product.age || "4+ Yr"}
                 </span>
                 <button
                   onClick={handleToggleWishlist}
-                  className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm ${
+                  aria-label={isFavorite ? "Remove from Wishlist" : "Save to Wishlist"}
+                  className={`w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-sm cursor-pointer ${
                     isFavorite 
                       ? 'bg-rose-500 text-white' 
                       : 'bg-white/95 text-slate-400 hover:text-rose-500 hover:bg-white'
                   }`}
                   title={isFavorite ? "Remove from Wishlist" : "Save to Wishlist"}
                 >
-                  <Heart className={`w-4 h-4 ${isFavorite ? 'fill-white' : ''}`} />
+                  <Heart className={`w-5 h-5 ${isFavorite ? 'fill-white' : ''}`} />
                 </button>
               </div>
             </div>
@@ -547,17 +580,17 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     aria-label="Decrease quantity"
-                    className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#13805B] font-bold shadow-xs active:scale-90"
+                    className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#13805B] font-bold shadow-xs active:scale-90 cursor-pointer"
                   >
-                    <Minus className="w-3.5 h-3.5" />
+                    <Minus className="w-4 h-4" />
                   </button>
                   <span className="w-9 text-center text-sm font-black text-slate-800">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     aria-label="Increase quantity"
-                    className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#13805B] font-bold shadow-xs active:scale-90"
+                    className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#13805B] font-bold shadow-xs active:scale-90 cursor-pointer"
                   >
-                    <Plus className="w-3.5 h-3.5" />
+                    <Plus className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -732,9 +765,9 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-500" />
-                <h3 className="text-lg sm:text-xl font-black text-slate-900">
+                <h2 className="text-lg sm:text-xl font-black text-slate-900">
                   Frequently Bought Together
-                </h3>
+                </h2>
               </div>
               <span className="bg-[#FF2F92] text-white text-xs font-black px-3 py-1 rounded-full uppercase shadow-2xs">
                 Save ₹149 Combo Discount
@@ -815,7 +848,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             <MiniStarCluster className="text-amber-400 absolute top-5 right-8 hidden sm:inline-flex" />
 
             {/* Rainbow Whimsical Heading */}
-            <h3 className="text-2xl sm:text-4xl font-black tracking-tight font-sans select-none mb-1">
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight font-sans select-none mb-1">
               <span className="text-sky-500 inline-block hover:scale-110 transition-transform">H</span>
               <span className="text-sky-600 inline-block hover:scale-110 transition-transform">E</span>
               <span className="text-indigo-500 inline-block hover:scale-110 transition-transform">A</span>
@@ -842,7 +875,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               <span className="text-purple-600 inline-block hover:scale-110 transition-transform">R</span>
               <span className="text-red-500 inline-block hover:scale-110 transition-transform">E</span>
               <span className="text-red-600 inline-block hover:scale-110 transition-transform">...</span>
-            </h3>
+            </h2>
 
             {/* 🦸 Iconic Flying Kid Superhero SVG Doodle */}
             <div className="flex justify-center -my-2">
@@ -905,9 +938,9 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <span className="text-xs font-black uppercase tracking-wider text-[#13805B]">
                   Radical Transparency
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
                   What's Inside Every Scoop
-                </h3>
+                </h2>
               </div>
               <Link
                 to="/honest-report"
@@ -988,9 +1021,9 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             </div>
 
             {/* Prominent Clean Heading */}
-            <h3 className="text-2xl sm:text-4xl font-black text-[#0B4A34] tracking-tight uppercase mt-4">
+            <h2 className="text-2xl sm:text-4xl font-black text-[#0B4A34] tracking-tight uppercase mt-4">
               BACKED BY SCIENCE + CARE
-            </h3>
+            </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#18533E] max-w-xl mx-auto mt-1 leading-relaxed">
               Formulated alongside India's top pediatricians and nutrition scientists to meet 100% ICMR RDA requirements.
             </p>
@@ -1336,9 +1369,9 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               <span className="text-[11px] font-black uppercase text-[#13805B] tracking-wider">
                 Complementary Nutrition
               </span>
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
                 Parents Also Purchased
-              </h3>
+              </h2>
             </div>
             <Link
               to="/shop/all"
@@ -1389,9 +1422,9 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             <span className="text-xs font-black uppercase tracking-widest text-[#13805B]">
               Questions &amp; Answers
             </span>
-            <h3 className="text-2xl font-black text-slate-900">
+            <h2 className="text-2xl font-black text-slate-900">
               Frequently Asked Questions About This Product
-            </h3>
+            </h2>
           </div>
 
           <div className="space-y-3">

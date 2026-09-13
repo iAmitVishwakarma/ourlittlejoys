@@ -94,3 +94,47 @@ export const useCartStore = create(
     }
   )
 );
+
+// Derived selectors — use these in components that need computed cart values
+export function useCartDerived() {
+  const cartItems = useCartStore((s) => s.cartItems);
+  const appliedCoupon = useCartStore((s) => s.appliedCoupon);
+
+  const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
+  const mrpTotal = cartItems.reduce((sum, item) => sum + (item.originalPrice || item.price) * (item.quantity || 1), 0);
+
+  let couponDiscount = 0;
+  if (appliedCoupon) {
+    if (appliedCoupon.type === 'percent') {
+      couponDiscount = Math.round((subtotal * appliedCoupon.value) / 100);
+    } else if (appliedCoupon.type === 'flat') {
+      couponDiscount = Math.min(appliedCoupon.value, subtotal);
+    }
+  }
+
+  const mrpSavings = Math.max(0, mrpTotal - subtotal);
+  const totalSavings = mrpSavings + couponDiscount;
+  const deliveryFee = subtotal === 0 ? 0 : (subtotal >= 499 ? 0 : 49);
+  const totalPayable = subtotal === 0 ? 0 : Math.max(0, subtotal - couponDiscount + deliveryFee);
+
+  const freeGiftThreshold = 999;
+  const freeGiftAmountLeft = Math.max(0, freeGiftThreshold - subtotal);
+  const isFreeGiftUnlocked = subtotal >= freeGiftThreshold;
+
+  return {
+    cartItems,
+    cartCount,
+    subtotal,
+    mrpTotal,
+    mrpSavings,
+    couponDiscount,
+    totalSavings,
+    deliveryFee,
+    totalPayable,
+    appliedCoupon,
+    freeGiftThreshold,
+    freeGiftAmountLeft,
+    isFreeGiftUnlocked
+  };
+}

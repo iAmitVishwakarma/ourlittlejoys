@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import { useAuthStore } from '@/stores/authStore';
+import { useCartStore } from '@/stores/cartStore';
 import { ShoppingCart, Search, User, Menu, X, Sparkles, Smartphone, ShieldCheck, Wallet, ChevronDown, CheckCircle2 } from 'lucide-react';
 
 export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAccount }) {
-  const { user, isAuthenticated } = useAuth();
-  const { cartCount: ctxCartCount } = useCart();
+  const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const cartItems = useCartStore((s) => s.cartItems);
+  const ctxCartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
   const effectiveCartCount = cartCount || ctxCartCount || 0;
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -94,7 +96,12 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
 
               {/* Shop By Category Dropdown */}
               <div className="relative group" onMouseEnter={() => setIsCategoryDropdownOpen(true)} onMouseLeave={() => setIsCategoryDropdownOpen(false)}>
-                <button className="flex items-center gap-1 hover:text-pink-600 transition-colors py-2">
+                <button 
+                  aria-haspopup="true" 
+                  aria-expanded={isCategoryDropdownOpen}
+                  aria-label="Shop By Category menu"
+                  className="flex items-center gap-1 hover:text-pink-600 transition-colors py-2 cursor-pointer"
+                >
                   <span>Shop By Category</span>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform" />
                 </button>
@@ -135,6 +142,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder='Search for "Nutrimix", "Gummies", "Spread"...'
+                aria-label="Search products"
                 className="w-full bg-slate-100 text-xs md:text-sm pl-10 pr-4 py-2 rounded-full border border-slate-200 focus:border-pink-400 focus:bg-white focus:outline-none transition-all"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -156,8 +164,9 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
               {isAuthenticated ? (
                 <Link
                   to="/profile"
-                  className="flex items-center gap-1.5 text-slate-700 hover:text-pink-600 transition-colors text-xs font-bold px-2 py-1.5"
+                  className="flex items-center gap-1.5 text-slate-700 hover:text-pink-600 transition-colors text-xs font-bold px-2 py-1.5 min-w-[44px] min-h-[44px]"
                   title="Parent Profile"
+                  aria-label="Parent Profile"
                 >
                   <div className="flex items-center gap-1.5">
                     <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-[10px] font-black">
@@ -169,7 +178,8 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
               ) : (
                 <button
                   onClick={handleUserClick}
-                  className="flex items-center gap-1.5 text-slate-700 hover:text-pink-600 transition-colors text-xs font-bold px-2 py-1.5"
+                  aria-label="Log in to account"
+                  className="flex items-center gap-1.5 text-slate-700 hover:text-pink-600 transition-colors text-xs font-bold px-2 py-1.5 min-w-[44px] min-h-[44px] cursor-pointer"
                 >
                   <User className="w-4 h-4" />
                   <span className="hidden md:inline">Login</span>
@@ -179,8 +189,8 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
               {/* Cart Button linking directly to /cart */}
               <Link
                 to="/cart"
-                className="relative flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full transition-transform active:scale-95 shadow-md shadow-pink-500/25"
-                aria-label="Shopping Cart"
+                className="relative flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 min-h-[44px] rounded-full transition-transform active:scale-95 shadow-md shadow-pink-500/25"
+                aria-label={`Shopping Cart with ${effectiveCartCount} items`}
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span className="text-xs font-black hidden sm:inline">Cart</span>
@@ -192,7 +202,8 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
               {/* Mobile Hamburger */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2 text-slate-700 hover:text-pink-600 rounded-lg"
+                aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                className="lg:hidden p-2 text-slate-700 hover:text-pink-600 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -210,6 +221,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder='Search for "Nutrimix", "Gummies"...'
+                aria-label="Search products"
                 className="w-full bg-slate-100 text-sm pl-10 pr-4 py-2.5 rounded-full border border-slate-200 focus:outline-none"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />

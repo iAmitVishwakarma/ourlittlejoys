@@ -16,36 +16,20 @@
  * ============================================================================
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+import { apiClient } from './apiClient';
 
 /**
- * Generic API request wrapper with authentication and error handling
+ * Request helper delegating to extensible apiClient
  */
 async function request(endpoint, options = {}) {
-  const token = localStorage.getItem('lj_auth_token');
-  
-  const headers = {
-    'Content-Type': 'application/json',
-    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-    ...options.headers,
-  };
-
-  try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      ...options,
-      headers,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.warn(`[API] Endpoint "${endpoint}" fetch failed, using fallback mock data. Reason:`, error.message);
-    return null; // Return null so callers can gracefully fallback to mock data
+  const method = (options.method || 'GET').toUpperCase();
+  if (method === 'POST') {
+    const body = options.body ? (typeof options.body === 'string' ? JSON.parse(options.body) : options.body) : {};
+    const res = await apiClient.post(endpoint, body, options);
+    return res.success ? res : null;
   }
+  const res = await apiClient.get(endpoint, {}, options);
+  return res.success ? res : null;
 }
 
 /* ============================================================================

@@ -1,24 +1,33 @@
-import dbData from '../../db.json';
+import { ALL_PRODUCTS, HERO_SLIDES } from '../data/products';
+import { apiClient } from './apiClient';
 
 /**
- * Service to interface with db.json data directly or via json-server backend if available.
+ * Service to interface with product catalog and user data without statically bundling db.json.
  */
 export const dbService = {
-  getHeroSlides: () => dbData.heroSlides || [],
-  getProducts: () => dbData.products || [],
+  getHeroSlides: () => HERO_SLIDES || [],
+  getProducts: () => ALL_PRODUCTS || [],
   getProductBySlug: (slug) => {
     return (
-      dbData.products.find((p) => p.slug === slug || p.id === slug) || null
+      ALL_PRODUCTS.find((p) => p.slug === slug || p.id === slug) || null
     );
   },
-  getCategories: () => dbData.categories || [],
-  getReviews: (productId) => {
-    if (!productId) return dbData.reviews || [];
-    return dbData.reviews.filter((r) => r.productId === productId);
+  getCategories: () => [
+    'Nutrimix', 'Gummies', 'Spreads & Sauce', 'Cereals & Snacks', 'Protein', 'Brain Health', 'For Moms', 'Best Value'
+  ],
+  getReviews: async (productId) => {
+    const res = await apiClient.get('/reviews', { productId });
+    return res.data || [];
   },
-  getCoupons: () => dbData.coupons || [],
-  getUserProfile: () => (dbData.users && dbData.users[0]) || null,
-  getOrders: () => dbData.orders || []
+  getCoupons: () => [
+    { code: 'JOY30', discountPercent: 30, description: '30% LJ Wallet discount' },
+    { code: 'FIRST100', discountAmount: 100, description: 'Flat ₹100 First Order' },
+  ],
+  getUserProfile: () => null,
+  getOrders: async () => {
+    const res = await apiClient.get('/orders');
+    return res.data || [];
+  }
 };
 
 export default dbService;

@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
+import { useCartStore } from '@/stores/cartStore';
+import { useAuthStore } from '@/stores/authStore';
 import { Home, ShoppingBag, ShoppingCart, User } from 'lucide-react';
 
 export default function MobileBottomNav({ onOpenAuth }) {
-  const { cartCount } = useCart();
-  const { isAuthenticated } = useAuth();
+  const cartItems = useCartStore((s) => s.cartItems);
+  const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const handleProfileClick = (e) => {
     if (!isAuthenticated) {
@@ -24,9 +25,10 @@ export default function MobileBottomNav({ onOpenAuth }) {
         {/* Home */}
         <NavLink
           to="/"
+          aria-label="Home"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
-              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-500 hover:text-slate-900 font-semibold'
+            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
         >
@@ -37,9 +39,10 @@ export default function MobileBottomNav({ onOpenAuth }) {
         {/* Shop All */}
         <NavLink
           to="/shop/all"
+          aria-label="Shop Products"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
-              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-500 hover:text-slate-900 font-semibold'
+            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
         >
@@ -50,22 +53,24 @@ export default function MobileBottomNav({ onOpenAuth }) {
         {/* Honest Reports */}
         <NavLink
           to="/honest-report"
+          aria-label="Honest Lab Reports"
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
-              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-500 hover:text-slate-900 font-semibold'
+            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
         >
-          <span className="text-base mb-0.5">🔬</span>
+          <span className="text-base mb-0.5 leading-none">🔬</span>
           <span className="text-[10px] tracking-tight">Reports</span>
         </NavLink>
 
         {/* Cart with Badge */}
         <NavLink
           to="/cart"
+          aria-label={`Shopping cart with ${cartCount} items`}
           className={({ isActive }) =>
-            `relative flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
-              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-500 hover:text-slate-900 font-semibold'
+            `relative flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
         >
@@ -83,10 +88,11 @@ export default function MobileBottomNav({ onOpenAuth }) {
         {/* Profile */}
         <NavLink
           to="/profile"
+          aria-label={isAuthenticated ? 'Parent Account' : 'Log in to account'}
           onClick={handleProfileClick}
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
-              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-500 hover:text-slate-900 font-semibold'
+            `flex flex-col items-center justify-center min-w-[48px] min-h-[48px] py-1 px-2.5 rounded-xl transition-all ${
+              isActive ? 'text-pink-600 font-extrabold' : 'text-slate-600 hover:text-slate-900 font-bold'
             }`
           }
         >

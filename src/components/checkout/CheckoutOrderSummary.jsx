@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
-import { useCheckoutStore } from '../stores/checkoutStore';
-import { ShieldCheck, Truck, ChevronDown, Check, Tag } from 'lucide-react';
+import { useCartDerived } from '@/stores/cartStore';
+import { useCheckoutStore } from '@/stores/checkoutStore';
+import { ShieldCheck, Truck, ChevronDown, Tag } from 'lucide-react';
 
 export default function CheckoutOrderSummary({ showItemsList = true }) {
-  const { cartItems, mrpTotal, mrpSavings, couponDiscount, appliedCoupon, deliveryFee, totalPayable } = useCart();
+  const { cartItems, mrpTotal, mrpSavings, couponDiscount, appliedCoupon, deliveryFee, totalPayable } = useCartDerived();
   const { useWalletBalance, walletBalance } = useCheckoutStore();
 
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);

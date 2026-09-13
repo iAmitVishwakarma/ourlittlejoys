@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
-import ProductVisual from '../components/ProductVisual';
+import { useAuthStore } from '@/stores/authStore';
+import { useCartStore } from '@/stores/cartStore';
+import { useWishlistStore } from '@/stores/wishlistStore';
+import ProductVisual from '@/components/product/ProductVisual';
+import SEO from '@/components/common/SEO';
 import { 
   User, 
   Package, 
@@ -18,9 +19,14 @@ import {
 } from 'lucide-react';
 
 export default function Profile() {
-  const { user, isAuthenticated, login, logout, updateChildProfile } = useAuth();
-  const { addToCart } = useCart();
-  const { wishlistItems, removeFromWishlist } = useWishlist();
+  const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const login = useAuthStore((s) => s.login);
+  const logout = useAuthStore((s) => s.logout);
+  const updateChildProfile = useAuthStore((s) => s.updateChildProfile);
+  const addToCart = useCartStore((s) => s.addToCart);
+  const wishlistItems = useWishlistStore((s) => s.wishlistItems);
+  const removeFromWishlist = useWishlistStore((s) => s.removeFromWishlist);
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'profile' | 'addresses' | 'wallet' | 'wishlist'
@@ -140,9 +146,13 @@ export default function Profile() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-[75vh] flex items-center justify-center px-4 py-16 bg-[#FFF9F5]">
+        <SEO 
+          title="Parent Account Login | Little Joys"
+          description="Sign in to your Little Joys account to track orders, manage your child's nutrition profile, and view your LJ Wallet."
+        />
         <div className="max-w-md w-full bg-white rounded-3xl shadow-md border border-orange-100 p-8 space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center mx-auto text-3xl shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center mx-auto text-3xl shadow-sm" aria-hidden="true">
               🧸
             </div>
             <h1 className="text-2xl font-black text-slate-800 tracking-tight">Parent Account Login</h1>
@@ -154,10 +164,11 @@ export default function Profile() {
           {!otpSent ? (
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">Mobile Number</label>
+                <label htmlFor="profile-phone-input" className="block text-xs font-bold text-slate-700 mb-1.5">Mobile Number</label>
                 <div className="flex items-center border border-slate-200 rounded-2xl overflow-hidden focus-within:border-pink-500 bg-slate-50">
                   <span className="px-3 text-xs font-bold text-slate-500 border-r border-slate-200">+91</span>
                   <input
+                    id="profile-phone-input"
                     type="tel"
                     maxLength={10}
                     value={phoneNumber}
@@ -173,7 +184,7 @@ export default function Profile() {
 
               <button
                 type="submit"
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-md shadow-pink-500/25 transition-all active:scale-98"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-md shadow-pink-500/25 transition-all active:scale-98 min-h-[44px]"
               >
                 Send OTP
               </button>
@@ -186,8 +197,9 @@ export default function Profile() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">Enter 4-Digit OTP</label>
+                <label htmlFor="profile-otp-input" className="block text-xs font-bold text-slate-700 mb-1.5">Enter 4-Digit OTP</label>
                 <input
+                  id="profile-otp-input"
                   type="text"
                   maxLength={4}
                   value={otp}
@@ -202,7 +214,7 @@ export default function Profile() {
 
               <button
                 type="submit"
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-md shadow-pink-500/25 transition-all active:scale-98"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-md shadow-pink-500/25 transition-all active:scale-98 min-h-[44px]"
               >
                 Verify & Login
               </button>
@@ -221,6 +233,10 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-4 md:pt-6">
+      <SEO 
+        title="Parent Account & Orders | Little Joys"
+        description="Manage your Little Joys orders, child nutrition profile, saved addresses, and LJ Wallet balance."
+      />
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         {/* Profile Header Banner */}
         <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-orange-100 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -268,10 +284,12 @@ export default function Profile() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Sidebar Navigation (4 cols) */}
           <div className="md:col-span-4 space-y-2">
-            <div className="bg-white rounded-3xl p-3 shadow-sm border border-orange-100 space-y-1">
+            <div className="bg-white rounded-3xl p-3 shadow-sm border border-orange-100 space-y-1" role="tablist" aria-label="Account sections">
               <button
+                role="tab"
+                aria-selected={activeTab === 'orders'}
                 onClick={() => setActiveTab('orders')}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
                   activeTab === 'orders'
                     ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
                     : 'text-slate-700 hover:bg-slate-50'
@@ -287,8 +305,10 @@ export default function Profile() {
               </button>
 
               <button
+                role="tab"
+                aria-selected={activeTab === 'profile'}
                 onClick={() => setActiveTab('profile')}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
                   activeTab === 'profile'
                     ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
                     : 'text-slate-700 hover:bg-slate-50'
@@ -302,8 +322,10 @@ export default function Profile() {
               </button>
 
               <button
+                role="tab"
+                aria-selected={activeTab === 'addresses'}
                 onClick={() => setActiveTab('addresses')}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
                   activeTab === 'addresses'
                     ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
                     : 'text-slate-700 hover:bg-slate-50'
@@ -317,8 +339,10 @@ export default function Profile() {
               </button>
 
               <button
+                role="tab"
+                aria-selected={activeTab === 'wallet'}
                 onClick={() => setActiveTab('wallet')}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
                   activeTab === 'wallet'
                     ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
                     : 'text-slate-700 hover:bg-slate-50'
@@ -334,8 +358,10 @@ export default function Profile() {
               </button>
 
               <button
+                role="tab"
+                aria-selected={activeTab === 'wishlist'}
                 onClick={() => setActiveTab('wishlist')}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-[44px] ${
                   activeTab === 'wishlist'
                     ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
                     : 'text-slate-700 hover:bg-slate-50'
@@ -621,7 +647,7 @@ export default function Profile() {
                 <div className="bg-gradient-to-r from-amber-500 to-rose-500 rounded-3xl p-6 text-white shadow-lg shadow-amber-500/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
                     <span className="text-xs font-bold text-white/80 uppercase tracking-widest">Available Balance</span>
-                    <h3 className="text-3xl font-black mt-1">₹{user.walletBalance || 450}</h3>
+                    <p className="text-3xl font-black mt-1">₹{user.walletBalance || 450}</p>
                     <p className="text-xs text-white/90 mt-1">Save up to 30% automatically at checkout!</p>
                   </div>
                   <Link
@@ -634,7 +660,7 @@ export default function Profile() {
                 </div>
 
                 <div className="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 space-y-4">
-                  <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Transaction History</h3>
+                  <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Transaction History</h2>
                   <div className="divide-y divide-slate-100 text-xs">
                     <div className="py-3 flex justify-between items-center">
                       <div>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useCheckoutStore } from '../../stores/checkoutStore';
-import { useCart } from '../../context/CartContext';
-import CheckoutStepper from '../../components/CheckoutStepper';
-import AddressDrawer from '../../components/AddressDrawer';
-import CheckoutOrderSummary from '../../components/CheckoutOrderSummary';
+import { useCheckoutStore } from '@/stores/checkoutStore';
+import { useCartDerived } from '@/stores/cartStore';
+import CheckoutStepper from '@/components/checkout/CheckoutStepper';
+import AddressDrawer from '@/components/modals/AddressDrawer';
+import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
+import SEO from '@/components/common/SEO';
 import { 
   Plus, 
   MapPin, 
@@ -21,7 +22,7 @@ import {
 
 export default function AddressStep() {
   const navigate = useNavigate();
-  const { cartItems, totalPayable } = useCart();
+  const { cartItems, totalPayable } = useCartDerived();
   const { 
     savedAddresses, 
     selectedAddressId, 
@@ -37,11 +38,12 @@ export default function AddressStep() {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-[#FFF9F5] py-12 px-4">
+        <SEO title="Checkout - Cart Empty | Little Joys" description="Your shopping cart is currently empty." />
         <div className="container mx-auto max-w-lg text-center bg-white rounded-3xl p-8 border border-orange-100 shadow-sm space-y-4">
           <div className="w-16 h-16 rounded-full bg-orange-50 text-orange-400 flex items-center justify-center mx-auto text-3xl">
             🛒
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900">Your Cart is Empty</h2>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900">Your Cart is Empty</h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
             Add some wholesome child nutrition favorites before proceeding to checkout!
           </p>
@@ -86,6 +88,7 @@ export default function AddressStep() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 md:pb-16">
+      <SEO title="Checkout - Delivery Address | Little Joys" description="Confirm shipping address for your Little Joys order." />
       {/* 1. Myntra-Style Step Navigation */}
       <CheckoutStepper currentStep="address" />
 

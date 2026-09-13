@@ -1,7 +1,7 @@
 import React from 'react';
-import { PAYMENT_PARTNERS } from './PaymentLogos';
-import { FlyingKidDoodle, MiniStarCluster, SunDoodle } from './KidsDoodles';
-import ScallopDivider from './ScallopDivider';
+import { PAYMENT_PARTNERS } from '../graphics/PaymentLogos';
+import { FlyingKidDoodle, SunDoodle } from '../graphics/KidsDoodles';
+import ScallopDivider from '../common/ScallopDivider';
 
 export default function BrandPaymentSection() {
   return (
@@ -56,15 +56,15 @@ export default function BrandPaymentSection() {
 
         {/* Large Signature Typographic Header */}
         <div className="relative select-none">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-slate-400 leading-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-slate-700 leading-tight">
             Life is full of
             <br />
-            <span className="text-slate-400/90 font-black">little joys...</span>
+            <span className="text-[#13805B] font-black">little joys...</span>
           </h2>
         </div>
 
         {/* Origin Signature */}
-        <div className="mt-5 sm:mt-6 flex items-center justify-center gap-2 text-sm sm:text-base font-bold text-slate-500">
+        <div className="mt-5 sm:mt-6 flex items-center justify-center gap-2 text-sm sm:text-base font-bold text-slate-600">
           <span>Crafted with</span>
           <span className="text-red-500 animate-pulse text-lg leading-none">❤️</span>
           <span>in Thane, India</span>

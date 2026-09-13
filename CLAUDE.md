@@ -23,62 +23,71 @@ Modern e-commerce platform for baby/kids health & nutrition products inspired by
 - [x] **Wallet Recharge (`/wallet-recharge`)**: LJ Wallet recharge packs (Save up to 30%), instant cashback calculations, and transaction history.
 - [x] **Auth & Cart Modals**: Mobile/Email OTP login simulation with user profile drawer and fly-out slide-over cart drawer.
 
-## Folder Structure
+### Folder Structure
 ```
 d:/ourlittlejoys/
+├── ARCHITECTURE.md        # Technical architecture & data flows
 ├── CLAUDE.md              # AI instructions and context
-├── ARCHITECTURE.md        # Technical architecture
 ├── RULES.md               # AI coding rules
 ├── SCHEMA.md              # Data schemas
-├── README.md              # Project documentation
+├── README.md              # Project overview
 ├── package.json           # Dependencies and scripts
-├── vite.config.js         # Vite configuration
+├── vite.config.js         # Vite configuration with @ path alias
+├── jsconfig.json          # IDE path mapping configuration
 ├── .env.example           # Environment variables template
 ├── db.json                # Mock data for json-server
-│
+├── docs/                  # Detailed architecture & AI setup guides
+│   └── AI_DEVELOPMENT_SETUP.md
 ├── public/                # Static assets & icons
 └── src/                   # Source code
-    ├── components/        # Reusable UI components
-    │   ├── Navbar.jsx         # Sticky header with categories & search
-    │   ├── Footer.jsx         # Brand footer with safety guarantees
-    │   ├── ProductCard.jsx    # Standard e-commerce product card
-    │   ├── ProductVisual.jsx  # SVG vector packaging graphics for products
-    │   ├── CartDrawer.jsx     # Slide-over cart overlay
-    │   ├── AuthModal.jsx      # Mobile/email login with OTP verification
-    │   ├── UserAccountDrawer.jsx # Profile, orders, and wallet drawer
-    │   └── TestimonialCard.jsx# Parent reviews component
+    ├── assets/            # Static brand assets
+    ├── components/        # Reusable domain-categorized UI components
+    │   ├── layout/        # Navbar, Footer, MobileBottomNav, CheckoutFooter
+    │   ├── common/        # SEO, ResponsiveImage, ScallopDivider, TestimonialCard
+    │   ├── modals/        # AuthModal, CartDrawer, UserAccountDrawer, AddressDrawer
+    │   ├── product/       # ProductCard, ProductVisual
+    │   ├── checkout/      # CheckoutStepper, CheckoutOrderSummary, BrandPaymentSection
+    │   ├── graphics/      # KidsDoodles, CategorySVGs, PaymentLogos, PediatricDoctorIllustration
+    │   └── index.js       # Master component barrel export
+    ├── constants/         # Route definitions and global constants
+    ├── data/              # Product listings & lab test reports
     ├── pages/             # Route pages
     │   ├── Home.jsx           # Landing page
-    │   ├── ShopAll.jsx        # Product catalog
-    │   ├── HonestReport.jsx   # Lab tests and honest certifications
-    │   ├── CheckoutV2.jsx     # Step-by-step cart & checkout
-    │   ├── ProductDetail.jsx  # Individual product page
+    │   ├── ShopAll.jsx        # Product catalog with filters
+    │   ├── HonestReport.jsx   # Lab tests and certifications
+    │   ├── ProductDetail.jsx  # Individual product view
+    │   ├── Cart.jsx           # Dedicated shopping bag
+    │   ├── Profile.jsx        # Parent account & orders dashboard
     │   ├── AboutUs.jsx        # Story & paediatric advisory board
-    │   └── WalletRecharge.jsx # LJ Wallet credit packs
-    ├── context/           # React context providers
-    │   └── AuthContext.jsx    # User authentication & profile state
-    ├── data/              # Static data & product listings
-    │   └── products.js        # Detailed product database with nutritional info
-    ├── services/          # API & integration layers
-    │   └── paymentService.js  # Payment gateway simulator (Razorpay/UPI)
-    ├── App.jsx            # Router and layout setup
+    │   ├── WalletRecharge.jsx # LJ Wallet credit packs
+    │   ├── StaticPages.jsx    # FAQ, Contact, Policy views
+    │   └── checkout/          # Multi-step checkout flow (Address, Payment, Success)
+    ├── services/          # API & payment gateway integration layers
+    ├── stores/            # Zustand global state (auth, cart, checkout, wishlist)
+    ├── utils/             # Helper utilities (formatters, calculations)
+    ├── App.jsx            # Router and layout setup with code-splitting
     ├── main.jsx           # Application entry point
     └── index.css          # Tailwind CSS v4 & custom design tokens
 ```
 
 ## Coding Conventions
 - Use functional components with modern React hooks (no class components).
+- Use path alias `@/*` for imports from `src/*`.
 - Keep component code clean, modular, and well-commented with backend integration notes.
 - Use Tailwind CSS utility classes and design tokens defined in `src/index.css`.
 - Ensure responsive design for mobile (360px+), tablet (768px+), and desktop (1024px+).
-- Do not use generic placeholder images: use vector illustrations or high-fidelity SVGs (`ProductVisual.jsx`).
+- Use authentic high-fidelity imagery with `ResponsiveImage.jsx` and vector packaging in `ProductVisual.jsx`.
 
 ## API Service Layer Pattern
 All external and backend communication should go through service files in `src/services/`:
-- `src/services/api.js`: Base HTTP client instance (fetch / Axios) with token headers and response handlers.
+- `src/services/api.js`: Base HTTP client instance with token headers and response handlers.
+- `src/services/apiClient.js`: Core fetch wrapper with standard envelope response `{ success, data, message }`.
 - `src/services/paymentService.js`: Payment gateway integrations (Razorpay, Paytm, Cashfree, UPI deep-links).
 
 ## State Management Patterns
-- **User Authentication**: Managed via `src/context/AuthContext.jsx` with LocalStorage session persistence.
-- **Cart State**: Managed centrally in `App.jsx` and persisted to LocalStorage, passed to `CartDrawer.jsx`, `Navbar.jsx`, and `CheckoutV2.jsx`.
+- **Global State**: Managed with Zustand stores in `src/stores/`:
+  - `authStore.js`: Session authentication, user profile, login/logout, wallet balance.
+  - `cartStore.js`: Cart items, quantity modifiers, coupon code engine, derived totals.
+  - `checkoutStore.js`: Multi-step checkout address selection, payment option, order placement.
+  - `wishlistStore.js`: Saved favorite items with localStorage synchronization.
 - **Server State**: Configured for TanStack Query / REST API endpoints against `db.json` or live Node/Django backend.
