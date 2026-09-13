@@ -138,15 +138,8 @@ function AppContent() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Login />} />
 
-            {/* Dedicated Shopping Bag / Cart Page (Protected) */}
-            <Route
-              path="/cart"
-              element={
-                <ProtectedRoute>
-                  <Cart />
-                </ProtectedRoute>
-              }
-            />
+            {/* Dedicated Shopping Bag / Cart Page (Public, checkout is protected) */}
+            <Route path="/cart" element={<Cart />} />
 
             {/* Dedicated Parent Account & Orders Dashboard (Protected) */}
             <Route

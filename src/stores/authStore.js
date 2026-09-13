@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { authService } from '@/services/authService';
+import { setAuthTokenGetter } from '@/services/apiClient';
 import { useCartStore } from './cartStore';
 import { useWishlistStore } from './wishlistStore';
 import { useCheckoutStore } from './checkoutStore';
@@ -143,5 +144,18 @@ export const useAuthStore = create(
     }
   )
 );
+
+// Connect dynamic token getter to apiClient
+setAuthTokenGetter(() => useAuthStore.getState()?.token);
+
+// Handle server 401 session expiration
+if (typeof window !== 'undefined') {
+  window.addEventListener('lj:unauthorized', () => {
+    const { logout, isAuthenticated } = useAuthStore.getState();
+    if (isAuthenticated) {
+      logout();
+    }
+  });
+}
 
 export default useAuthStore;

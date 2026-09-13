@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
 import { useCheckoutStore } from '@/stores/checkoutStore';
 import { useCartDerived } from '@/stores/cartStore';
 import CheckoutStepper from '@/components/checkout/CheckoutStepper';
@@ -22,6 +23,10 @@ import {
 
 export default function AddressStep() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isLoading = useAuthStore((s) => s.isLoading);
+
   const { cartItems, totalPayable } = useCartDerived();
   const { 
     savedAddresses, 
@@ -33,6 +38,18 @@ export default function AddressStep() {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
+
+  // Enforce checkout step prerequisites
+  useEffect(() => {
+    if (isLoading) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location }, replace: true });
+      return;
+    }
+    if (!cartItems || cartItems.length === 0) {
+      navigate('/cart', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, cartItems, navigate, location]);
 
   // If cart is empty, show empty state with link to shop
   if (cartItems.length === 0) {

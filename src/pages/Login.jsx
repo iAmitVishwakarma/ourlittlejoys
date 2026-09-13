@@ -13,7 +13,6 @@ import {
   ShieldCheck, 
   User, 
   Baby, 
-  Heart, 
   Gift,
   Eye,
   EyeOff,
@@ -26,11 +25,23 @@ export default function Login() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const login = useAuthStore((s) => s.login);
 
-  // Determine return target path
+  // Determine return target path with full pathname, search, and hash support
   const rawFrom = location.state?.from;
-  const targetPath = (typeof rawFrom === 'string' ? rawFrom : rawFrom?.pathname) || 
-    new URLSearchParams(location.search).get('redirect') || 
-    '/profile';
+  const getDestination = () => {
+    if (typeof rawFrom === 'string') return rawFrom;
+    if (rawFrom && typeof rawFrom === 'object') {
+      const pathname = rawFrom.pathname || '';
+      const search = rawFrom.search || '';
+      const hash = rawFrom.hash || '';
+      const full = `${pathname}${search}${hash}`;
+      if (full && full !== '/login' && full !== '/signup') return full;
+    }
+    const redirectParam = new URLSearchParams(location.search).get('redirect');
+    if (redirectParam) return redirectParam;
+    return '/';
+  };
+
+  const targetPath = getDestination();
 
   // If already authenticated, redirect immediately
   useEffect(() => {

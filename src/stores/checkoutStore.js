@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { addressService } from '@/services/addressService';
+import { orderService } from '@/services/orderService';
 import { apiClient } from '@/services/apiClient';
 
 export const useCheckoutStore = create(
@@ -112,29 +113,19 @@ export const useCheckoutStore = create(
       setCustomUpiId: (id) => set({ customUpiId: id }),
       toggleUseWallet: () => set((state) => ({ useWalletBalance: !state.useWalletBalance })),
 
-      // Order Placement
+      // Order Placement (Delegated to backend-ready orderService)
       createOrder: async (orderPayload) => {
         const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : 'user_001');
-        const orderId = `LJ${Math.floor(100000 + Math.random() * 900000)}`;
-        const date = new Date();
-        const estStart = new Date(date.getTime() + 4 * 24 * 60 * 60 * 1000);
-        const estEnd = new Date(date.getTime() + 6 * 24 * 60 * 60 * 1000);
 
-        const options = { month: 'short', day: 'numeric' };
-        const estimatedDelivery = `${estStart.toLocaleDateString('en-IN', options)} – ${estEnd.toLocaleDateString('en-IN', options)}`;
+        const createdOrder = await orderService.createOrder({
+          userId,
+          ...orderPayload
+        });
 
         const newOrder = {
-          id: `order_${Date.now()}`,
-          orderId,
-          userId,
-          createdAt: date.toISOString(),
-          estimatedDelivery,
-          status: 'Confirmed',
-          ...orderPayload
+          ...createdOrder,
+          orderId: createdOrder.orderId || createdOrder.id || `LJ${Math.floor(100000 + Math.random() * 900000)}`,
         };
-
-        // Post to backend/json-server
-        await apiClient.post('/orders', newOrder).catch(() => {});
 
         set((state) => ({
           lastOrder: newOrder,

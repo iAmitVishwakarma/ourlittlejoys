@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
 import { useCheckoutStore } from '@/stores/checkoutStore';
 import { useCartStore, useCartDerived } from '@/stores/cartStore';
+import { orderService } from '@/services/orderService';
 import CheckoutStepper from '@/components/checkout/CheckoutStepper';
 import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
 import SEO from '@/components/common/SEO';
@@ -21,6 +23,10 @@ import {
 
 export default function PaymentStep() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isLoading = useAuthStore((s) => s.isLoading);
+
   const { cartItems, totalPayable } = useCartDerived();
   const clearCart = useCartStore((s) => s.clearCart);
   const { 
@@ -41,8 +47,24 @@ export default function PaymentStep() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [cardData, setCardData] = useState({ number: '', name: '', expiry: '', cvv: '' });
 
-  // Fallback selected address
-  const selectedAddress = savedAddresses.find((a) => a.id === selectedAddressId) || savedAddresses[0];
+  // Selected address or fallback
+  const selectedAddress = savedAddresses.find((a) => a.id === selectedAddressId) || (savedAddresses.length > 0 ? savedAddresses[0] : null);
+
+  // Enforce checkout step prerequisites
+  useEffect(() => {
+    if (isLoading) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location }, replace: true });
+      return;
+    }
+    if (!cartItems || cartItems.length === 0) {
+      navigate('/cart', { replace: true });
+      return;
+    }
+    if (!selectedAddress) {
+      navigate('/checkout/address', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, cartItems, selectedAddress, navigate, location]);
 
   // If no items in cart, redirect back
   if (cartItems.length === 0) {
@@ -67,20 +89,37 @@ export default function PaymentStep() {
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
 
-    // Realistic banking authorization delay (1.2s)
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    try {
+      // 1. Stage 1: Call order service to create order draft
+      const newOrder = await createOrder({
+        items: cartItems.map((item) => ({
+          id: item.id,
+          title: item.title || item.name,
+          price: item.price,
+          quantity: item.quantity,
+          selectedPack: item.selectedPack || null,
+          image: item.image || null,
+        })),
+        totalAmount: finalPayable,
+        address: selectedAddress,
+        paymentMethod,
+        paymentDetails: paymentMethod === 'UPI' ? { app: upiApp, upiId: customUpiId || 'instant_upi@bank' } : null
+      });
 
-    await createOrder({
-      items: cartItems,
-      totalAmount: finalPayable,
-      address: selectedAddress,
-      paymentMethod,
-      paymentDetails: paymentMethod === 'UPI' ? { app: upiApp, upiId: customUpiId || 'instant_upi@bank' } : null
-    });
+      // 2. Stage 2: Verify payment via backend boundary
+      await orderService.verifyPayment({
+        orderId: newOrder.id || newOrder.orderId,
+        paymentMethod,
+        paymentDetails: paymentMethod === 'UPI' ? { app: upiApp, upiId: customUpiId || 'instant_upi@bank' } : null
+      });
 
-    clearCart();
-    setIsProcessing(false);
-    navigate('/checkout/success');
+      clearCart();
+      setIsProcessing(false);
+      navigate('/checkout/success', { replace: true });
+    } catch (err) {
+      console.error('[PaymentStep] Order placement failed:', err);
+      setIsProcessing(false);
+    }
   };
 
   return (

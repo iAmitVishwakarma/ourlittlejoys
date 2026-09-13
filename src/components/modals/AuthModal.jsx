@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/services/authService';
 import { 
@@ -15,6 +16,8 @@ import {
 } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const loginWithOtp = useAuthStore((s) => s.loginWithOtp);
   const updateProfile = useAuthStore((s) => s.updateProfile);
 
@@ -128,6 +131,15 @@ export default function AuthModal({ isOpen, onClose }) {
     setStep(4);
     setTimeout(() => {
       onClose();
+      const rawFrom = location.state?.from;
+      if (rawFrom) {
+        const dest = typeof rawFrom === 'string'
+          ? rawFrom
+          : `${rawFrom.pathname || ''}${rawFrom.search || ''}${rawFrom.hash || ''}`;
+        if (dest && dest !== '/login' && dest !== '/signup') {
+          navigate(dest, { replace: true });
+        }
+      }
     }, 1800);
   };
 

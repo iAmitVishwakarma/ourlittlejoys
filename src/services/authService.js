@@ -110,7 +110,29 @@ async function findUserByPhone(phone) {
 
 export const authService = {
   /**
-   * Login with Email & Password or Phone
+   * DEVELOPMENT NOTE:
+   * json-server is used strictly as a development mock. Real password verification,
+   * hashing, rate-limiting, and JWT issuance MUST be enforced by the production backend
+   * at POST /auth/login. Plaintext passwords must never be stored or evaluated in the browser.
+   */
+
+  /**
+   * Request OTP code for phone authentication
+   * Contract: POST /auth/send-otp
+   */
+  async sendOtp(phone) {
+    const cleanPhone = (phone || '').replace(/\D/g, '').slice(-10);
+    try {
+      await apiClient.post('/auth/send-otp', { phone: cleanPhone });
+    } catch {
+      // Silently fall back in development mock mode
+    }
+    return { success: true, message: `OTP sent to +91 ${cleanPhone}` };
+  },
+
+  /**
+   * Login with Email & Password or Phone OTP
+   * Backend Contract: POST /auth/login -> { token, user }
    * @param {{ email?: string, password?: string, phone?: string, otp?: string }} credentials
    */
   async loginUser({ email, password, phone, otp }) {
@@ -125,6 +147,34 @@ export const authService = {
           return { success: false, message: 'Please enter your password.' };
         }
 
+        // Production contract attempt: POST /auth/login
+        try {
+          const apiRes = await apiClient.post('/auth/login', {
+            email: normalizedEmail,
+            password
+          });
+          if (apiRes.success && apiRes.data?.token && apiRes.data?.user) {
+            const { password: _, ...safeUser } = apiRes.data.user;
+            const token = apiRes.data.token;
+            this.setToken(token);
+            this.setUserData(safeUser);
+            return {
+              success: true,
+              user: safeUser,
+              token,
+              message: 'Login successful!'
+            };
+          }
+        } catch (apiErr) {
+          if (apiErr.response?.status === 401) {
+            return {
+              success: false,
+              message: apiErr.response.data?.message || 'Incorrect email or password.'
+            };
+          }
+        }
+
+        // Development Mock Fallback Adapter
         const user = await findUserByEmail(normalizedEmail);
         if (!user) {
           return {
@@ -140,13 +190,15 @@ export const authService = {
           };
         }
 
-        const token = `mock_token_${user.id}_${Date.now()}`;
+        // SANITIZE: Never expose or store plaintext password in user state
+        const { password: _, ...safeUser } = user;
+        const token = `mock_jwt_${safeUser.id}_${Date.now()}`;
         this.setToken(token);
-        this.setUserData(user);
+        this.setUserData(safeUser);
 
         return {
           success: true,
-          user,
+          user: safeUser,
           token,
           message: 'Login successful!'
         };
@@ -157,6 +209,33 @@ export const authService = {
         const cleanPhone = (phone || '').replace(/\D/g, '').slice(-10);
         if (cleanPhone.length < 10) {
           return { success: false, message: 'Please enter a valid 10-digit mobile number.' };
+        }
+
+        // Production contract attempt: POST /auth/login-otp
+        try {
+          const apiRes = await apiClient.post('/auth/login-otp', {
+            phone: cleanPhone,
+            otp
+          });
+          if (apiRes.success && apiRes.data?.token && apiRes.data?.user) {
+            const { password: _, ...safeUser } = apiRes.data.user;
+            const token = apiRes.data.token;
+            this.setToken(token);
+            this.setUserData(safeUser);
+            return {
+              success: true,
+              user: safeUser,
+              token,
+              message: 'Phone verified successfully!'
+            };
+          }
+        } catch (apiErr) {
+          if (apiErr.response?.status === 401) {
+            return {
+              success: false,
+              message: apiErr.response.data?.message || 'Invalid OTP code.'
+            };
+          }
         }
 
         const user = await findUserByPhone(cleanPhone);
@@ -180,13 +259,15 @@ export const authService = {
           };
         }
 
-        const token = `mock_token_${user.id}_${Date.now()}`;
+        // SANITIZE: Never expose password in user state
+        const { password: _, ...safeUser } = user;
+        const token = `mock_jwt_${safeUser.id}_${Date.now()}`;
         this.setToken(token);
-        this.setUserData(user);
+        this.setUserData(safeUser);
 
         return {
           success: true,
-          user,
+          user: safeUser,
           token,
           message: 'Phone verified successfully!'
         };
@@ -277,13 +358,15 @@ export const authService = {
       // 5. Save to local custom registry as reliable persistence
       saveCustomUser(newUser);
 
-      const token = `mock_token_${newUser.id}_${Date.now()}`;
+      // SANITIZE: Never expose or store plaintext password in user state
+      const { password: _, ...safeUser } = newUser;
+      const token = `mock_jwt_${safeUser.id}_${Date.now()}`;
       this.setToken(token);
-      this.setUserData(newUser);
+      this.setUserData(safeUser);
 
       return {
         success: true,
-        user: newUser,
+        user: safeUser,
         token,
         message: 'Account created successfully! ₹200 welcome bonus added to your Little Joys Wallet.'
       };

@@ -21,10 +21,47 @@ export const axiosInstance = axios.create({
   },
 });
 
+let authTokenGetter = null;
+
+/**
+ * Configure dynamic token resolver (e.g. from authStore)
+ */
+export const setAuthTokenGetter = (fn) => {
+  authTokenGetter = fn;
+};
+
+/**
+ * Resolve current active JWT / bearer token
+ */
+export const getAuthToken = () => {
+  if (typeof authTokenGetter === 'function') {
+    try {
+      const t = authTokenGetter();
+      if (t) return t;
+    } catch {
+      // ignore
+    }
+  }
+  if (typeof window !== 'undefined') {
+    const direct = localStorage.getItem('lj_auth_token');
+    if (direct) return direct;
+    try {
+      const persisted = localStorage.getItem('lj_auth_session_v3');
+      if (persisted) {
+        const parsed = JSON.parse(persisted);
+        if (parsed?.state?.token) return parsed.state.token;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  return null;
+};
+
 // Request Interceptor: Inject JWT token into Authorization header
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('lj_auth_token') : null;
+    const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,14 +70,18 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Uniform error handling
+// Response Interceptor: Uniform error handling & 401 session clearing
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    // 401 Unauthorized handling if needed
     if (error.response?.status === 401 && typeof window !== 'undefined') {
-      // Clear expired token if server explicitly rejects it
       console.warn('[API Client] Unauthorized 401 received from server.');
+      try {
+        localStorage.removeItem('lj_auth_token');
+        window.dispatchEvent(new CustomEvent('lj:unauthorized'));
+      } catch {
+        // ignore
+      }
     }
     return Promise.reject(error);
   }
