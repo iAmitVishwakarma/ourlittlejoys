@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '@/stores/authStore';
+import { resetAppSession } from '@/utils/session';
 import { 
   X, 
   User, 
@@ -16,7 +17,6 @@ import {
 
 export default function UserAccountDrawer({ isOpen, onClose }) {
   const user = useAuthStore((s) => s.user);
-  const logout = useAuthStore((s) => s.logout);
   const [activeTab, setActiveTab] = useState('wallet'); // 'wallet', 'orders', 'child'
 
   if (!isOpen || !user) return null;
@@ -229,7 +229,7 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
           {/* Footer Logout */}
           <div className="p-6 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
             <button
-              onClick={() => { logout(); onClose(); }}
+              onClick={() => { resetAppSession(); onClose(); }}
               className="flex items-center gap-2 text-xs font-black text-slate-500 hover:text-red-600 transition-colors uppercase tracking-wider"
             >
               <LogOut className="w-4 h-4" />

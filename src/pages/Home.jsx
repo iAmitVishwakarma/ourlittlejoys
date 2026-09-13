@@ -34,6 +34,8 @@ import SEO from '@/components/common/SEO';
 import ParentReviewsSection from '@/components/ParentReviewsSection';
 import ResponsiveImage from '@/components/common/ResponsiveImage';
 import { HERO_SLIDES, ALL_PRODUCTS } from '@/data/products';
+import { productService } from '@/services/productService';
+
 import { 
   ArrowRight, 
   ShieldCheck, 
@@ -64,9 +66,23 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
   const [openFaq, setOpenFaq] = useState(0);
 
   // Swiper Hero Carousel Refs & State
-  const slides = HERO_SLIDES;
+  const [slides, setSlides] = useState(HERO_SLIDES);
+  const [allProducts, setAllProducts] = useState(ALL_PRODUCTS);
   const heroPrevRef = useRef(null);
   const heroNextRef = useRef(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    productService.getHeroSlides().then((res) => {
+      if (isMounted && Array.isArray(res)) setSlides(res);
+    });
+    productService.getAllProducts().then((res) => {
+      if (isMounted && Array.isArray(res)) setAllProducts(res);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleCategoryChange = (tab) => {
     if (tab === activeCategory) return;
@@ -154,7 +170,8 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
   ];
 
   // Top-selling favourites matching the product catalog with real images
-  const topFavourites = ALL_PRODUCTS.slice(0, 8);
+  const productList = Array.isArray(allProducts) ? allProducts : [];
+  const topFavourites = productList.slice(0, 8);
 
   // FAQ list with clear, high-contrast answers
   const faqs = [
@@ -188,7 +205,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
 
   const displayedProducts = activeCategory === 'All'
     ? topFavourites
-    : ALL_PRODUCTS.filter((p) => p.category === activeCategory || p.subCategory?.toLowerCase() === activeCategory.toLowerCase());
+    : productList.filter((p) => p.category === activeCategory || p.subCategory?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
     <div className="bg-[#FFF9F5] min-h-screen pb-16">
@@ -506,7 +523,11 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 animate-in fade-in duration-200">
               {displayedProducts.map((product) => {
-                const inCart = effectiveCartItems.find((c) => c.id === product.id || c.slug === product.slug);
+                const inCart = effectiveCartItems.find(
+                  (c) =>
+                    String(c.id) === String(product.id) ||
+                    (c.slug && product.slug && String(c.slug) === String(product.slug))
+                );
                 return (
                   <ProductCard
                     key={product.id}

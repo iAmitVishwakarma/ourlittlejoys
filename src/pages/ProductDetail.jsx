@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ALL_PRODUCTS } from '@/data/products';
+import { productService } from '@/services/productService';
+
 import ScallopDivider from '@/components/common/ScallopDivider';
 import { 
   SunDoodle, 
@@ -56,8 +58,18 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
-  // Find product by slug or id
-  const product = ALL_PRODUCTS.find((p) => p.slug === slug || p.id === slug) || ALL_PRODUCTS[0];
+  // Standardized product resolution via productService with fallback (F-0.1, F-3.2)
+  const [catalogList, setCatalogList] = useState(ALL_PRODUCTS);
+  const [product, setProduct] = useState(() => {
+    const target = String(slug || '').toLowerCase().trim();
+    return (
+      ALL_PRODUCTS.find(
+        (p) =>
+          String(p.slug || '').toLowerCase() === target ||
+          String(p.id).toLowerCase() === target
+      ) || ALL_PRODUCTS[0]
+    );
+  });
 
   // Pack size variants with clear savings & explicit selected states
   const packVariants = [
@@ -85,8 +97,25 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
 
   useEffect(() => {
     setIsLoading(true);
+    let isMounted = true;
+
+    productService.getProductBySlugOrId(slug).then((resolved) => {
+      if (isMounted && resolved) {
+        setProduct(resolved);
+      }
+    });
+
+    productService.getAllProducts().then((list) => {
+      if (isMounted && Array.isArray(list) && list.length > 0) {
+        setCatalogList(list);
+      }
+    });
+
     const timer = setTimeout(() => setIsLoading(false), 240);
-    return () => clearTimeout(timer);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, [slug]);
 
   // Interactive Pincode Delivery Checker
@@ -94,7 +123,12 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const [pincodeStatus, setPincodeStatus] = useState({ checked: true, deliveryDate: "Thursday, 17 Sep", isFree: true });
 
   // Frequently bought together bundle complementary product
-  const bundleComplement = ALL_PRODUCTS.find((p) => p.id !== product.id && (p.category === "Gummies" || p.category === "Nutrimix")) || ALL_PRODUCTS[1];
+  const bundleComplement =
+    catalogList.find(
+      (p) =>
+        String(p.id) !== String(product.id) &&
+        (p.category === "Gummies" || p.category === "Nutrimix")
+    ) || ALL_PRODUCTS[1];
 
   // Gallery multi-images (Product hero, nutrition facts, kid enjoying milk, raw ingredients)
   const galleryImages = [
@@ -207,8 +241,10 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
     }
   };
 
-  // Complementary Related Products
-  const relatedProducts = ALL_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  // Complementary Related Products (F-0.1, F-3.2)
+  const relatedProducts = catalogList
+    .filter((p) => String(p.id) !== String(product.id))
+    .slice(0, 4);
 
   // Reviews Data
   const productReviews = [

@@ -96,10 +96,29 @@ export const orderService = {
   },
 
   /**
-   * Fetch user orders
+   * Fetch tenant-scoped user orders (F-4.3)
+   * Contract: GET /orders/me
+   * Fallback: GET /orders?userId=:id for development mock server
    */
   async getUserOrders(userId) {
-    return apiClient.get('/orders', { userId });
+    const activeUid = userId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : null);
+
+    // 1. Backend-ready tenant route
+    try {
+      const res = await apiClient.get('/orders/me');
+      if (res.success && Array.isArray(res.data)) {
+        return res;
+      }
+    } catch {
+      // json-server fallback
+    }
+
+    // 2. Development json-server query fallback
+    if (activeUid) {
+      return apiClient.get('/orders', { userId: activeUid });
+    }
+
+    return { success: true, data: [] };
   },
 };
 

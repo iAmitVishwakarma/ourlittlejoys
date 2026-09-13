@@ -41,18 +41,40 @@ function saveLocalAddresses(userId, addresses) {
 }
 
 export const addressService = {
+  /**
+   * Fetch current authenticated tenant's addresses (F-4.3)
+   * Contract: GET /addresses/me
+   * Fallback: GET /addresses?userId=:id for development mock server
+   */
   async getUserAddresses(userId) {
-    if (!userId) return [];
+    const activeUid = userId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : null);
+    
+    // 1. Backend-ready tenant route
     try {
-      const res = await apiClient.get('/addresses', { userId });
+      const res = await apiClient.get('/addresses/me');
       if (res.success && Array.isArray(res.data) && res.data.length > 0) {
-        saveLocalAddresses(userId, res.data);
+        if (activeUid) saveLocalAddresses(activeUid, res.data);
         return res.data;
       }
-    } catch (err) {
-      console.warn('[addressService] getUserAddresses fallback:', err.message);
+    } catch {
+      // json-server fallback
     }
-    return getLocalAddresses(userId);
+
+    // 2. Development json-server query fallback
+    if (activeUid) {
+      try {
+        const res = await apiClient.get('/addresses', { userId: activeUid });
+        if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+          saveLocalAddresses(activeUid, res.data);
+          return res.data;
+        }
+      } catch (err) {
+        console.warn('[addressService] getUserAddresses dev fallback:', err.message);
+      }
+      return getLocalAddresses(activeUid);
+    }
+
+    return [];
   },
 
   async addAddress(userId, addressData) {

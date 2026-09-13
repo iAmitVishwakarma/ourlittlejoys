@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { cartService } from '@/services/cartService';
+import { calculateOrderPricing, calculateSubtotal } from '@/utils/pricing';
 
 export const VALID_COUPONS = [
   { code: 'JOY30', type: 'percent', value: 22, minOrder: 499, description: '22% Flat Instant Joy Discount' },
@@ -120,10 +121,7 @@ export const useCartStore = create(
        */
       applyCoupon: (code) => {
         const state = get();
-        const subtotal = state.cartItems.reduce(
-          (sum, item) => sum + item.price * (item.quantity || 1),
-          0
-        );
+        const subtotal = calculateSubtotal(state.cartItems);
         const found = VALID_COUPONS.find(
           (c) => c.code.toUpperCase() === code.trim().toUpperCase()
         );
@@ -150,46 +148,31 @@ export const useCartStore = create(
   )
 );
 
-// Derived selectors for computed cart values
+// Derived selectors for computed cart values using pure pricing engine
 export function useCartDerived() {
   const cartItems = useCartStore((s) => s.cartItems);
   const appliedCoupon = useCartStore((s) => s.appliedCoupon);
 
   const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
-  const mrpTotal = cartItems.reduce(
-    (sum, item) => sum + (item.originalPrice || item.price) * (item.quantity || 1),
-    0
-  );
-
-  let couponDiscount = 0;
-  if (appliedCoupon) {
-    if (appliedCoupon.type === 'percent') {
-      couponDiscount = Math.round((subtotal * appliedCoupon.value) / 100);
-    } else if (appliedCoupon.type === 'flat') {
-      couponDiscount = Math.min(appliedCoupon.value, subtotal);
-    }
-  }
-
-  const mrpSavings = Math.max(0, mrpTotal - subtotal);
-  const totalSavings = mrpSavings + couponDiscount;
-  const deliveryFee = subtotal === 0 ? 0 : subtotal >= 499 ? 0 : 49;
-  const totalPayable = subtotal === 0 ? 0 : Math.max(0, subtotal - couponDiscount + deliveryFee);
+  const pricing = calculateOrderPricing({
+    items: cartItems,
+    coupon: appliedCoupon
+  });
 
   const freeGiftThreshold = 999;
-  const freeGiftAmountLeft = Math.max(0, freeGiftThreshold - subtotal);
-  const isFreeGiftUnlocked = subtotal >= freeGiftThreshold;
+  const freeGiftAmountLeft = Math.max(0, freeGiftThreshold - pricing.subtotal);
+  const isFreeGiftUnlocked = pricing.subtotal >= freeGiftThreshold;
 
   return {
     cartItems,
     cartCount,
-    subtotal,
-    mrpTotal,
-    mrpSavings,
-    couponDiscount,
-    totalSavings,
-    deliveryFee,
-    totalPayable,
+    subtotal: pricing.subtotal,
+    mrpTotal: pricing.mrpTotal,
+    mrpSavings: pricing.mrpSavings,
+    couponDiscount: pricing.discount,
+    totalSavings: pricing.totalSavings,
+    deliveryFee: pricing.shipping,
+    totalPayable: pricing.finalTotal,
     appliedCoupon,
     freeGiftThreshold,
     freeGiftAmountLeft,

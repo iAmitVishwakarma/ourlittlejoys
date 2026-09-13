@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCartStore, useCartDerived, VALID_COUPONS } from '@/stores/cartStore';
+import { calculateItemTotal, SHIPPING_THRESHOLD } from '@/utils/pricing';
 import { CROSS_SELL_PRODUCTS } from '@/data/products';
 import ProductVisual from '@/components/product/ProductVisual';
 import SEO from '@/components/common/SEO';
@@ -174,9 +175,9 @@ export default function Cart() {
 
               <div className="divide-y divide-slate-100">
                 {cartItems.map((item) => {
-                  const itemTotal = item.price * (item.quantity || 1);
-                  const itemMrpTotal = (item.originalPrice || item.price) * (item.quantity || 1);
-                  const itemSavings = itemMrpTotal - itemTotal;
+                  const itemTotal = calculateItemTotal(item.price, item.quantity);
+                  const itemMrpTotal = calculateItemTotal(item.originalPrice || item.price, item.quantity);
+                  const itemSavings = Math.max(0, itemMrpTotal - itemTotal);
 
                   return (
                     <div key={item.id || item.slug} className="py-5 first:pt-2 last:pb-2 flex gap-4 md:gap-5">
@@ -441,7 +442,7 @@ export default function Cart() {
 
                 {deliveryFee > 0 && (
                   <p className="text-[11px] text-slate-400">
-                    Add ₹{499 - subtotal} more for <strong>FREE Delivery</strong>
+                    Add ₹{SHIPPING_THRESHOLD - subtotal} more for <strong>FREE Delivery</strong>
                   </p>
                 )}
 

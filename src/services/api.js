@@ -1,18 +1,15 @@
 /**
  * ============================================================================
- * BACKEND API SERVICE LAYER - OUR LITTLE JOYS
+ * BACKEND API SERVICE LAYER - OUR LITTLE JOYS (DEPRECATED)
  * ============================================================================
- * 
- * NOTE FOR BACKEND DEVELOPER:
- * This file serves as the unified API interface between the React frontend
- * and your backend server (Node.js/Express, Python/Django/FastAPI, Go, PHP, etc.).
- * 
- * 1. Set your backend URL in your environment file (.env):
- *    VITE_API_BASE_URL=https://api.yourdomain.com/v1
- * 
- * 2. All functions return standardized Promise data: { success, data, message }.
- *    Currently, fallback mock data is provided so the frontend runs seamlessly
- *    out of the box while backend development is in progress.
+ * @deprecated All networking is consolidated into domain services:
+ * - productService.js
+ * - cartService.js
+ * - addressService.js
+ * - orderService.js
+ * - authService.js
+ * - paymentService.js
+ * All backed directly by centralized apiClient.js.
  * ============================================================================
  */
 

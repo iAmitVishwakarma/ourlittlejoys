@@ -26,13 +26,21 @@ export const useWishlistStore = create(
         
         // Optimistic update
         set((state) => {
+          const targetId = String(product.id || '');
+          const targetSlug = String(product.slug || '');
           const exists = state.wishlistItems.some(
-            (item) => item.id === product.id || item.slug === product.slug || item.productId === product.id
+            (item) =>
+              String(item.id) === targetId ||
+              (targetSlug && String(item.slug) === targetSlug) ||
+              String(item.productId) === targetId
           );
           if (exists) {
             return {
               wishlistItems: state.wishlistItems.filter(
-                (item) => item.id !== product.id && item.slug !== product.slug && item.productId !== product.id
+                (item) =>
+                  String(item.id) !== targetId &&
+                  (!targetSlug || String(item.slug) !== targetSlug) &&
+                  String(item.productId) !== targetId
               )
             };
           }
@@ -47,11 +55,16 @@ export const useWishlistStore = create(
       },
 
       /**
-       * Check if product is in active user's wishlist
+       * Check if product is in active user's wishlist (F-3.2: String-normalized)
        */
       isInWishlist: (productIdOrSlug) => {
+        if (!productIdOrSlug) return false;
+        const target = String(productIdOrSlug).toLowerCase();
         return get().wishlistItems.some(
-          (item) => item.id === productIdOrSlug || item.slug === productIdOrSlug || item.productId === productIdOrSlug
+          (item) =>
+            String(item.id).toLowerCase() === target ||
+            String(item.slug || '').toLowerCase() === target ||
+            String(item.productId || '').toLowerCase() === target
         );
       },
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { useCartStore } from '@/stores/cartStore';
 import { useWishlistStore } from '@/stores/wishlistStore';
+import { resetAppSession } from '@/utils/session';
 import { 
   ShoppingCart, 
   Search, 
@@ -81,7 +82,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
   const handleLogout = () => {
     setIsUserMenuOpen(false);
     setIsMobileMenuOpen(false);
-    logout();
+    resetAppSession();
     navigate('/');
   };
 

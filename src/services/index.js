@@ -7,3 +7,4 @@ export * from './cartService';
 export * from './wishlistService';
 export * from './addressService';
 export * from './orderService';
+export * from './productService';

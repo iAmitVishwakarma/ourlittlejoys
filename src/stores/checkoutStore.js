@@ -133,6 +133,23 @@ export const useCheckoutStore = create(
         }));
 
         return newOrder;
+      },
+
+      /**
+       * Reset checkout session on logout (F-4.4)
+       */
+      resetCheckout: () => {
+        set({
+          savedAddresses: [],
+          selectedAddressId: null,
+          activeUserId: null,
+          paymentMethod: 'UPI',
+          upiApp: 'GPAY',
+          customUpiId: '',
+          useWalletBalance: false,
+          orders: [],
+          lastOrder: null
+        });
       }
     }),
     {

@@ -2,9 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useParams, Link } from 'react-router-dom';
 import ProductCard from '@/components/product/ProductCard';
 import { ProductGridSkeleton } from '@/components/common/Skeleton';
-import { ALL_PRODUCTS } from '@/data/products';
+import { productService } from '@/services/productService';
 import { useCartStore } from '@/stores/cartStore';
 import SEO from '@/components/common/SEO';
+
 import { ShoppingBag, Filter, Sparkles, ArrowRight, Check, ShieldCheck } from 'lucide-react';
 import { RainbowDoodle, SunDoodle, MiniStarCluster } from '@/components/graphics/KidsDoodles';
 
@@ -50,6 +51,19 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
   const [selectedAge, setSelectedAge] = useState('All');
   const [sortBy, setSortBy] = useState('popular');
   const [isFiltering, setIsFiltering] = useState(false);
+  const [catalogProducts, setCatalogProducts] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    productService.getAllProducts().then((data) => {
+      if (isMounted && Array.isArray(data)) {
+        setCatalogProducts(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     setIsFiltering(true);
@@ -109,7 +123,8 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
 
   // Filter and Sort Products
   const filteredProducts = useMemo(() => {
-    return ALL_PRODUCTS.filter((item) => {
+    const list = Array.isArray(catalogProducts) ? catalogProducts : [];
+    return list.filter((item) => {
       // Category filter
       if (selectedCategory === 'New Launches' && !item.isNewLaunch) return false;
       if (selectedCategory !== 'All' && selectedCategory !== 'New Launches' && item.category !== selectedCategory) {
@@ -119,7 +134,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
       // Age filter
       if (selectedAge !== 'All') {
         if (selectedAge === 'Moms' && item.ageGroup !== 'Moms') return false;
-        if (selectedAge !== 'Moms' && item.ageGroup !== selectedAge && !item.age.includes(selectedAge)) {
+        if (selectedAge !== 'Moms' && item.ageGroup !== selectedAge && !(item.age || '').includes(selectedAge)) {
           return false;
         }
       }
@@ -128,10 +143,10 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
     }).sort((a, b) => {
       if (sortBy === 'price-low') return a.price - b.price;
       if (sortBy === 'price-high') return b.price - a.price;
-      if (sortBy === 'rating') return parseFloat(b.rating) - parseFloat(a.rating);
+      if (sortBy === 'rating') return parseFloat(b.rating || 0) - parseFloat(a.rating || 0);
       return 0; // Default popularity
     });
-  }, [selectedCategory, selectedAge, sortBy]);
+  }, [catalogProducts, selectedCategory, selectedAge, sortBy]);
 
   const totalCartCount = effectiveCartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
   const totalCartAmount = effectiveCartItems.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
@@ -379,7 +394,11 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-200">
             {filteredProducts.map((product) => {
-              const inCart = effectiveCartItems.find((c) => c.id === product.id || c.slug === product.slug);
+              const inCart = effectiveCartItems.find(
+                (c) =>
+                  String(c.id) === String(product.id) ||
+                  (c.slug && product.slug && String(c.slug) === String(product.slug))
+              );
               return (
                 <ProductCard
                   key={product.id}

@@ -1,6 +1,10 @@
 /**
- * Centralized Real Parent Testimonials & Reviews
- * Single source of truth for Home, AboutUs, and product proof sections.
+ * ============================================================================
+ * REAL PARENT TESTIMONIALS & REVIEWS - SEEDER / OFFLINE FALLBACK DATA
+ * ============================================================================
+ * Strictly used as local development seeders and offline fallback data.
+ * Production environments fetch testimonials dynamically via backend API services.
+ * ============================================================================
  */
 export const TESTIMONIALS = [
   {

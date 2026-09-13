@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useCheckoutStore } from '@/stores/checkoutStore';
 import { useCartStore, useCartDerived } from '@/stores/cartStore';
 import { orderService } from '@/services/orderService';
+import { calculateOrderPricing } from '@/utils/pricing';
 import CheckoutStepper from '@/components/checkout/CheckoutStepper';
 import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
 import SEO from '@/components/common/SEO';
@@ -82,9 +83,14 @@ export default function PaymentStep() {
     );
   }
 
-  // Calculate final payable considering wallet
-  const walletDeduction = useWalletBalance ? Math.min(walletBalance, totalPayable) : 0;
-  const finalPayable = Math.max(0, totalPayable - walletDeduction);
+  // Calculate final payable considering wallet via pure pricing engine
+  const orderPricing = calculateOrderPricing({
+    items: cartItems,
+    walletBalance,
+    useWallet: useWalletBalance
+  });
+  const walletDeduction = orderPricing.walletDeduction;
+  const finalPayable = orderPricing.finalTotal;
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);

@@ -3,11 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { useCartStore } from "../stores/cartStore";
 import { useWishlistStore } from "../stores/wishlistStore";
+import { resetAppSession } from "@/utils/session";
 import ProductVisual from "@/components/product/ProductVisual";
 import SEO from "@/components/common/SEO";
 import ChildCharacterIllustration from "@/components/graphics/ChildCharacterIllustration";
 import { HeartDoodle, SunDoodle, MiniStarCluster } from "@/components/graphics/KidsDoodles";
 import { OrderCardSkeleton, TableSkeleton } from "@/components/common/Skeleton";
+import ProfileDetailsTab from "./profile/tabs/ProfileDetailsTab";
+import ChildProfileTab from "./profile/tabs/ChildProfileTab";
+import OrdersTab from "./profile/tabs/OrdersTab";
+import AddressesTab from "./profile/tabs/AddressesTab";
+import WalletTab from "./profile/tabs/WalletTab";
 import {
   User,
   Package,
@@ -17,37 +23,18 @@ import {
   Settings,
   LogOut,
   ChevronRight,
-  ChevronDown,
-  Truck,
-  Edit2,
-  Plus,
   Check,
   CheckCircle2,
-  ShoppingCart,
-  Gift,
   Headphones,
-  Sparkles,
-  Clock,
-  ArrowRight,
-  Search,
-  Share2,
-  X,
-  ExternalLink,
-  ShieldCheck,
-  FileText,
-  AlertCircle,
-  HelpCircle,
   Phone,
   Mail,
-  Copy,
-  SlidersHorizontal,
+  X,
 } from "lucide-react";
 
 export default function Profile({ defaultTab }) {
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const login = useAuthStore((s) => s.login);
-  const logout = useAuthStore((s) => s.logout);
   const updateChildProfile = useAuthStore((s) => s.updateChildProfile);
   const addToCart = useCartStore((s) => s.addToCart);
   const wishlistItems = useWishlistStore((s) => s.wishlistItems);
@@ -790,7 +777,7 @@ export default function Profile({ defaultTab }) {
               <div className="pt-2 border-t border-slate-100 mt-1">
                 <button
                   onClick={() => {
-                    logout();
+                    resetAppSession();
                     navigate("/");
                   }}
                   className="w-full flex items-center gap-3 p-3 rounded-2xl font-extrabold text-xs md:text-sm text-rose-600 hover:bg-rose-50/80 transition-colors"
@@ -818,550 +805,78 @@ export default function Profile({ defaultTab }) {
             ) : (
               <>
                 {/* ---------------------------------------------------------------------
-                    TAB 1: MY ORDERS (Focused on visual progress, clear items & Buy Again)
+                    TAB 1: MY ORDERS (Extracted Tab Component)
                    --------------------------------------------------------------------- */}
                 {activeTab === "orders" && (
-              <div className="space-y-5">
-                
-                {/* Header with Filter Dropdown */}
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-                      <Package className="w-5 h-5 text-pink-600" />
-                      <span>My Orders ({filteredOrders.length})</span>
-                    </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Track, manage and reorder your Little Joys purchases.
-                    </p>
-                  </div>
+                  <OrdersTab
+                    filteredOrders={filteredOrders}
+                    orderFilter={orderFilter}
+                    setOrderFilter={setOrderFilter}
+                    isFilterOpen={isFilterOpen}
+                    setIsFilterOpen={setIsFilterOpen}
+                    onSelectOrder={setSelectedOrderDetail}
+                    onBuyAgain={handleBuyAgain}
+                  />
+                )}
 
-                  {/* Filter Dropdown */}
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsFilterOpen(!isFilterOpen)}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-xl border border-slate-200/80 shadow-2xs hover:border-pink-300 transition-colors"
-                    >
-                      <SlidersHorizontal className="w-3.5 h-3.5 text-slate-400" />
-                      <span>
-                        {orderFilter === "all" ? "All Orders" : orderFilter === "delivered" ? "Delivered" : "Processing"}
-                      </span>
-                      <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-                    </button>
-
-                    {isFilterOpen && (
-                      <div className="absolute right-0 mt-1.5 w-36 bg-white rounded-2xl shadow-lg border border-slate-100 py-1.5 z-20 text-xs font-bold text-slate-700">
-                        <button
-                          onClick={() => {
-                            setOrderFilter("all");
-                            setIsFilterOpen(false);
-                          }}
-                          className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "all" ? "text-pink-600 font-black" : ""}`}
-                        >
-                          All Orders
-                        </button>
-                        <button
-                          onClick={() => {
-                            setOrderFilter("delivered");
-                            setIsFilterOpen(false);
-                          }}
-                          className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "delivered" ? "text-pink-600 font-black" : ""}`}
-                        >
-                          Delivered
-                        </button>
-                        <button
-                          onClick={() => {
-                            setOrderFilter("processing");
-                            setIsFilterOpen(false);
-                          }}
-                          className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "processing" ? "text-pink-600 font-black" : ""}`}
-                        >
-                          Processing
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Orders List */}
-                {filteredOrders.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-10 text-center border border-orange-100 space-y-4 shadow-2xs">
-                    <div className="w-16 h-16 rounded-2xl bg-orange-50 text-3xl flex items-center justify-center mx-auto">
-                      📦
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-base font-black text-slate-800">No orders found</h3>
-                      <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
-                        Start exploring healthy doctor-formulated little joys for your family.
-                      </p>
-                    </div>
-                    <Link
-                      to="/shop/all"
-                      className="inline-block bg-[#FF2F92] text-white text-xs font-black px-6 py-2.5 rounded-full shadow-xs hover:bg-pink-600 transition-all"
-                    >
-                      Shop Now &rarr;
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {filteredOrders.map((order) => (
-                      <div
-                        key={order.id}
-                        className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xs border border-orange-100/90 space-y-5 hover:border-pink-200 transition-colors"
-                      >
-                        {/* Order Header */}
-                        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-black text-slate-900 tracking-tight">
-                                {order.id}
-                              </span>
-                              <span className="text-[11px] bg-emerald-50 text-emerald-700 font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">
-                                {order.status}
-                              </span>
-                            </div>
-                            <p className="text-xs text-slate-400 mt-0.5">
-                              Placed on {order.date} &bull; {order.items.length} {order.items.length === 1 ? "item" : "items"}
-                            </p>
-                          </div>
-
-                          <div className="text-right">
-                            <span className="text-base font-black text-slate-900">
-                              ₹{order.total}
-                            </span>
-                            <p className="text-[11px] text-emerald-600 font-bold">
-                              Saved ₹{order.discount}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Visual Step Progress Tracker (Confirmed ── Packed ── Shipped ── Delivered) */}
-                        <div className="bg-[#F8FAFC] rounded-2xl p-4 border border-slate-100/80">
-                          <div className="relative flex items-center justify-between">
-                            {/* Connected Background Track Line */}
-                            <div className="absolute top-3 left-4 right-4 h-0.5 bg-emerald-400 -z-0" />
-
-                            {/* Stepper Nodes */}
-                            {order.timeline.map((step, idx) => (
-                              <div key={idx} className="relative z-10 flex flex-col items-center text-center">
-                                <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white">
-                                  ✓
-                                </div>
-                                <span className="text-[11px] font-black text-slate-800 mt-1.5">
-                                  {step.label}
-                                </span>
-                                <span className="text-[10px] font-medium text-slate-400">
-                                  {step.date}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Product Items List (With Product-Level "Buy Again" Action) */}
-                        <div className="space-y-3 divide-y divide-slate-50">
-                          {order.items.map((item, idx) => (
-                            <div key={idx} className="pt-2 first:pt-0 flex items-center justify-between gap-4">
-                              <div className="flex items-center gap-3.5 min-w-0">
-                                <div className="w-14 h-14 rounded-2xl bg-orange-50/80 p-1.5 flex items-center justify-center border border-orange-100 shrink-0">
-                                  <ProductVisual
-                                    visualType={item.visualType}
-                                    flavor={item.flavor}
-                                    className="w-full h-full object-contain"
-                                  />
-                                </div>
-                                <div className="min-w-0">
-                                  <h4 className="text-xs sm:text-sm font-black text-slate-800 truncate">
-                                    {item.title}
-                                  </h4>
-                                  <p className="text-xs text-slate-400 font-medium mt-0.5">
-                                    Qty: {item.quantity} &bull; <strong className="text-slate-700">₹{item.price}</strong>
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* Product-Level Buy Again Button */}
-                              <button
-                                onClick={() => handleBuyAgain(item)}
-                                className="shrink-0 bg-pink-50 hover:bg-[#FF2F92] text-[#FF2F92] hover:text-white font-black text-xs px-3.5 py-1.5 rounded-xl border border-pink-200/80 shadow-2xs transition-all flex items-center gap-1.5"
-                                title={`Reorder ${item.title}`}
-                              >
-                                <ShoppingCart className="w-3.5 h-3.5" />
-                                <span>Buy Again</span>
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Order Card Footer */}
-                        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
-                          <div className="text-slate-500 text-[11px] truncate max-w-sm flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                            <span className="truncate">{order.address}</span>
-                          </div>
-
-                          <button
-                            onClick={() => setSelectedOrderDetail(order)}
-                            className="text-xs font-black text-[#FF2F92] hover:underline flex items-center gap-1 shrink-0 ml-auto"
-                          >
-                            <span>View Details</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-
-                      </div>
-                    ))}
+                {/* ---------------------------------------------------------------------
+                    TAB 2: PERSONAL & CHILD PROFILE (Extracted Tab Components)
+                   --------------------------------------------------------------------- */}
+                {activeTab === "profile" && (
+                  <div className="space-y-6">
+                    <ChildProfileTab
+                      childName={currentChildName}
+                      childAge={currentChildAge}
+                      nutritionGoal={nutritionGoal}
+                      isEditingChild={isEditingChild}
+                      setIsEditingChild={setIsEditingChild}
+                      editName={childName}
+                      setEditName={setChildName}
+                      editAge={childAge}
+                      setEditAge={setChildAge}
+                      editGoal={nutritionGoal}
+                      setEditGoal={setNutritionGoal}
+                      onSaveChildProfile={handleSaveChildProfile}
+                    />
+                    <ProfileDetailsTab
+                      userName={currentUserName}
+                      userPhone={currentUserPhone}
+                      userEmail={currentUserEmail}
+                      childName={currentChildName}
+                    />
                   </div>
                 )}
-              </div>
-            )}
 
-            {/* ---------------------------------------------------------------------
-                TAB 2: PERSONAL & CHILD PROFILE
-               --------------------------------------------------------------------- */}
-            {activeTab === "profile" && (
-              <div className="space-y-6">
-                
-                {/* Child Nutrition Profile Card ("Your Little Joy") */}
-                <div className="bg-[#F0FDF4] rounded-3xl p-6 border border-emerald-200/80 shadow-2xs space-y-5">
-                  <div className="flex items-center justify-between border-b border-emerald-200/50 pb-3.5">
-                    <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 block">
-                        Your Little Joy
-                      </span>
-                      <h2 className="text-base sm:text-lg font-black text-emerald-950 flex items-center gap-2">
-                        <span>👦 {currentChildName}</span>
-                        <span className="text-xs font-bold text-emerald-700">({currentChildAge} Years Old)</span>
-                      </h2>
-                    </div>
-
-                    {!isEditingChild && (
-                      <button
-                        onClick={() => setIsEditingChild(true)}
-                        className="text-xs font-black text-emerald-800 bg-white px-3.5 py-1.5 rounded-xl border border-emerald-200 shadow-2xs hover:bg-emerald-50 flex items-center gap-1 transition-colors"
-                      >
-                        <Edit2 className="w-3.5 h-3.5" />
-                        <span>Edit Child Info &rarr;</span>
-                      </button>
-                    )}
-                  </div>
-
-                  {!isEditingChild ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="bg-white/90 rounded-2xl p-3.5 border border-emerald-100 shadow-2xs">
-                        <span className="text-slate-400 font-bold block mb-1">Child Name</span>
-                        <span className="text-slate-900 font-black text-sm">{currentChildName}</span>
-                      </div>
-                      <div className="bg-white/90 rounded-2xl p-3.5 border border-emerald-100 shadow-2xs">
-                        <span className="text-slate-400 font-bold block mb-1">Age Milestone</span>
-                        <span className="text-slate-900 font-black text-sm">{currentChildAge} Years Old</span>
-                      </div>
-                      <div className="bg-white/90 rounded-2xl p-3.5 border border-emerald-100 shadow-2xs">
-                        <span className="text-slate-400 font-bold block mb-1">Nutrition Focus</span>
-                        <span className="text-emerald-700 font-black text-sm">{nutritionGoal}</span>
-                      </div>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleSaveChildProfile} className="space-y-4 bg-white p-5 rounded-2xl border border-emerald-100">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-xs font-bold text-slate-700 mb-1">
-                            Child's Name
-                          </label>
-                          <input
-                            type="text"
-                            value={childName}
-                            onChange={(e) => setChildName(e.target.value)}
-                            className="w-full text-xs font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold text-slate-700 mb-1">
-                            Child's Age (Years)
-                          </label>
-                          <select
-                            value={childAge}
-                            onChange={(e) => setChildAge(e.target.value)}
-                            className="w-full text-xs font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
-                          >
-                            <option value="2">2 Years</option>
-                            <option value="3">3 Years</option>
-                            <option value="4">4 Years</option>
-                            <option value="5">5 Years</option>
-                            <option value="6">6 Years</option>
-                            <option value="7">7 Years</option>
-                            <option value="8">8 Years</option>
-                            <option value="9+">9+ Years</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">
-                          Primary Nutrition Focus
-                        </label>
-                        <select
-                          value={nutritionGoal}
-                          onChange={(e) => setNutritionGoal(e.target.value)}
-                          className="w-full text-xs font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
-                        >
-                          <option value="Growth & Immunity">Growth &amp; Immunity</option>
-                          <option value="Brain Health & Focus">Brain Health &amp; Focus</option>
-                          <option value="Healthy Weight Gain">Healthy Weight Gain</option>
-                          <option value="Digestion & Fibre">Digestion &amp; Fibre</option>
-                        </select>
-                      </div>
-
-                      <div className="flex gap-2 justify-end pt-2">
-                        <button
-                          type="button"
-                          onClick={() => setIsEditingChild(false)}
-                          className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow-xs"
-                        >
-                          Save Child Profile
-                        </button>
-                      </div>
-                    </form>
-                  )}
-                </div>
-
-                {/* Parent Contact Details */}
-                <div className="bg-white rounded-3xl p-6 border border-orange-100/90 shadow-2xs space-y-4">
-                  <h3 className="text-base font-black text-slate-900">
-                    Parent Details
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                    <div className="border border-slate-100 bg-slate-50/60 rounded-2xl p-3.5">
-                      <span className="text-slate-400 font-bold block mb-1">
-                        Full Name
-                      </span>
-                      <span className="text-slate-900 font-bold text-sm">
-                        {currentUserName}
-                      </span>
-                    </div>
-                    <div className="border border-slate-100 bg-slate-50/60 rounded-2xl p-3.5">
-                      <span className="text-slate-400 font-bold block mb-1">
-                        Mobile Number
-                      </span>
-                      <span className="text-slate-900 font-bold text-sm">
-                        +91 {currentUserPhone}
-                      </span>
-                    </div>
-                    <div className="border border-slate-100 bg-slate-50/60 rounded-2xl p-3.5 sm:col-span-2">
-                      <span className="text-slate-400 font-bold block mb-1">
-                        Email Address
-                      </span>
-                      <span className="text-slate-900 font-bold text-sm">
-                        {currentUserEmail}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            )}
-
-            {/* ---------------------------------------------------------------------
-                TAB 3: SAVED DELIVERY ADDRESSES
-               --------------------------------------------------------------------- */}
-            {activeTab === "addresses" && (
-              <div className="space-y-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                      Saved Delivery Addresses
-                    </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Manage default shipping addresses for 1-click checkout.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setIsAddingAddress(true)}
-                    className="text-xs font-black text-[#FF2F92] bg-pink-50 hover:bg-pink-100 px-3.5 py-2 rounded-xl border border-pink-200 transition-colors flex items-center gap-1.5"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>+ Add Address</span>
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                  {addresses.map((addr) => (
-                    <div
-                      key={addr.id}
-                      className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xs border-2 border-pink-300 relative space-y-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-black bg-[#FF2F92] text-white px-2.5 py-0.5 rounded-full">
-                            {addr.label}
-                          </span>
-                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            Default Shipping Address
-                          </span>
-                        </div>
-                        <button 
-                          onClick={() => showToast("Edit address mode enabled")}
-                          className="text-xs font-bold text-slate-400 hover:text-pink-600"
-                        >
-                          Edit
-                        </button>
-                      </div>
-
-                      <div>
-                        <p className="text-sm font-black text-slate-900">
-                          {addr.recipient}
-                        </p>
-                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                          {addr.line1}, {addr.line2}, {addr.city}, {addr.state}{" "}
-                          - <strong>{addr.pincode}</strong>
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                          Phone: {addr.phone}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {isAddingAddress && (
-                  <div className="bg-white rounded-3xl p-6 border border-pink-200 shadow-sm space-y-4">
-                    <h3 className="text-sm font-black text-slate-900">Add New Shipping Address</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                      <div>
-                        <label className="block text-slate-600 font-bold mb-1">Contact Name</label>
-                        <input
-                          type="text"
-                          value={newAddress.recipient}
-                          onChange={(e) => setNewAddress({ ...newAddress, recipient: e.target.value })}
-                          className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-600 font-bold mb-1">Phone Number</label>
-                        <input
-                          type="tel"
-                          value={newAddress.phone}
-                          onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })}
-                          className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50"
-                        />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className="block text-slate-600 font-bold mb-1">Address Line 1</label>
-                        <input
-                          type="text"
-                          value={newAddress.line1}
-                          onChange={(e) => setNewAddress({ ...newAddress, line1: e.target.value })}
-                          placeholder="House/Flat No., Building Name"
-                          className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-600 font-bold mb-1">City</label>
-                        <input
-                          type="text"
-                          value={newAddress.city}
-                          onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-                          className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-600 font-bold mb-1">Pincode</label>
-                        <input
-                          type="text"
-                          value={newAddress.pincode}
-                          onChange={(e) => setNewAddress({ ...newAddress, pincode: e.target.value })}
-                          placeholder="e.g. 462016"
-                          className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-2 pt-2">
-                      <button
-                        onClick={() => setIsAddingAddress(false)}
-                        className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (newAddress.line1 && newAddress.pincode) {
-                            setAddresses([...addresses, { ...newAddress, id: `addr_${Date.now()}`, isDefault: false }]);
-                            setIsAddingAddress(false);
-                            showToast("New address saved!");
-                          }
-                        }}
-                        className="px-5 py-2 bg-[#FF2F92] text-white text-xs font-black rounded-xl shadow-xs"
-                      >
-                        Save Address
-                      </button>
-                    </div>
-                  </div>
+                {/* ---------------------------------------------------------------------
+                    TAB 3: SAVED DELIVERY ADDRESSES (Extracted Tab Component)
+                   --------------------------------------------------------------------- */}
+                {activeTab === "addresses" && (
+                  <AddressesTab
+                    addresses={addresses}
+                    isAddingAddress={isAddingAddress}
+                    setIsAddingAddress={setIsAddingAddress}
+                    newAddress={newAddress}
+                    setNewAddress={setNewAddress}
+                    onSaveAddress={() => {
+                      if (newAddress.line1 && newAddress.pincode) {
+                        setAddresses([
+                          ...addresses,
+                          { ...newAddress, id: `addr_${Date.now()}`, isDefault: false },
+                        ]);
+                        setIsAddingAddress(false);
+                        showToast("New address saved!");
+                      }
+                    }}
+                    showToast={showToast}
+                  />
                 )}
-              </div>
-            )}
 
-            {/* ---------------------------------------------------------------------
-                TAB 4: LJ WALLET LEDGER
-               --------------------------------------------------------------------- */}
-            {activeTab === "wallet" && (
-              <div className="space-y-5">
-                <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-3xl p-6 text-white shadow-md shadow-orange-500/15 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div>
-                    <span className="text-xs font-bold text-white/80 uppercase tracking-widest">
-                      Available Balance
-                    </span>
-                    <p className="text-3xl font-black mt-1">
-                      ₹{currentWalletBalance}
-                    </p>
-                    <p className="text-xs text-white/90 mt-1">
-                      Save up to 30% automatically on every checkout!
-                    </p>
-                  </div>
-                  <Link
-                    to="/wallet-recharge"
-                    className="bg-white hover:bg-orange-50 text-slate-900 text-xs font-black px-5 py-3 rounded-2xl shadow-xs transition-transform active:scale-95 flex items-center gap-2"
-                  >
-                    <Plus className="w-4 h-4 text-pink-600" />
-                    <span>Top-up Wallet (+30% Extra)</span>
-                  </Link>
-                </div>
-
-                <div className="bg-white rounded-3xl p-6 shadow-2xs border border-orange-100/90 space-y-4">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-wider">
-                    Recent Wallet Transactions
-                  </h3>
-                  <div className="divide-y divide-slate-100 text-xs font-medium">
-                    <div className="py-3 flex justify-between items-center">
-                      <div>
-                        <p className="font-bold text-slate-800">Welcome Cashback Credit</p>
-                        <span className="text-[11px] text-slate-400">01 Sep, 2026</span>
-                      </div>
-                      <span className="font-black text-emerald-600 text-sm">+ ₹200</span>
-                    </div>
-                    <div className="py-3 flex justify-between items-center">
-                      <div>
-                        <p className="font-bold text-slate-800">Used on Order #LJ-ORD-9824</p>
-                        <span className="text-[11px] text-slate-400">08 Sep, 2026</span>
-                      </div>
-                      <span className="font-black text-slate-800 text-sm">- ₹298</span>
-                    </div>
-                    <div className="py-3 flex justify-between items-center">
-                      <div>
-                        <p className="font-bold text-slate-800">LJ Wallet 30% Bonus Top-up</p>
-                        <span className="text-[11px] text-slate-400">10 Sep, 2026</span>
-                      </div>
-                      <span className="font-black text-emerald-600 text-sm">+ ₹300</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                {/* ---------------------------------------------------------------------
+                    TAB 4: LJ WALLET LEDGER (Extracted Tab Component)
+                   --------------------------------------------------------------------- */}
+                {activeTab === "wallet" && (
+                  <WalletTab walletBalance={currentWalletBalance} />
+                )}
 
             {/* ---------------------------------------------------------------------
                 TAB 5: MY WISHLIST
@@ -1445,47 +960,12 @@ export default function Profile({ defaultTab }) {
                 TAB 6: ACCOUNT SETTINGS
                --------------------------------------------------------------------- */}
             {activeTab === "settings" && (
-              <div className="bg-white rounded-3xl p-6 border border-orange-100/90 shadow-2xs space-y-6">
-                <div>
-                  <h2 className="text-lg font-black text-slate-900">Account Preferences</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Customize your communication channels and milestone notifications.
-                  </p>
-                </div>
-
-                <div className="space-y-4 divide-y divide-slate-100 text-xs">
-                  <div className="pt-3 first:pt-0 flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-slate-800 block">WhatsApp Order Tracking</span>
-                      <span className="text-slate-400 text-[11px]">Receive live dispatch &amp; out-for-delivery alerts.</span>
-                    </div>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-600" />
-                  </div>
-
-                  <div className="pt-3 flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-slate-800 block">Weekly Pediatric Nutrition Tips</span>
-                      <span className="text-slate-400 text-[11px]">Bite-sized growth roadmap tailored to {currentChildName}'s age.</span>
-                    </div>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-600" />
-                  </div>
-
-                  <div className="pt-3 flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-slate-800 block">Birthday Surprise Cash (₹200)</span>
-                      <span className="text-slate-400 text-[11px]">Automatic wallet credit on {currentChildName}'s birthday month.</span>
-                    </div>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-600" />
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500">Need to update your mobile number?</span>
-                  <Link to="/contact" className="text-[#FF2F92] font-black hover:underline">
-                    Contact Support &rarr;
-                  </Link>
-                </div>
-              </div>
+              <ProfileDetailsTab
+                userName={currentUserName}
+                userPhone={currentUserPhone}
+                userEmail={currentUserEmail}
+                childName={currentChildName}
+              />
             )}
               </>
             )}

@@ -88,14 +88,33 @@ axiosInstance.interceptors.response.use(
 );
 
 /**
- * Standardized request helper
+ * Helper to unwrap data from response envelopes or flat arrays
+ */
+export function normalizeData(res) {
+  if (!res) return null;
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res.data)) return res.data;
+  if (res.data?.data && Array.isArray(res.data.data)) return res.data.data;
+  return res.data !== undefined ? res.data : res;
+}
+
+/**
+ * Standardized request helper with envelope normalization
  */
 async function executeRequest(fn) {
   try {
     const response = await fn();
+    const rawData = response.data;
+    const normalizedData =
+      rawData && typeof rawData === 'object' && 'data' in rawData && rawData.data !== undefined
+        ? rawData.data
+        : rawData;
+
     return {
       success: true,
-      data: response.data !== undefined ? response.data : null,
+      data: normalizedData !== undefined ? normalizedData : null,
+      raw: rawData,
+      pagination: rawData?.pagination || null,
       message: 'Success',
       status: response.status,
     };

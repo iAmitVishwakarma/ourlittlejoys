@@ -1,3 +1,12 @@
+/**
+ * ============================================================================
+ * HONEST BATCH LAB REPORTS - SEEDER / OFFLINE FALLBACK DATA
+ * ============================================================================
+ * Strictly used as local development seeders and offline fallback data.
+ * Production environments fetch reports dynamically via backend API services.
+ * ============================================================================
+ */
+
 export const BATCH_REPORTS = [
   {
     batchNumber: "SL-2026-NM09",
