@@ -71,7 +71,7 @@ export function ProductCardSkeleton({ className = "" }) {
 // 2. Product Grid Skeleton (for ShopAll, Category Tabs, Favourites)
 export function ProductGridSkeleton({ count = 8, cols = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" }) {
   return (
-    <div className={`grid ${cols} gap-6`} aria-label="Loading products...">
+    <div role="status" className={`grid ${cols} gap-6`} aria-label="Loading products...">
       {Array.from({ length: count }).map((_, idx) => (
         <ProductCardSkeleton key={idx} />
       ))}

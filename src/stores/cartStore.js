@@ -9,6 +9,8 @@ export const VALID_COUPONS = [
   { code: 'LJWALLET', type: 'percent', value: 30, minOrder: 899, description: 'Extra 30% Value with LJ Wallet' }
 ];
 
+/** Maximum allowed quantity per cart item to prevent abuse */
+export const MAX_ITEM_QUANTITY = 10;
 export const useCartStore = create(
   persist(
     (set, get) => ({
@@ -45,9 +47,10 @@ export const useCartStore = create(
 
           if (existingIndex > -1) {
             const updated = [...state.cartItems];
+            const newQty = Math.min((updated[existingIndex].quantity || 1) + qtyToAdd, MAX_ITEM_QUANTITY);
             updated[existingIndex] = {
               ...updated[existingIndex],
-              quantity: (updated[existingIndex].quantity || 1) + qtyToAdd
+              quantity: newQty
             };
             return { cartItems: updated };
           }
@@ -58,7 +61,7 @@ export const useCartStore = create(
             title: product.title || product.name,
             price: product.price,
             originalPrice: product.originalPrice || product.mrp || product.price,
-            quantity: qtyToAdd,
+            quantity: Math.min(qtyToAdd, MAX_ITEM_QUANTITY),
             image: product.image,
             slug: product.slug,
             flavor: product.flavor,
@@ -84,17 +87,18 @@ export const useCartStore = create(
           get().removeFromCart(id);
           return;
         }
+        const clampedQty = Math.min(newQty, MAX_ITEM_QUANTITY);
 
         set((state) => ({
           cartItems: state.cartItems.map((item) =>
             String(item.id) === targetId || String(item.productId) === targetId || (item.slug && String(item.slug) === targetId)
-              ? { ...item, quantity: newQty }
+              ? { ...item, quantity: clampedQty }
               : item
           )
         }));
 
         if (userId) {
-          await cartService.updateQuantity(userId, targetId, newQty);
+          await cartService.updateQuantity(userId, targetId, clampedQty);
         }
       },
 

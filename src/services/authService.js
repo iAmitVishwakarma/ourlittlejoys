@@ -15,6 +15,19 @@ import { apiClient } from './apiClient';
 // Fallback demo users when json-server is not reachable
 const FALLBACK_USERS = [
   {
+    id: 'user_demo',
+    name: 'Demo Parent',
+    email: 'demo@example.com',
+    phone: '9123456789',
+    password: 'demo123',
+    role: 'parent',
+    walletBalance: 200,
+    childName: 'Joy',
+    childAge: '4',
+    nutritionGoal: 'Growth & Immunity',
+    createdAt: '2026-09-01T10:00:00Z'
+  },
+  {
     id: 'user_001',
     name: 'Amit Vishwakarma',
     email: 'iam.itvishwakarma03@gmail.com',
@@ -455,6 +468,10 @@ export const authService = {
     } catch (e) {
       console.error(e);
     }
+  },
+
+  logout() {
+    return this.logoutUser();
   }
 };
 

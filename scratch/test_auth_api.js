@@ -1,5 +1,5 @@
 // Scratch test script to verify json-server authentication & read/write capabilities
-const testEmail = `test_parent_${Date.now()}@example.com`;
+const testEmail = `demo@example.com`;
 const testPhone = `98${Math.floor(10000000 + Math.random() * 90000000)}`;
 
 async function runTests() {
@@ -19,7 +19,7 @@ async function runTests() {
     name: 'Ananya Sharma',
     email: testEmail,
     phone: testPhone,
-    password: 'mypassword123',
+    password: 'Demo123',
     role: 'parent',
     walletBalance: 200,
     childName: 'Aarav',

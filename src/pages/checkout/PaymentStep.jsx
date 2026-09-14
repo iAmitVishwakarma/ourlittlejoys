@@ -42,6 +42,7 @@ export default function PaymentStep() {
   } = useCheckoutStore();
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [cardData, setCardData] = useState({ number: '', name: '', expiry: '', cvv: '' });
 
   // Selected address or fallback
@@ -49,7 +50,7 @@ export default function PaymentStep() {
 
   // Enforce checkout step prerequisites
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || isProcessing || isSuccess) return;
     if (!isAuthenticated) {
       navigate('/login', { state: { from: location }, replace: true });
       return;
@@ -61,10 +62,10 @@ export default function PaymentStep() {
     if (!selectedAddress) {
       navigate('/checkout/address', { replace: true });
     }
-  }, [isAuthenticated, isLoading, cartItems, selectedAddress, navigate, location]);
+  }, [isAuthenticated, isLoading, isProcessing, isSuccess, cartItems, selectedAddress, navigate, location]);
 
-  // If no items in cart, redirect back
-  if (cartItems.length === 0) {
+  // If no items in cart and not completing an order, redirect back
+  if (cartItems.length === 0 && !isProcessing && !isSuccess) {
     return (
       <div className="min-h-screen bg-brand-cream py-12 px-4">
         <SEO title="Checkout - Cart Empty | Little Joys" description="Your shopping cart is currently empty." />
@@ -114,6 +115,7 @@ export default function PaymentStep() {
         paymentDetails: paymentMethod === 'UPI' ? { app: upiApp, upiId: customUpiId || 'instant_upi@bank' } : null
       });
 
+      setIsSuccess(true);
       clearCart();
       setIsProcessing(false);
       navigate('/checkout/success', { replace: true });

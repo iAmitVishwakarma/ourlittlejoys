@@ -20,15 +20,18 @@ export function calculateDiscountPercent(mrp, price) {
 }
 
 /**
- * Sanitize user input by stripping HTML tags and trimming extra whitespace (F-4.3)
+ * Sanitize user input by stripping HTML tags, dangerous attributes,
+ * javascript: protocol URIs, and trimming extra whitespace (F-4.3)
  * @param {string} str
  * @returns {string}
  */
 export function sanitizeInput(str) {
   if (typeof str !== 'string') return '';
   return str
-    .replace(/<[^>]*>/g, '') // Strip HTML tags
-    .replace(/[\r\n]+/g, ' ') // Collapse line breaks
+    .replace(/<[^>]*>/g, '')                      // Strip HTML tags
+    .replace(/javascript\s*:/gi, '')               // Strip javascript: protocol
+    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')   // Strip event handler attributes
+    .replace(/on\w+\s*=/gi, '')                    // Strip bare event handlers
+    .replace(/[\r\n]+/g, ' ')                      // Collapse line breaks
     .trim();
 }
-
