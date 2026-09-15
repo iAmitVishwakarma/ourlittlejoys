@@ -47,6 +47,7 @@ const ContactPage = React.lazy(() =>
 const LegalPage = React.lazy(() =>
   import("./pages/StaticPages").then((m) => ({ default: m.LegalPage })),
 );
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 // Scroll to top helper on route change
 function ScrollToTop() {
@@ -81,7 +82,7 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col min-h-screen bg-[#FFF9F5] text-slate-800 antialiased selection:bg-pink-100 selection:text-pink-600 font-sans ${isCheckoutRoute ? "" : "pb-16 lg:pb-0"}`}
+      className={`flex flex-col min-h-screen bg-brand-cream text-slate-800 antialiased selection:bg-pink-100 selection:text-pink-600 font-sans ${isCheckoutRoute ? "" : "pb-16 lg:pb-0"}`}
     >
       <ScrollToTop />
 
@@ -97,7 +98,7 @@ function AppContent() {
 
       {/* Main Pages Router (pt-0 on checkout routes) */}
       <main
-        className={`flex-grow ${isCheckoutRoute ? "pt-0" : "pt-[90px] md:pt-[98px]"}`}
+        className={`grow ${isCheckoutRoute ? "pt-0" : "pt-22.5 md:pt-24.5"}`}
       >
         <React.Suspense fallback={<PageSkeleton />}>
           <Routes>
@@ -346,6 +347,8 @@ function AppContent() {
                 />
               }
             />
+            {/* 404 Fallback Route */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </React.Suspense>
       </main>

@@ -17,7 +17,7 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
   const currentIndex = stepOrder.indexOf(currentStep);
 
   return (
-    <header className="sticky scale-105 pt-5 top-0 z-40 bg-white/95 backdrop-blur-md border-b border-orange-100/90 shadow-2xs py-3 sm:py-4 px-4 sm:px-6">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-brand-border shadow-xs py-3 sm:py-3.5 px-4 sm:px-6">
       <div className="container mx-auto max-w-6xl flex items-center justify-between gap-3 sm:gap-6">
         
         {/* Left: Little Joys Logo & Back to Bag */}

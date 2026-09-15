@@ -55,7 +55,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
   const navigate = useNavigate();
 
   const ctxAddToCart = useCartStore((s) => s.addToCart);
-  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
+  const wishlistItems = useWishlistStore((s) => s.wishlistItems);
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
@@ -177,7 +177,20 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
     : 0;
 
   const effectiveAddToCart = onAddToCart || ctxAddToCart;
-  const isFavorite = isInWishlist(product.id || product.slug);
+  
+  const isFavorite = Boolean(
+    (wishlistItems || []).some((item) => {
+      const targetId = String(product.id || '').toLowerCase();
+      const targetSlug = String(product.slug || slug || '').toLowerCase();
+      const itemId = String(item.id || '').toLowerCase();
+      const itemSlug = String(item.slug || '').toLowerCase();
+      const itemProductId = String(item.productId || '').toLowerCase();
+      return (
+        (targetId && (itemId === targetId || itemProductId === targetId || itemSlug === targetId)) ||
+        (targetSlug && (itemSlug === targetSlug || itemId === targetSlug || itemProductId === targetSlug))
+      );
+    })
+  );
 
   const handleToggleWishlist = () => {
     if (!isAuthenticated) {
@@ -496,16 +509,17 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   {product.age || "4+ Yr"}
                 </span>
                 <button
+                  type="button"
                   onClick={handleToggleWishlist}
                   aria-label={isFavorite ? "Remove from Wishlist" : "Save to Wishlist"}
                   className={`w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-sm cursor-pointer ${
                     isFavorite 
-                      ? 'bg-rose-500 text-white' 
-                      : 'bg-white/95 text-slate-400 hover:text-rose-500 hover:bg-white'
+                      ? 'bg-red-500 text-white shadow-md scale-105' 
+                      : 'bg-white/95 text-slate-400 hover:text-red-500 hover:bg-white'
                   }`}
                   title={isFavorite ? "Remove from Wishlist" : "Save to Wishlist"}
                 >
-                  <Heart className={`w-5 h-5 ${isFavorite ? 'fill-white' : ''}`} />
+                  <Heart className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-white text-white' : ''}`} />
                 </button>
               </div>
             </div>

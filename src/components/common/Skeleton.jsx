@@ -82,7 +82,7 @@ export function ProductGridSkeleton({ count = 8, cols = "grid-cols-1 sm:grid-col
 // 3. Hero Section Skeleton Placeholder
 export function HeroSkeleton() {
   return (
-    <div className="w-full bg-gradient-to-br from-[#FFFDF9] via-[#FAF4ED] to-[#F5ECE1] rounded-3xl md:rounded-[2.5rem] p-8 sm:p-12 border border-amber-200/60 shadow-xs">
+    <div className="w-full bg-linear-to-br from-[#FFFDF9] via-[#FAF4ED] to-brand-border-subtle rounded-3xl md:rounded-[2.5rem] p-8 sm:p-12 border border-amber-200/60 shadow-xs">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div className="lg:col-span-7 space-y-4">
           <div className="w-40 h-6 skeleton-shimmer rounded-full" />
@@ -200,7 +200,7 @@ export function TableSkeleton({ rows = 4, cols = 4 }) {
 // 7. Full Page Route Fallback Skeleton (Used in React.Suspense in App.jsx)
 export function PageSkeleton() {
   return (
-    <div className="min-h-screen bg-[#FFF9F5] pb-20 animate-in fade-in duration-300">
+    <div className="min-h-screen bg-brand-cream pb-20 animate-in fade-in duration-300">
       {/* Top Banner Skeleton */}
       <div className="w-full bg-white border-b border-orange-100/80 py-10 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl space-y-4">

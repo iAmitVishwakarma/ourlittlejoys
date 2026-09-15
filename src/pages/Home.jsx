@@ -208,7 +208,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
     : productList.filter((p) => p.category === activeCategory || p.subCategory?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <div className="bg-[#FFF9F5] min-h-screen pb-16">
+    <div className="bg-brand-cream min-h-screen pb-20 sm:pb-16">
       {/* Dynamic Programmatic SEO & Structured Data */}
       <SEO
         title="Little Joys | Expert-Formulated Nutrition & Wellness For Kids"
@@ -235,23 +235,23 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </h1>
 
       {/* 1. HERO SLIDER SECTION (PREMIUM EDITORIAL HERO POWERED BY SWIPER.JS) */}
-      <section className="pt-4 md:pt-6 pb-2 px-4 md:px-6">
+      <section className="pt-2 sm:pt-4 md:pt-6 pb-2 px-2.5 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="relative group">
-            {/* Left Chevron Button (Subtle Translucent Swiper Nav) */}
+            {/* Left Chevron Button (Hidden on mobile touch screens, visible on sm+) */}
             <button 
               ref={heroPrevRef}
               aria-label="Previous Slide"
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/75 hover:bg-white text-slate-700 backdrop-blur-xs border border-white/60 shadow-md flex items-center justify-center transition-all hover:scale-105 active:scale-95 z-20 cursor-pointer"
+              className="hidden sm:flex absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-slate-700 backdrop-blur-xs border border-white/80 shadow-md items-center justify-center transition-all hover:scale-105 active:scale-95 z-20 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4 text-slate-700" />
             </button>
 
-            {/* Right Chevron Button (Subtle Translucent Swiper Nav) */}
+            {/* Right Chevron Button (Hidden on mobile touch screens, visible on sm+) */}
             <button 
               ref={heroNextRef}
               aria-label="Next Slide"
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/75 hover:bg-white text-slate-700 backdrop-blur-xs border border-white/60 shadow-md flex items-center justify-center transition-all hover:scale-105 active:scale-95 z-20 cursor-pointer"
+              className="hidden sm:flex absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-slate-700 backdrop-blur-xs border border-white/80 shadow-md items-center justify-center transition-all hover:scale-105 active:scale-95 z-20 cursor-pointer"
             >
               <ChevronRight className="w-4 h-4 text-slate-700" />
             </button>
@@ -267,79 +267,83 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                 swiper.params.navigation.nextEl = heroNextRef.current;
               }}
               grabCursor={true}
-              className="hero-swiper rounded-3xl md:rounded-[2.5rem] border border-amber-200/60 shadow-xs overflow-hidden"
+              className="hero-swiper rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] border border-amber-200/60 shadow-xs overflow-hidden"
             >
               {slides.map((slide, idx) => (
                 <SwiperSlide key={slide.id || idx}>
-                  <div className="w-full bg-gradient-to-br from-[#FFFDF9] via-[#FAF4ED] to-[#F5ECE1] py-8 sm:py-10 md:py-12 px-6 sm:px-10 md:px-14 relative overflow-hidden">
-                    {/* Subtle Little Joys Doodles (2-3 elements only) */}
-                    <SunDoodle className="w-9 h-9 text-amber-400/70 absolute -top-1 -right-1 sm:top-3 sm:right-6 pointer-events-none" />
+                  <div className="w-full bg-linear-to-br from-[#FFFDF9] via-[#FFF0F7] to-brand-primary-50 py-5 sm:py-8 md:py-12 px-3.5 sm:px-8 md:px-14 relative overflow-hidden">
+                    {/* Subtle Little Joys Doodles */}
+                    <SunDoodle className="w-7 h-7 sm:w-9 sm:h-9 text-amber-400/70 absolute -top-1 -right-1 sm:top-3 sm:right-6 pointer-events-none" />
                     <RainbowDoodle className="w-8 h-5 text-rose-300/60 opacity-60 absolute top-4 left-6 sm:left-8 pointer-events-none hidden sm:block" />
                     <StarDoodle className="w-3.5 h-3.5 text-amber-400/60 absolute bottom-6 right-1/2 pointer-events-none hidden lg:block" />
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center relative z-10">
                       {/* Left Editorial Text Column */}
-                      <div className="lg:col-span-7 text-center lg:text-left space-y-3 sm:space-y-4">
-                        {/* Small Clean Badge */}
-                        <div className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs px-3 py-1 rounded-full border border-amber-200/70 shadow-2xs">
+                      <div className="lg:col-span-7 text-center lg:text-left space-y-2.5 sm:space-y-4">
+                        {/* Micro-Pill SaaS Badge with Live Pulse */}
+                        <div className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs px-2.5 sm:px-3 py-1 rounded-full border border-amber-200/70 shadow-2xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                           <span className="text-xs">{slide.badgeEmoji || "🌿"}</span>
-                          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-800">
+                          <span className="text-[9.5px] sm:text-[11px] font-black uppercase tracking-wider text-slate-800">
                             {slide.badge}
                           </span>
                         </div>
 
-                        {/* Primary Headline: Dark Navy + Green highlight + Thin/Short Wavy Accent */}
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight leading-[1.12]">
+                        {/* Primary Headline */}
+                        <h2 className="text-[22px] xs:text-2xl sm:text-3xl md:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight leading-[1.14]">
                           {slide.title}<br />
-                          <span className="text-[#13805B] relative inline-block">
+                          <span className="text-brand-primary relative inline-block">
                             {slide.highlight}
                             <WavyUnderline className="w-20 sm:w-24 h-1.5 text-pink-300/80 absolute -bottom-1 left-0 pointer-events-none" />
                           </span>
                         </h2>
 
-                        {/* 1 Short Readable Description */}
-                        <p className="text-sm sm:text-base text-slate-600 max-w-md font-medium leading-relaxed">
+                        {/* Description */}
+                        <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-md mx-auto lg:mx-0 font-medium leading-relaxed">
                           {slide.subtitle}
                         </p>
 
-                        {/* Clean Inline Proof Points (No heavy SaaS pills) */}
-                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 sm:gap-x-5 gap-y-1.5 pt-1 text-xs sm:text-sm font-semibold text-slate-700">
+                        {/* SaaS Proof Chips */}
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2 pt-0.5 sm:pt-1 text-[11px] sm:text-xs font-semibold text-slate-700">
                           {slide.benefits?.map((benefit, bIdx) => (
-                            <span key={bIdx} className="inline-flex items-center gap-1.5">
-                              <span className="text-[#13805B] font-black text-sm leading-none">✓</span>
-                              <span>{benefit}</span>
+                            <span 
+                              key={bIdx} 
+                              className="inline-flex items-center gap-1 bg-white/85 backdrop-blur-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg border border-slate-200/70 shadow-2xs text-slate-700"
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                              <span className="leading-tight">{benefit}</span>
                             </span>
                           ))}
                         </div>
 
                         {/* Action CTAs */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
                           <Link
                             to={slide.ctaLink || "/shop/all"}
-                            className="w-full sm:w-auto bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-3 px-7 rounded-full text-xs uppercase tracking-wider transition-all transform active:scale-95 shadow-md shadow-[#13805B]/20 flex items-center justify-center gap-2"
+                            className="w-full sm:w-auto bg-brand-primary hover:bg-brand-primary-hover text-white font-extrabold py-2.5 sm:py-3 px-6 sm:px-7 rounded-full text-xs uppercase tracking-wider transition-all transform active:scale-95 shadow-md shadow-brand-primary/20 flex items-center justify-center gap-2 min-h-10.5 sm:min-h-11 group/btn"
                           >
                             <span>{slide.ctaText || "Shop Breakfast"}</span>
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                           </Link>
 
                           <Link
                             to="/honest-report"
-                            className="w-full sm:w-auto bg-white/90 hover:bg-white text-slate-700 hover:text-slate-900 border border-slate-200/80 font-bold py-3 px-6 rounded-full text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-2xs"
+                            className="w-full sm:w-auto bg-white/90 hover:bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 font-bold py-2.5 sm:py-3 px-5 sm:px-6 rounded-full text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-2xs min-h-10.5 sm:min-h-11 active:scale-95"
                           >
-                            <ShieldCheck className="w-4 h-4 text-[#13805B]" />
+                            <ShieldCheck className="w-4 h-4 text-brand-primary" />
                             <span>View Lab Report</span>
                           </Link>
                         </div>
                       </div>
 
-                      {/* Right Hero Product Showcase (Editorial Floating Composition) */}
-                      <div className="lg:col-span-5 flex justify-center items-center relative py-4 lg:py-0">
+                      {/* Right Hero Product Showcase */}
+                      <div className="lg:col-span-5 flex justify-center items-center relative py-2 sm:py-4 lg:py-0">
                         {/* Soft Ambient Pedestal Glow */}
-                        <div className="absolute w-64 sm:w-72 h-64 sm:h-72 rounded-full bg-amber-200/35 blur-3xl pointer-events-none -z-0" />
+                        <div className="absolute w-56 sm:w-72 h-56 sm:h-72 rounded-full bg-amber-200/35 blur-3xl pointer-events-none z-0" />
 
                         {/* Main Floating Product Showcase */}
                         <div className="relative z-10 group/img flex flex-col items-center">
-                          <div className="relative overflow-hidden rounded-3xl sm:rounded-[2rem] shadow-xl shadow-amber-950/10 border border-amber-100/60 bg-white/40 backdrop-blur-xs">
+                          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl md:rounded-4xl shadow-xl shadow-amber-950/10 border border-amber-100/60 bg-white/40 backdrop-blur-xs">
                             <ResponsiveImage 
                               src={slide.image} 
                               alt={slide.productName || slide.title}
@@ -348,16 +352,16 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                               decoding={idx === 0 ? "sync" : "async"}
                               width={380}
                               height={340}
-                              sizes="(max-width: 640px) 280px, 360px"
-                              className="w-64 sm:w-72 md:w-80 h-60 sm:h-68 md:h-72 object-cover transition-transform duration-500 hover:scale-103"
+                              sizes="(max-width: 640px) 260px, 360px"
+                              className="w-56 xs:w-64 sm:w-72 md:w-80 h-48 xs:h-56 sm:h-68 md:h-72 object-cover transition-transform duration-500 hover:scale-103"
                             />
                           </div>
 
                           {/* Floating Social Proof Badge */}
-                          <div className="absolute -bottom-3 sm:-bottom-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md border border-amber-100 flex items-center gap-1.5 z-20 whitespace-nowrap">
-                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                            <span className="text-xs font-black text-slate-900">{slide.rating || "4.7"}</span>
-                            <span className="text-[11px] text-slate-500 font-medium">• {slide.reviewCount || "2,140+"} parents</span>
+                          <div className="absolute -bottom-2.5 sm:-bottom-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 bg-white/95 backdrop-blur-md px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-md border border-amber-100 flex items-center gap-1.5 z-20 whitespace-nowrap">
+                            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400" />
+                            <span className="text-[11px] sm:text-xs font-black text-slate-900">{slide.rating || "4.8"}</span>
+                            <span className="text-[10px] sm:text-[11px] text-slate-500 font-medium">• {slide.reviewCount || "2,140+"} parents</span>
                           </div>
                         </div>
                       </div>
@@ -368,7 +372,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
             </Swiper>
 
             {/* Custom Bottom Pagination Container for Swiper */}
-            <div className="hero-swiper-pagination" />
+            <div className="hero-swiper-pagination flex justify-center items-center gap-1.5 pt-2" />
           </div>
         </div>
       </section>
@@ -383,24 +387,24 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </div>
 
       {/* 2. EXPLORE OUR CATEGORIES (CONSISTENT VISUAL CARDS) */}
-      <section className="py-6 px-4 md:px-6">
+      <section className="py-6 px-3 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="flex justify-between items-center mb-6">
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-[11px] font-black uppercase text-[#13805B] tracking-wider">
+                <span className="text-[10px] sm:text-[11px] font-black uppercase text-brand-primary tracking-wider">
                   Discover By Need
                 </span>
                 <MiniStarCluster className="text-amber-400" />
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl md:text-3xl font-black text-slate-900 mt-0.5 flex items-center gap-1.5 sm:gap-2">
                 <span>Explore Our Categories</span>
                 <SunDoodle className="w-6 h-6 text-amber-400 inline-block -mt-1" />
               </h2>
             </div>
             <Link
               to="/shop/all"
-              className="text-xs font-black text-[#13805B] hover:underline flex items-center gap-1 bg-white px-3.5 py-1.5 rounded-full border border-orange-100 shadow-2xs"
+              className="text-[11px] sm:text-xs font-black text-brand-primary hover:underline flex items-center gap-1 bg-white px-2.5 sm:px-3.5 py-1.5 rounded-full border border-orange-100 shadow-2xs"
             >
               <span>View All</span>
               <ChevronRight className="w-4 h-4" />
@@ -408,7 +412,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
           </div>
 
           {/* 8 Uniform Category Cards with Custom Vector SVGs */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3 md:gap-4">
             {homeCategories.map((cat) => {
               const Icon = cat.icon;
               return (
@@ -419,7 +423,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                 >
                   {/* Optional Mini Badge */}
                   {cat.badge && (
-                    <span className="absolute top-2 right-2 bg-[#FF2F92] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-2xs">
+                    <span className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-brand-berry text-white text-[7px] sm:text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
                       {cat.badge}
                     </span>
                   )}
@@ -431,7 +435,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
 
                   {/* Title & Subtitle */}
                   <div className="space-y-0.5 w-full">
-                    <span className="text-xs sm:text-sm font-black text-slate-900 block group-hover:text-[#13805B] transition-colors leading-tight truncate">
+                    <span className="text-[11px] sm:text-xs md:text-sm font-black text-slate-900 block group-hover:text-brand-primary transition-colors leading-tight truncate">
                       {cat.name}
                     </span>
                     <span className="text-[10px] sm:text-[11px] text-slate-500 font-semibold block truncate">
@@ -446,11 +450,11 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </section>
 
       {/* 3. BRAND TRUST PILLARS (Clean whitespace separation, no repetitive divider) */}
-      <section className="py-6 px-4 md:px-6">
+      <section className="py-6 px-3 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
-          <div className="bg-white rounded-3xl p-5 md:p-7 border border-emerald-100 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-4 md:divide-x md:divide-slate-100">
+          <div className="bg-linear-to-br from-white to-brand-primary-50/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-7 border border-emerald-100 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
             <div className="flex items-center gap-3.5 px-2">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#13805B] flex items-center justify-center shrink-0 border border-emerald-100">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-50 text-brand-primary flex items-center justify-center shrink-0 border border-emerald-100">
                 <Stethoscope className="w-6 h-6" />
               </div>
               <div>
@@ -486,28 +490,28 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </section>
 
       {/* 4. TOP-SELLING FAVOURITES (HIGH-ENERGY PRODUCT SHOWCASE) */}
-      <section className="py-6 md:py-8 px-4 md:px-6">
+      <section className="py-6 md:py-8 px-3 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
             <div>
-              <span className="text-[11px] font-black uppercase text-[#13805B] tracking-wider">
+              <span className="text-[10px] sm:text-[11px] font-black uppercase text-brand-primary tracking-wider">
                 Most Loved Products
               </span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
                 <span>Top-Selling Favourites</span>
               </h2>
               <WavyUnderline className="w-32 h-2.5 text-pink-300 mt-1" />
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 scrollbar-none touch-scroll -mx-1 px-1">
               {categoryTabs.map((tab) => (
                 <button
                   key={tab}
                   onClick={() => handleCategoryChange(tab)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+                  className={`px-3 sm:px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all min-h-9 cursor-pointer ${
                     activeCategory === tab
-                      ? 'bg-[#13805B] text-white shadow-md shadow-[#13805B]/25'
+                      ? 'bg-brand-primary text-white shadow-md shadow-brand-primary/25'
                       : 'bg-white text-slate-700 hover:bg-orange-50 border border-orange-100'
                   }`}
                 >
@@ -521,7 +525,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
           {isCategoryLoading ? (
             <ProductGridSkeleton count={4} cols="grid-cols-2 lg:grid-cols-4" />
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 animate-in fade-in duration-200">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6 animate-in fade-in duration-200">
               {displayedProducts.map((product) => {
                 const inCart = effectiveCartItems.find(
                   (c) =>
@@ -552,24 +556,24 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </div>
 
       {/* 5. PEDIATRIC HEALTH ASSESSMENT BANNER (DOCTOR-BACKED AUTHORITY WITH CUSTOM SVG) */}
-      <section className="py-8 px-4 md:px-6">
+      <section className="py-6 sm:py-8 px-3 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
-          <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/60 text-white rounded-3xl md:rounded-[2.5rem] p-6 sm:p-10 md:p-12 relative overflow-hidden shadow-2xl border border-slate-800/90">
+          <div className="bg-linear-to-br from-slate-950 via-slate-900 to-emerald-950/60 text-white rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] p-5 sm:p-8 md:p-12 relative overflow-hidden shadow-2xl border border-slate-800/90">
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
               
               {/* Left Column: Assessment Copy & CTAs */}
               <div className="lg:col-span-7 space-y-4">
-                <div className="inline-flex items-center gap-2 bg-[#13805B]/30 text-emerald-300 px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#13805B]/40 shadow-xs">
+                <div className="inline-flex items-center gap-2 bg-brand-primary/30 text-emerald-300 px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-bold border border-brand-primary/40 shadow-xs">
                   <Clock className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Takes Only 2 Minutes • 100% Free</span>
                 </div>
 
-                <h2 className="text-2xl sm:text-4xl lg:text-[2.6rem] font-black leading-tight text-white tracking-tight">
+                <h2 className="text-xl sm:text-3xl lg:text-[2.6rem] font-black leading-tight text-white tracking-tight">
                   Not sure what nutrition your child is missing?
                 </h2>
 
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl font-medium">
+                <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl font-medium">
                   Take our 2-minute <strong className="text-emerald-400 font-black">Doctor-Backed Pediatric Health Assessment</strong> to receive a tailored daily nutrition roadmap calibrated to your child's age, growth milestones, and eating habits.
                 </p>
 
@@ -593,7 +597,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                 <div className="pt-3 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <button
                     onClick={() => navigate('/shop/all')}
-                    className="w-full sm:w-auto bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-4 px-9 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-[#13805B]/35 transition-all transform active:scale-95 flex items-center justify-center gap-2.5"
+                    className="w-full sm:w-auto bg-brand-primary hover:bg-brand-primary-hover text-white font-black py-3.5 sm:py-4 px-7 sm:px-9 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-brand-primary/35 transition-all transform active:scale-95 flex items-center justify-center gap-2.5 min-h-11"
                   >
                     <span>Start Free Assessment</span>
                     <ArrowRight className="w-4 h-4" />
@@ -622,13 +626,13 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       </section>
 
       {/* 6. HONEST REPORTS: TESTED & CERTIFIED (SCANNABLE MICRO-STATS) */}
-      <section className="py-8 px-4 md:px-6">
+      <section className="py-6 sm:py-8 px-3 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
-            <span className="text-xs font-black uppercase tracking-widest text-[#13805B] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-brand-primary bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               Radical Transparency
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
               Honest Reports: Tested &amp; Certified
             </h2>
             <p className="text-xs sm:text-sm text-slate-500">
@@ -636,9 +640,9 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Card 1 */}
-            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#13805B] transition-colors space-y-3">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-orange-100 shadow-xs hover:border-brand-primary transition-colors space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl shadow-xs">
                 🛡️
               </div>
@@ -648,18 +652,18 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
               </p>
               <div className="pt-2 space-y-1 text-xs font-bold text-slate-700">
                 <div className="flex items-center gap-1.5 text-emerald-700">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>&lt;0.01 ppm Heavy Metals</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-emerald-700">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>NABL Lab Certified Batch-Wise</span>
                 </div>
               </div>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#13805B] transition-colors space-y-3">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-orange-100 shadow-xs hover:border-brand-primary transition-colors space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-xs">
                 🍯
               </div>
@@ -669,19 +673,19 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
               </p>
               <div className="pt-2 space-y-1 text-xs font-bold text-slate-700">
                 <div className="flex items-center gap-1.5 text-emerald-700">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>0% White Refined Sugar</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-emerald-700">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>100% Dhampur Organic Jaggery</span>
                 </div>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#13805B] transition-colors space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#13805B] flex items-center justify-center text-xl shadow-xs">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-orange-100 shadow-xs hover:border-brand-primary transition-colors space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-brand-primary flex items-center justify-center text-xl shadow-xs">
                 👩‍⚕️
               </div>
               <h3 className="text-base font-black text-slate-900">Pediatrician Endorsed</h3>
@@ -690,11 +694,11 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
               </p>
               <div className="pt-2 space-y-1 text-xs font-bold text-slate-700">
                 <div className="flex items-center gap-1.5 text-emerald-700">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>100% Daily ICMR Dosages</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-emerald-700">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 stroke-3" />
                   <span>Clinically Reviewed &amp; Safe</span>
                 </div>
               </div>
@@ -704,7 +708,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
           <div className="mt-6 text-center">
             <Link
               to="/honest-report"
-              className="inline-flex items-center gap-2 bg-white hover:bg-orange-50 text-[#13805B] font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full border border-emerald-200 shadow-xs transition-colors"
+              className="inline-flex items-center gap-2 bg-white hover:bg-orange-50 text-brand-primary font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full border border-emerald-200 shadow-xs transition-colors min-h-11"
             >
               <span>Search Your Product Batch Code</span>
               <ArrowRight className="w-4 h-4" />
@@ -719,8 +723,8 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
           direction="up" 
           color="text-pink-300/80" 
           centerBadge={
-            <div className="flex items-center gap-1.5 text-[11px] font-black text-[#FF2F92] bg-white px-3.5 py-0.5 rounded-full border border-pink-200/80 shadow-2xs">
-              <HeartDoodle className="w-3.5 h-3.5 text-[#FF2F92]" />
+            <div className="flex items-center gap-1.5 text-[11px] font-black text-brand-berry bg-white px-3.5 py-0.5 rounded-full border border-pink-200/80 shadow-2xs">
+              <HeartDoodle className="w-3.5 h-3.5 text-brand-berry" />
               <span>Real Stories From Real Parents</span>
             </div>
           } 
@@ -731,25 +735,25 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       <ParentReviewsSection />
 
       {/* 8. FAQ ACCORDION (QUIET & STRONG CONTRAST) */}
-      <section className="py-8 px-4 md:px-6">
+      <section className="py-6 sm:py-8 px-3 sm:px-4 md:px-6">
         <div className="container mx-auto max-w-3xl">
           <div className="text-center mb-6 space-y-2">
-            <span className="text-xs font-black uppercase tracking-widest text-[#13805B]">
+            <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-brand-primary">
               Common Questions
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900">
               Frequently Asked Questions
             </h2>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {faqs.map((faq, idx) => {
               const isOpen = openFaq === idx;
               return (
                 <div
                   key={idx}
-                  className={`bg-white rounded-2xl p-5 border transition-all cursor-pointer ${
-                    isOpen ? 'border-[#13805B] shadow-sm' : 'border-orange-100/90 shadow-2xs hover:border-slate-300'
+                  className={`bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 border transition-all cursor-pointer ${
+                    isOpen ? 'border-brand-primary shadow-sm' : 'border-orange-100/90 shadow-2xs hover:border-slate-300'
                   }`}
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
                 >
@@ -757,12 +761,12 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                     <h3 className={`text-xs sm:text-sm flex items-center gap-2.5 ${
                       isOpen ? 'font-black text-slate-900' : 'font-bold text-slate-800'
                     }`}>
-                      <HelpCircle className={`w-4 h-4 shrink-0 ${isOpen ? 'text-[#13805B]' : 'text-slate-400'}`} />
+                      <HelpCircle className={`w-4 h-4 shrink-0 ${isOpen ? 'text-brand-primary' : 'text-slate-400'}`} />
                       <span>{faq.q}</span>
                     </h3>
                     <ChevronDown
                       className={`w-4 h-4 text-slate-400 transition-transform shrink-0 ${
-                        isOpen ? 'rotate-180 text-[#13805B]' : ''
+                        isOpen ? 'rotate-180 text-brand-primary' : ''
                       }`}
                     />
                   </div>

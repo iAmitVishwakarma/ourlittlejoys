@@ -230,7 +230,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[85vh] bg-[#FFF9F5] flex items-center justify-center px-4 py-8 md:py-14">
+    <div className="min-h-[85vh] bg-brand-cream flex items-center justify-center px-4 py-8 md:py-14">
       <SEO 
         title={`${mode === 'signup' ? 'Create Account' : 'Sign In'} | Little Joys`}
         description="Sign in to your Little Joys parent dashboard to access your cart, honest nutrition lab reports, and manage orders."

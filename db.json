@@ -625,19 +625,6 @@
       "childAge": "3",
       "nutritionGoal": "Height & Immunity",
       "createdAt": "2026-09-13T08:14:54.553Z"
-    },
-    {
-      "id": "m2mnWc0vhss",
-      "name": "Amit Vishwakarma",
-      "email": "iam.itvishwakarma03@gmail.com",
-      "phone": "7772929755",
-      "password": "123456789",
-      "role": "parent",
-      "walletBalance": 200,
-      "childName": "shubh",
-      "childAge": "7",
-      "nutritionGoal": "Overall Growth & Immunity",
-      "createdAt": "2026-09-13T08:18:22.686Z"
     }
   ],
   "reviews": [
@@ -713,6 +700,72 @@
       "trackingNumber": "DELHIVERY-LJ-88231",
       "createdAt": "2026-09-08T10:15:00Z",
       "updatedAt": "2026-09-10T16:45:00Z"
+    },
+    {
+      "items": [
+        {
+          "id": "p1",
+          "title": "Nutrimix",
+          "price": 549,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 1098,
+      "paymentMethod": "COD",
+      "address": {
+        "name": "Amit",
+        "city": "Bhopal"
+      },
+      "orderId": "LJ382591",
+      "status": "PENDING",
+      "paymentStatus": "PENDING_COD",
+      "estimatedDelivery": "18 Sept – 20 Sept",
+      "createdAt": "2026-09-14T15:14:59.935Z",
+      "id": "X3amRSxEL80"
+    },
+    {
+      "items": [
+        {
+          "id": "p1",
+          "title": "Nutrimix",
+          "price": 549,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 1098,
+      "paymentMethod": "COD",
+      "address": {
+        "name": "Amit",
+        "city": "Bhopal"
+      },
+      "orderId": "LJ190848",
+      "status": "PENDING",
+      "paymentStatus": "PENDING_COD",
+      "estimatedDelivery": "18 Sept – 20 Sept",
+      "createdAt": "2026-09-14T15:28:35.848Z",
+      "id": "0m-r_Bnl4BA"
+    },
+    {
+      "items": [
+        {
+          "id": "p1",
+          "title": "Nutrimix",
+          "price": 549,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 1098,
+      "paymentMethod": "COD",
+      "address": {
+        "name": "Amit",
+        "city": "Bhopal"
+      },
+      "orderId": "LJ235498",
+      "status": "PENDING",
+      "paymentStatus": "PENDING_COD",
+      "estimatedDelivery": "18 Sept – 20 Sept",
+      "createdAt": "2026-09-14T15:40:42.186Z",
+      "id": "hK1LrXuFelw"
     }
   ],
   "coupons": [
@@ -739,17 +792,6 @@
     }
   ],
   "cart": [
-    {
-      "id": "cart_001",
-      "userId": "user_001",
-      "productId": "nutrimix-choc",
-      "title": "Nutrimix Chocolate Nutrition Powder (350g)",
-      "price": 599,
-      "originalPrice": 649,
-      "quantity": 1,
-      "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
-      "slug": "nutrimix-nutrition-powder"
-    },
     {
       "id": "rpfOX_xfq0k",
       "userId": "usr_1789287502686",
