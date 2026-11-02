@@ -25,7 +25,7 @@ export default function ProductVisual({
   type = 'nutrimix',
   flavor = 'chocolate',
   age = '4+',
-  alt = 'Little Joys Product',
+  alt = 'Nestor Product',
   className = '',
   ischeckedPage = false
 }) {

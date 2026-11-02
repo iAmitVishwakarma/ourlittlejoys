@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import NestorLogo from '@/components/common/NestorLogo';
 import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/services/authService';
 import SEO from '@/components/common/SEO';
@@ -232,25 +233,22 @@ export default function Login() {
   return (
     <div className="min-h-[85vh] bg-brand-cream flex items-center justify-center px-4 py-8 md:py-14">
       <SEO 
-        title={`${mode === 'signup' ? 'Create Account' : 'Sign In'} | Little Joys`}
-        description="Sign in to your Little Joys parent dashboard to access your cart, honest nutrition lab reports, and manage orders."
+        title={`${mode === 'signup' ? 'Create Account' : 'Sign In'} | Nestor`}
+        description="Sign in to your Nestor parent dashboard to access your cart, honest nutrition lab reports, and manage orders."
       />
 
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-orange-950/5 border border-orange-100 p-6 sm:p-8 relative overflow-hidden">
         {/* Soft background aura */}
-        <div className="absolute -top-14 -right-14 w-36 h-36 bg-pink-100 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-14 -left-14 w-36 h-36 bg-amber-100 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -top-14 -right-14 w-36 h-36 bg-amber-100/50 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-14 -left-14 w-36 h-36 bg-emerald-100/50 rounded-full blur-2xl pointer-events-none" />
 
         {/* Brand Header */}
         <div className="text-center mb-6 relative z-10">
-          <Link to="/" className="inline-flex items-center gap-1.5 mb-2 group">
-            <span className="text-2xl font-black tracking-tight text-slate-900 group-hover:text-[#13805B] transition-colors">
-              little<span className="text-pink-500">joys</span>
-            </span>
-            <span className="text-base">🍓</span>
-          </Link>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900">
-            {mode === 'signup' ? 'Join the Little Joys Family' : 'Welcome Back, Parent!'}
+          <div className="flex justify-center mb-3">
+            <NestorLogo variant="horizontal" linkTo="/" imgClassName="h-10 sm:h-11 w-auto" />
+          </div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 font-brand-display">
+            {mode === 'signup' ? 'Join the Nestor Family' : 'Welcome Back, Parent!'}
           </h1>
           <p className="text-xs text-slate-500 mt-1">
             {mode === 'signup'
@@ -357,7 +355,7 @@ export default function Login() {
           {mode === 'signup' && (
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Parent Name <span className="text-pink-500">*</span>
+                Parent Name <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
                 <User className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -367,7 +365,7 @@ export default function Login() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Pooja Sharma"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#13805B] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#1F3C24] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -377,7 +375,7 @@ export default function Login() {
           {(mode === 'signup' || method === 'email') && (
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Email Address <span className="text-pink-500">*</span>
+                Email Address <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -387,7 +385,7 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="demo@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#13805B] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#1F3C24] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -397,7 +395,7 @@ export default function Login() {
           {(mode === 'signup' || method === 'phone') && (
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Mobile Number {mode === 'signin' && <span className="text-pink-500">*</span>}
+                Mobile Number {mode === 'signin' && <span className="text-rose-500">*</span>}
               </label>
               <div className="relative flex items-center">
                 <span className="absolute left-3 text-xs font-black text-slate-400">+91</span>
@@ -408,7 +406,7 @@ export default function Login() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                   placeholder="9876543210"
-                  className="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#13805B] focus:bg-white transition-all tracking-wider"
+                  className="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#1F3C24] focus:bg-white transition-all tracking-wider"
                 />
               </div>
             </div>
@@ -419,7 +417,7 @@ export default function Login() {
             <div>
               <div className="flex justify-between items-center mb-1">
                 <label className="text-xs font-bold text-slate-700">
-                  4-Digit OTP <span className="text-pink-500">*</span>
+                  4-Digit OTP <span className="text-rose-500">*</span>
                 </label>
                 <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
                   Mock OTP: 1234
@@ -432,7 +430,7 @@ export default function Login() {
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                 placeholder="1234"
-                className="w-full px-4 py-2.5 text-center tracking-[0.5em] text-base font-black bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#13805B] focus:bg-white transition-all"
+                className="w-full px-4 py-2.5 text-center tracking-[0.5em] text-base font-black bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24] focus:bg-white transition-all"
               />
             </div>
           )}
@@ -442,7 +440,7 @@ export default function Login() {
             <div>
               <div className="flex justify-between items-center mb-1">
                 <label className="text-xs font-bold text-slate-700">
-                  Password <span className="text-pink-500">*</span>
+                  Password <span className="text-rose-500">*</span>
                 </label>
                 {mode === 'signin' && (
                   <span className="text-[10px] text-slate-400 font-medium">
@@ -458,7 +456,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={mode === 'signup' ? 'Create a secure password' : 'Enter password'}
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#13805B] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#1F3C24] focus:bg-white transition-all"
                 />
                 <button
                   type="button"
@@ -476,7 +474,7 @@ export default function Login() {
           {/* SIGNUP: Child Personalization (Optional) */}
           {mode === 'signup' && (
             <div className="pt-2 border-t border-slate-100">
-              <p className="text-[11px] font-bold text-[#13805B] mb-2 flex items-center gap-1">
+              <p className="text-[11px] font-bold text-[#1F3C24] mb-2 flex items-center gap-1">
                 <Baby className="w-3.5 h-3.5" />
                 Personalize Nutrition for Your Child
               </p>
@@ -486,12 +484,12 @@ export default function Login() {
                   value={childName}
                   onChange={(e) => setChildName(e.target.value)}
                   placeholder="Child's Name"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-[#13805B]"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-[#1F3C24]"
                 />
                 <select
                   value={childAge}
                   onChange={(e) => setChildAge(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-[#13805B]"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-[#1F3C24]"
                 >
                   <option value="2">Age 2-4 Years</option>
                   <option value="4">Age 4-6 Years</option>
@@ -506,7 +504,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-2 py-3 bg-[#13805B] hover:bg-[#0f6849] text-white text-xs font-black rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group disabled:opacity-60"
+            className="w-full mt-2 py-3 bg-[#1F3C24] hover:bg-[#142718] text-white text-xs font-black rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group disabled:opacity-60"
           >
             {isLoading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -532,7 +530,7 @@ export default function Login() {
             <span>256-Bit SSL Encrypted</span>
           </div>
           <div className="flex items-center gap-1">
-            <Gift className="w-3.5 h-3.5 text-pink-500" />
+            <Gift className="w-3.5 h-3.5 text-[#C89B58]" />
             <span>₹200 Welcome Gift</span>
           </div>
         </div>

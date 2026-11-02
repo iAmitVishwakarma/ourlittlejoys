@@ -26,7 +26,7 @@ export default function Input({
     <div className={`space-y-1 text-left ${className}`}>
       {label && (
         <label htmlFor={inputId} className="block text-xs font-bold text-slate-700">
-          {label} {required && <span className="text-pink-500">*</span>}
+          {label} {required && <span className="text-rose-500">*</span>}
         </label>
       )}
 
@@ -50,7 +50,7 @@ export default function Input({
           } ${rightElement ? 'pr-11' : 'pr-3.5'} ${
             error
               ? 'bg-rose-50/50 border border-rose-300 text-rose-900 focus:border-rose-500'
-              : 'bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#13805B] focus:bg-white'
+              : 'bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#1F3C24] focus:bg-white'
           } disabled:bg-slate-100 disabled:cursor-not-allowed ${inputClassName}`}
           aria-invalid={error ? 'true' : 'false'}
           aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}

@@ -82,7 +82,7 @@ function AppContent() {
 
   return (
     <div
-      className={`flex flex-col min-h-screen bg-brand-cream text-slate-800 antialiased selection:bg-pink-100 selection:text-pink-600 font-sans ${isCheckoutRoute ? "" : "pb-16 lg:pb-0"}`}
+      className={`flex flex-col min-h-screen bg-brand-cream text-slate-800 antialiased selection:bg-[#C89B58]/25 selection:text-[#1F3C24] font-sans ${isCheckoutRoute ? "" : "pb-16 lg:pb-0"}`}
     >
       <ScrollToTop />
 
@@ -252,7 +252,7 @@ function AppContent() {
                   content={
                     <>
                       <p>
-                        At Little Joys, your child's health, safety, and delight
+                        At Nestor, your child's health, safety, and delight
                         are our highest priorities. We formulate every product
                         with medical-grade clean ingredients and transparent lab
                         reporting.
@@ -264,13 +264,13 @@ function AppContent() {
                         If any product you receive is damaged in transit,
                         expired, or defective, you are entitled to an immediate
                         100% free replacement or full refund to your original
-                        payment method or LJ Wallet within 7 days of delivery.
+                        payment method or Nestor Wallet within 7 days of delivery.
                       </p>
                       <h3 className="text-sm font-black text-slate-800 mt-4">
                         How to Initiate a Return
                       </h3>
                       <p>
-                        Simply contact our care team at care@ourlittlejoys.com
+                        Simply contact our care team at care@nestorbio.com
                         or via WhatsApp helpline with your Order ID and photo of
                         the damaged package.
                       </p>
@@ -287,7 +287,7 @@ function AppContent() {
                   content={
                     <>
                       <p>
-                        Welcome to Our Little Joys. By accessing and purchasing
+                        Welcome to Nestor. By accessing and purchasing
                         from our website, you agree to comply with and be bound
                         by the following terms of service.
                       </p>
@@ -302,12 +302,12 @@ function AppContent() {
                         medicine.
                       </p>
                       <h3 className="text-sm font-black text-slate-800 mt-4">
-                        LJ Wallet Terms
+                        Nestor Wallet Terms
                       </h3>
                       <p>
-                        LJ Wallet bonus credits cannot be withdrawn as hard cash
+                        Nestor Wallet bonus credits cannot be withdrawn as hard cash
                         to bank accounts, but can be redeemed on any purchase on
-                        ourlittlejoys.com without expiry.
+                        nestorbio.com without expiry.
                       </p>
                     </>
                   }

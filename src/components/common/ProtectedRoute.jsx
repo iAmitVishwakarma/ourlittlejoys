@@ -19,8 +19,8 @@ export default function ProtectedRoute({ children }) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
         <div className="relative flex items-center justify-center mb-4">
-          <div className="w-12 h-12 border-4 border-pink-100 border-t-[#13805B] rounded-full animate-spin" />
-          <span className="absolute text-base select-none">🍓</span>
+          <div className="w-14 h-14 border-4 border-amber-100 border-t-[#1F3C24] rounded-full animate-spin" />
+          <img src="/logo-icon.png" alt="Nestor" className="absolute w-7 h-7 object-contain select-none" />
         </div>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest animate-pulse">
           Verifying Parent Session...

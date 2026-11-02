@@ -156,7 +156,7 @@ export default function AuthModal({ isOpen, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="auth-modal-title"
-        className="relative bg-white rounded-3xl max-w-md w-full p-7 md:p-9 shadow-2xl z-10 border border-pink-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+        className="relative bg-white rounded-3xl max-w-md w-full p-7 md:p-9 shadow-2xl z-10 border border-[#C89B58]/30 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
       >
         <button
           onClick={onClose}
@@ -169,16 +169,16 @@ export default function AuthModal({ isOpen, onClose }) {
         {/* STEP 1: PHONE NUMBER */}
         {step === 1 && (
           <div>
-            <div className="flex items-center gap-2 text-pink-600 mb-2">
-              <Sparkles className="w-4 h-4" />
-              <span className="text-[11px] font-black uppercase tracking-wider">Welcome To Little Joys</span>
+            <div className="flex items-center gap-2 text-[#1F3C24] mb-2">
+              <Sparkles className="w-4 h-4 text-[#C89B58]" />
+              <span className="text-[11px] font-black uppercase tracking-wider">Welcome To Nestor</span>
             </div>
 
-            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 leading-snug mb-2">
+            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-900 leading-snug mb-2 font-brand-display">
               Login or Register
             </h2>
             <p className="text-xs text-slate-500 mb-6 leading-relaxed">
-              Enter your mobile number to unlock <strong>₹200 LJ Wallet Cash</strong>, track orders, and view honest batch reports.
+              Enter your mobile number to unlock <strong>₹200 Nestor Wallet Cash</strong>, track orders, and view honest batch reports.
             </p>
 
             <form onSubmit={handleSendOtp} className="space-y-4">
@@ -199,7 +199,7 @@ export default function AuthModal({ isOpen, onClose }) {
                     placeholder="98765 43210"
                     autoFocus
                     required
-                    className="w-full pl-14 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500 focus:bg-white text-slate-800 font-bold text-sm transition-all"
+                    className="w-full pl-14 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24] focus:bg-white text-slate-800 font-bold text-sm transition-all"
                   />
                   <Phone className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
                 </div>
@@ -210,15 +210,15 @@ export default function AuthModal({ isOpen, onClose }) {
               )}
 
               {/* Wallet benefit badge */}
-              <div className="bg-amber-50 p-3 rounded-xl border border-amber-200/80 flex items-center gap-2.5 text-xs text-amber-900 font-bold">
-                <Wallet className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>Get flat ₹200 instant credit into your Little Joys Wallet!</span>
+              <div className="bg-[#FAF4EB] p-3 rounded-xl border border-[#C89B58]/30 flex items-center gap-2.5 text-xs text-[#1F3C24] font-bold">
+                <Wallet className="w-4 h-4 text-[#C89B58] shrink-0" />
+                <span>Get flat ₹200 instant credit into your Nestor Wallet!</span>
               </div>
 
               <button
                 type="submit"
                 disabled={phoneNumber.length < 10 || isSubmitting}
-                className="w-full bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-pink-500/25 transition-transform active:scale-95 flex items-center justify-center gap-2"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] disabled:opacity-50 text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-[#1F3C24]/20 transition-transform active:scale-95 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <span>Sending OTP...</span>
@@ -245,16 +245,16 @@ export default function AuthModal({ isOpen, onClose }) {
         {step === 2 && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-black uppercase tracking-wider text-pink-600">Verification</span>
+              <span className="text-[11px] font-black uppercase tracking-wider text-[#1F3C24]">Verification</span>
               <button
                 onClick={() => setStep(1)}
-                className="text-xs text-pink-600 hover:underline font-bold"
+                className="text-xs text-[#C89B58] hover:text-[#1F3C24] hover:underline font-bold"
               >
                 Change Number
               </button>
             </div>
 
-            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 mb-1">Enter 4-Digit Code</h2>
+            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 mb-1 font-brand-display">Enter 4-Digit Code</h2>
             <p className="text-xs text-slate-500 mb-6">
               Sent via SMS to <strong>+91 {phoneNumber}</strong>
             </p>
@@ -271,7 +271,7 @@ export default function AuthModal({ isOpen, onClose }) {
                     aria-label={`Digit ${index + 1} of 4`}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="w-12 h-14 text-center text-xl font-black bg-[#FFF9F5] border-2 border-orange-200 rounded-2xl focus:outline-none focus:border-pink-500 text-slate-800 shadow-xs"
+                    className="w-12 h-14 text-center text-xl font-black bg-[#FAF4EB] border-2 border-[#C89B58]/30 rounded-2xl focus:outline-none focus:border-[#1F3C24] text-slate-800 shadow-xs"
                   />
                 ))}
               </div>
@@ -287,7 +287,7 @@ export default function AuthModal({ isOpen, onClose }) {
               <button
                 type="submit"
                 disabled={otpValues.join('').length < 4 || isSubmitting}
-                className="w-full bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-pink-500/25 transition-transform active:scale-95"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] disabled:opacity-50 text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-[#1F3C24]/20 transition-transform active:scale-95"
               >
                 {isSubmitting ? 'Verifying...' : 'Verify & Continue'}
               </button>
@@ -301,7 +301,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   <button
                     type="button"
                     onClick={() => { setTimer(30); authService.sendOtp(phoneNumber); }}
-                    className="text-pink-600 font-bold hover:underline"
+                    className="text-[#1F3C24] hover:text-[#C89B58] font-bold hover:underline"
                   >
                     Resend OTP Code
                   </button>
@@ -319,7 +319,7 @@ export default function AuthModal({ isOpen, onClose }) {
               <span className="text-[11px] font-black uppercase tracking-wider">Number Verified</span>
             </div>
 
-            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 mb-1">Child's Profile</h2>
+            <h2 id="auth-modal-title" className="text-2xl font-black text-slate-800 mb-1 font-brand-display">Child's Profile</h2>
             <p className="text-xs text-slate-500 mb-6">
               Help our pediatric board personalize age-appropriate nutrition and honest batch reports.
             </p>
@@ -336,7 +336,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   onChange={(e) => setParentName(e.target.value)}
                   placeholder="e.g. Pooja Sharma"
                   required
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-pink-500"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-[#1F3C24]"
                 />
               </div>
 
@@ -351,7 +351,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   onChange={(e) => setChildName(e.target.value)}
                   placeholder="e.g. Aarav"
                   required
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-pink-500"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-[#1F3C24]"
                 />
               </div>
 
@@ -368,7 +368,7 @@ export default function AuthModal({ isOpen, onClose }) {
                       aria-pressed={childAge === age}
                       className={`p-2.5 min-h-[44px] rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                         childAge === age
-                          ? 'bg-pink-50 border-pink-500 text-pink-700 shadow-xs'
+                          ? 'bg-[#FAF4EB] border-[#1F3C24] text-[#1F3C24] font-black shadow-xs'
                           : 'bg-white border-slate-200 text-slate-700'
                       }`}
                     >
@@ -381,7 +381,7 @@ export default function AuthModal({ isOpen, onClose }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/25 transition-transform active:scale-95 mt-4"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-[#1F3C24]/20 transition-transform active:scale-95 mt-4"
               >
                 Complete Profile &amp; Claim ₹200
               </button>
@@ -395,11 +395,11 @@ export default function AuthModal({ isOpen, onClose }) {
             <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h2 id="auth-modal-title" className="text-xl font-black text-slate-800 mb-1">Welcome to Little Joys!</h2>
+            <h2 id="auth-modal-title" className="text-xl font-black text-slate-800 mb-1 font-brand-display">Welcome to Nestor!</h2>
             <p className="text-xs text-slate-500 mb-4">
-              ₹200 has been credited to your LJ Wallet.
+              ₹200 has been credited to your Nestor Wallet.
             </p>
-            <div className="inline-block bg-amber-50 text-amber-900 border border-amber-200 text-xs font-black px-4 py-2 rounded-full">
+            <div className="inline-block bg-[#FAF4EB] text-[#1F3C24] border border-[#C89B58]/30 text-xs font-black px-4 py-2 rounded-full">
               Wallet Balance: ₹200
             </div>
           </div>

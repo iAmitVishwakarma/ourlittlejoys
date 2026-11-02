@@ -94,7 +94,7 @@ export function SproutDoodle({ className = "w-6 h-6 text-emerald-500" }) {
 }
 
 // Hand-Drawn Wavy Squiggle Underline
-export function WavyUnderline({ className = "w-32 h-3 text-pink-400" }) {
+export function WavyUnderline({ className = "w-32 h-3 text-[#C89B58]" }) {
   return (
     <svg viewBox="0 0 120 12" fill="none" className={`block ${className}`}>
       <path

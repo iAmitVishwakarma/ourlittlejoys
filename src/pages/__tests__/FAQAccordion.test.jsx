@@ -14,7 +14,7 @@ describe('FAQPage Accordion Component', () => {
     );
 
     expect(screen.getByRole('heading', { level: 1, name: /frequently asked questions/i })).toBeInTheDocument();
-    expect(screen.getByText(/what age groups are little joys products suitable for\?/i)).toBeInTheDocument();
+    expect(screen.getByText(/what age groups are nestor products suitable for\?/i)).toBeInTheDocument();
 
     // First FAQ answer is open by default
     expect(
@@ -32,7 +32,7 @@ describe('FAQPage Accordion Component', () => {
     );
 
     const firstQuestionBtn = screen.getByRole('button', {
-      name: /what age groups are little joys products suitable for\?/i,
+      name: /what age groups are nestor products suitable for\?/i,
     });
     expect(firstQuestionBtn).toHaveAttribute('aria-expanded', 'true');
 
@@ -45,7 +45,7 @@ describe('FAQPage Accordion Component', () => {
 
     // Click second question to expand
     const secondQuestionBtn = screen.getByRole('button', {
-      name: /are little joys products 100% natural and free from white sugar\?/i,
+      name: /are nestor products 100% natural and free from white sugar\?/i,
     });
     expect(secondQuestionBtn).toHaveAttribute('aria-expanded', 'false');
 

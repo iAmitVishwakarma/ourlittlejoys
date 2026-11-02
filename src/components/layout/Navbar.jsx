@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import NestorLogo from '@/components/common/NestorLogo';
 import { useAuthStore } from '@/stores/authStore';
 import { useCartStore } from '@/stores/cartStore';
 import { useWishlistStore } from '@/stores/wishlistStore';
@@ -128,28 +129,28 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
   const desktopNavClass = ({ isActive }) =>
     `relative px-3 py-1.5 rounded-full text-xs md:text-sm font-bold transition-all duration-200 ${
       isActive
-        ? 'text-brand-berry bg-brand-berry-50 shadow-xs'
-        : 'text-slate-700 hover:text-brand-berry hover:bg-pink-50/50'
+        ? 'text-brand-forest bg-[#FAF4EB] shadow-xs'
+        : 'text-slate-700 hover:text-brand-forest hover:bg-[#FAF4EB]'
     }`;
 
   // Active indicator dot for desktop NavLinks
   const NavDot = ({ isActive }) =>
     isActive ? (
-      <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-berry nav-active-dot" />
+      <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#1F3C24] nav-active-dot" />
     ) : null;
 
   // Mobile menu link class helper
   const mobileMenuClass = ({ isActive }) =>
     `py-2 px-3 rounded-xl transition-all duration-200 flex items-center gap-2 ${
       isActive
-        ? 'text-brand-berry font-extrabold bg-brand-berry-50 border-l-3 border-brand-berry'
-        : 'text-slate-800 hover:text-brand-berry font-bold'
+        ? 'text-[#1F3C24] font-extrabold bg-[#FAF4EB] border-l-3 border-[#1F3C24]'
+        : 'text-slate-800 hover:text-[#1F3C24] font-bold'
     }`;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
       {/* Top Announcement Bar — Premium Gradient */}
-      <div className="bg-linear-to-r from-amber-600 via-brand-berry to-pink-600 text-white text-xs font-semibold py-2 px-3 sm:px-4">
+      <div className="bg-gradient-to-r from-[#142718] via-[#1F3C24] to-[#2A5232] text-white text-xs font-semibold py-2 px-3 sm:px-4">
         <div className="container mx-auto flex justify-between items-center">
           {/* Shipping progress or promo */}
           <div className="flex items-center gap-2 min-w-0 flex-1">
@@ -177,7 +178,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
             ) : (
               <div className="flex items-center gap-2 min-w-0">
                 <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] font-black uppercase shrink-0">Save 30%</span>
-                <span className="truncate text-[11px] sm:text-xs">Use <strong>LJ Wallet</strong> & Save Upto 30%</span>
+                <span className="truncate text-[11px] sm:text-xs">Use <strong>Nestor Wallet</strong> & Save Upto 30%</span>
               </div>
             )}
           </div>
@@ -246,13 +247,13 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
           ) : (
             /* 2. REGULAR NAVBAR (Desktop full + Mobile Logo with Search & Wishlist) */
             <div className="flex justify-between items-center gap-2 sm:gap-4">
-              {/* Logo */}
-              <Link to="/" className="flex items-center gap-1.5 sm:gap-2 shrink-0 group">
-                <span className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-slate-800 group-hover:text-brand-berry transition-colors">
-                  little<span className="text-brand-berry">joys</span>
-                </span>
-                <span className="text-lg sm:text-xl">🍓</span>
-              </Link>
+              {/* Nestor Brand Logo */}
+              <NestorLogo 
+                variant="horizontal" 
+                linkTo="/" 
+                className="group" 
+                imgClassName="h-9 sm:h-11 md:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]" 
+              />
 
               {/* Desktop Navigation Links with Active Indicators */}
               <div className="hidden lg:flex items-center space-x-1 xl:space-x-2 font-bold text-xs md:text-sm">
@@ -272,27 +273,27 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                     aria-expanded={isCategoryDropdownOpen}
                     className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer focus:outline-none ${
                       location.pathname.startsWith('/shop/') && !location.pathname.endsWith('/all')
-                        ? 'text-brand-berry bg-brand-berry-50 shadow-xs'
-                        : 'text-slate-700 hover:text-brand-berry hover:bg-pink-50/50'
+                        ? 'text-brand-forest bg-[#FAF4EB] shadow-xs'
+                        : 'text-slate-700 hover:text-brand-forest hover:bg-[#FAF4EB]'
                     }`}
                   >
                     <span>Shop By Category</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCategoryDropdownOpen ? 'rotate-180 text-brand-berry' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCategoryDropdownOpen ? 'rotate-180 text-brand-forest' : ''}`} />
                   </button>
 
                   {/* Dropdown Menu */}
                   {isCategoryDropdownOpen && (
-                    <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-orange-100 py-3 px-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-brand-border py-3 px-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                       <div className="grid grid-cols-1 gap-1">
                         {categories.map((cat) => (
                           <Link
                             key={cat.name}
                             to={cat.link}
                             onClick={() => setIsCategoryDropdownOpen(false)}
-                            className="px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-brand-berry hover:bg-pink-50/80 transition-all flex items-center justify-between group/item"
+                            className="px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-brand-forest hover:bg-[#FAF4EB] transition-all flex items-center justify-between group/item"
                           >
                             <span>{cat.name}</span>
-                            <span className="opacity-0 group-hover/item:opacity-100 transition-opacity text-brand-berry">›</span>
+                            <span className="opacity-0 group-hover/item:opacity-100 transition-opacity text-brand-forest">›</span>
                           </Link>
                         ))}
                       </div>
@@ -304,7 +305,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                   {({ isActive }) => (
                     <>
                       <span className="flex items-center gap-1">
-                        <Sparkles className="w-3.5 h-3.5" />
+                        <Sparkles className="w-3.5 h-3.5 text-[#C89B58]" />
                         Honest Reports
                       </span>
                       <NavDot isActive={isActive} />
@@ -331,7 +332,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder='Search for "Nutrimix", "Gummies"...'
                   aria-label="Search products"
-                  className="w-full bg-slate-100 text-xs md:text-sm pl-10 pr-9 py-2.5 rounded-full border border-slate-200 focus:border-brand-berry focus:bg-white focus:outline-none transition-all focus:shadow-sm focus:shadow-brand-berry/10"
+                  className="w-full bg-slate-100 text-xs md:text-sm pl-10 pr-9 py-2.5 rounded-full border border-slate-200 focus:border-brand-forest focus:bg-white focus:outline-none transition-all focus:shadow-sm focus:shadow-brand-forest/10"
                 />
                 {searchQuery && (
                   <button
@@ -352,7 +353,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                   type="button"
                   onClick={() => setIsMobileSearchOpen(true)}
                   aria-label="Search products"
-                  className="p-2 text-slate-700 hover:text-brand-berry hover:bg-pink-50 rounded-full transition-colors flex items-center justify-center min-w-11 min-h-11 cursor-pointer"
+                  className="p-2 text-slate-700 hover:text-brand-forest hover:bg-[#FAF4EB] rounded-full transition-colors flex items-center justify-center min-w-11 min-h-11 cursor-pointer"
                 >
                   <Search className="w-5 h-5" />
                 </button>
@@ -424,7 +425,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                           <p className="text-xs font-black text-slate-900 truncate">{user?.name || 'Parent'}</p>
                           <p className="text-[11px] text-slate-400 truncate">{user?.email || user?.phone || ''}</p>
                           <div className="mt-1.5 flex items-center justify-between text-[11px] bg-amber-50 text-amber-900 px-2 py-1 rounded-lg font-bold">
-                            <span>LJ Wallet:</span>
+                            <span>Nestor Wallet:</span>
                             <span className="font-black text-amber-700">₹{user?.walletBalance || 0}</span>
                           </div>
                         </div>
@@ -433,7 +434,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                           <Link
                             to="/profile"
                             onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 hover:bg-pink-50 hover:text-brand-berry transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2 hover:bg-[#FAF4EB] hover:text-brand-forest transition-colors"
                           >
                             <User className="w-4 h-4 text-slate-400" />
                             <span>My Account</span>
@@ -441,7 +442,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                           <Link
                             to="/orders"
                             onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 hover:bg-pink-50 hover:text-brand-berry transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2 hover:bg-[#FAF4EB] hover:text-brand-forest transition-colors"
                           >
                             <Package className="w-4 h-4 text-slate-400" />
                             <span>My Orders</span>
@@ -523,7 +524,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                 {({ isActive }) => (
                   <div className="flex items-center justify-between w-full">
                     <span>Honest Reports</span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${isActive ? 'bg-brand-berry text-white' : 'bg-pink-100 text-brand-berry'}`}>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${isActive ? 'bg-[#1F3C24] text-white' : 'bg-[#FAF4EB] text-[#1F3C24]'}`}>
                       100% Lab Tested
                     </span>
                   </div>
@@ -542,7 +543,7 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                     <Link
                       key={c.name}
                       to={c.link}
-                      className="p-2.5 rounded-xl bg-brand-cream text-slate-700 hover:text-brand-berry hover:bg-brand-berry-50 transition-colors font-bold"
+                      className="p-2.5 rounded-xl bg-brand-cream text-slate-700 hover:text-brand-forest hover:bg-[#FAF4EB] transition-colors font-bold"
                     >
                       {c.name}
                     </Link>
@@ -556,9 +557,9 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                 {isAuthenticated ? (
                   <Link
                     to="/profile"
-                    className="font-black text-slate-800 hover:text-brand-berry flex items-center gap-2"
+                    className="font-black text-slate-800 hover:text-brand-forest flex items-center gap-2"
                   >
-                    <span className="w-6 h-6 rounded-full bg-brand-berry text-white flex items-center justify-center text-[10px]">
+                    <span className="w-6 h-6 rounded-full bg-[#1F3C24] text-white flex items-center justify-center text-[10px]">
                       {user?.name ? user.name.charAt(0).toUpperCase() : 'P'}
                     </span>
                     <span>{user?.name} (Profile)</span>
@@ -566,9 +567,9 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
                 ) : (
                   <Link
                     to="/login"
-                    className="font-black text-slate-700 flex items-center gap-1.5 hover:text-brand-berry"
+                    className="font-black text-slate-700 flex items-center gap-1.5 hover:text-brand-forest"
                   >
-                    <User className="w-4 h-4 text-brand-berry" />
+                    <User className="w-4 h-4 text-brand-forest" />
                     <span>Login / Register</span>
                   </Link>
                 )}
@@ -597,13 +598,13 @@ export default function Navbar({ cartCount = 0, onOpenCart, onOpenAuth, onOpenAc
               {/* Cart Link for Mobile */}
               <Link
                 to={isAuthenticated ? "/cart" : "/login"}
-                className="w-full bg-pink-50 hover:bg-pink-100 text-brand-berry font-bold py-2.5 px-4 rounded-xl flex items-center justify-between border border-pink-200 min-h-11"
+                className="w-full bg-[#FAF4EB] hover:bg-[#F3EAD9] text-[#1F3C24] font-bold py-2.5 px-4 rounded-xl flex items-center justify-between border border-[#C89B58]/30 min-h-11"
               >
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="w-4 h-4" />
                   <span>View Shopping Bag</span>
                 </div>
-                <span className="bg-brand-berry text-white font-black text-[11px] px-2 py-0.5 rounded-full">
+                <span className="bg-[#1F3C24] text-white font-black text-[11px] px-2 py-0.5 rounded-full">
                   {effectiveCartCount} items
                 </span>
               </Link>

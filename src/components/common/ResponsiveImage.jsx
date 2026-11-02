@@ -27,7 +27,7 @@ function buildUnsplashUrl(baseUrl, width, quality = 75) {
 
 export default function ResponsiveImage({
   src,
-  alt = "Little Joys Product",
+  alt = "Nestor Product",
   width = 400,
   height = 400,
   className = "",

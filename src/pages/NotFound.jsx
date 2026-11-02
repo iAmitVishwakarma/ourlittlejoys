@@ -11,19 +11,19 @@ export default function NotFound() {
   return (
     <div className="min-h-[65vh] flex items-center justify-center px-4 py-16 bg-brand-cream">
       <SEO
-        title="Page Not Found | Little Joys"
-        description="The page you are looking for does not exist. Return to Little Joys for pediatric-formulated clean nutrition."
+        title="Page Not Found | Nestor"
+        description="The page you are looking for does not exist. Return to Nestor for pediatrician-formulated clean nutrition."
       />
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xs border border-orange-100/80 p-8 text-center space-y-6">
-        <div className="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-pink-100">
-          🍓
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-xs border border-brand-border p-8 text-center space-y-6">
+        <div className="w-20 h-20 bg-brand-primary-50 rounded-full flex items-center justify-center mx-auto shadow-inner border border-brand-primary-100 p-3">
+          <img src="/logo-icon.png" alt="Nestor" className="w-full h-full object-contain" />
         </div>
 
         <div className="space-y-2">
-          <span className="inline-block bg-pink-100 text-[#FF2F92] text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+          <span className="inline-block bg-amber-100 text-amber-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
             Error 404
           </span>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight font-brand-display">
             Page Not Found
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-xs mx-auto">

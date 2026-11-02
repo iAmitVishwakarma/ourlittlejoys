@@ -36,8 +36,7 @@ describe('Navbar Component', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/little/i)).toBeInTheDocument();
-    expect(screen.getByText(/joys/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/nestor/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /shop all/i })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: /honest reports/i }).length).toBeGreaterThan(0);
     expect(screen.getByRole('link', { name: /about us/i })).toBeInTheDocument();

@@ -118,7 +118,7 @@ export default function MobileBottomNav({ onOpenAuth: _onOpenAuth }) {
               <div className={iconContainerClass(isActive)}>
                 <ShoppingCart className={iconClass(isActive)} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1.5 bg-brand-berry text-white text-[9px] font-black min-w-4 h-4 px-1 rounded-full flex items-center justify-center shadow-xs ring-2 ring-white animate-in zoom-in-50">
+                  <span className="absolute -top-1 -right-1.5 bg-[#1F3C24] text-white text-[9px] font-black min-w-4 h-4 px-1 rounded-full flex items-center justify-center shadow-xs ring-2 ring-white animate-in zoom-50">
                     {cartCount}
                   </span>
                 )}

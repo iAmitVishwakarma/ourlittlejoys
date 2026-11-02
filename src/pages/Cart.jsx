@@ -72,22 +72,22 @@ export default function Cart() {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
         <SEO
-          title="Your Cart is Empty | Little Joys"
+          title="Your Cart is Empty | Nestor"
           description="Explore our pediatric-formulated kids nutrition, sprouted ragi Nutrimix, and multivitamin gummies."
         />
         <div className="max-w-md w-full bg-white rounded-3xl shadow-sm border border-orange-100 p-8 text-center space-y-6">
-          <div className="w-24 h-24 bg-pink-50 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-pink-100">
+          <div className="w-24 h-24 bg-[#FAF4EB] rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-[#C89B58]/30">
             🛒
           </div>
           <div className="space-y-2">
-            <h1 className="text-2xl font-black text-slate-800 tracking-tight">Your Cart is Empty!</h1>
+            <h1 className="text-2xl font-black text-slate-800 tracking-tight font-brand-display">Your Cart is Empty!</h1>
             <p className="text-sm text-slate-500 leading-relaxed">
               Explore our range of clean nutrition, sprouted millet Nutrimix, and gelatin-free gummies designed for growing kids.
             </p>
           </div>
           <Link
             to="/shop/all"
-            className="inline-flex items-center justify-center gap-2 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-500/25 transition-all transform active:scale-98"
+            className="inline-flex items-center justify-center gap-2 w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-[#1F3C24]/20 transition-all transform active:scale-98"
           >
             <ShoppingBag className="w-5 h-5" />
             <span>Start Shopping</span>
@@ -101,28 +101,28 @@ export default function Cart() {
   return (
     <div className="bg-brand-cream min-h-screen py-6 md:py-10">
       <SEO
-        title={`Shopping Cart (${cartItems.length} items) | Little Joys`}
-        description="Review your Little Joys clean kids nutrition cart, apply coupons, and checkout securely."
+        title={`Shopping Cart (${cartItems.length} items) | Nestor`}
+        description="Review your Nestor clean kids nutrition cart, apply coupons, and checkout securely."
       />
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
         {/* Breadcrumb & Header */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-1">
-              <Link to="/" className="hover:text-pink-600">Home</Link>
+              <Link to="/" className="hover:text-[#1F3C24]">Home</Link>
               <ChevronRight className="w-3.5 h-3.5" />
               <span className="text-slate-700">Shopping Cart</span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
+            <h1 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3 font-brand-display">
               <span>Shopping Bag</span>
-              <span className="text-sm font-bold bg-pink-100 text-pink-700 px-3 py-1 rounded-full">
+              <span className="text-sm font-bold bg-[#FAF4EB] text-[#1F3C24] px-3 py-1 rounded-full border border-[#C89B58]/30">
                 {cartCount} {cartCount === 1 ? 'item' : 'items'}
               </span>
             </h1>
           </div>
           <Link
             to="/shop/all"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-pink-600 hover:text-pink-700 hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3C24] hover:text-[#C89B58] hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Continue Shopping</span>
@@ -143,7 +143,7 @@ export default function Cart() {
                   </span>
                 ) : (
                   <span>
-                    Add <strong className="text-pink-600 font-black">₹{freeGiftAmountLeft}</strong> more to unlock a <strong>Free Gift</strong>!
+                    Add <strong className="text-[#1F3C24] font-black">₹{freeGiftAmountLeft}</strong> more to unlock a <strong>Free Gift</strong>!
                   </span>
                 )}
               </p>
@@ -155,7 +155,7 @@ export default function Cart() {
           <div className="w-full bg-amber-100 rounded-full h-2.5 overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
-                isFreeGiftUnlocked ? 'bg-emerald-500' : 'bg-linear-to-r from-amber-400 to-pink-500'
+                isFreeGiftUnlocked ? 'bg-emerald-500' : 'bg-linear-to-r from-amber-400 to-[#1F3C24]'
               }`}
               style={{ width: `${freeGiftProgress}%` }}
             />
@@ -203,7 +203,7 @@ export default function Cart() {
                           <div className="flex items-start justify-between gap-2">
                             <Link
                               to={`/product/${item.slug || item.id}`}
-                              className="text-sm md:text-base font-black text-slate-800 hover:text-pink-600 transition-colors leading-snug"
+                              className="text-sm md:text-base font-black text-slate-800 hover:text-[#1F3C24] transition-colors leading-snug"
                             >
                               {item.title || item.name}
                             </Link>
@@ -252,10 +252,10 @@ export default function Cart() {
                           </div>
 
                           {/* - 1 + Quantity Controls */}
-                          <div className="flex items-center border-2 border-pink-200 bg-pink-50/40 rounded-full px-2 py-1">
+                          <div className="flex items-center border border-[#1F3C24]/20 bg-[#FAF4EB]/60 rounded-full px-2 py-1 shadow-2xs">
                             <button
                               onClick={() => updateQuantity(item.id || item.slug, (item.quantity || 1) - 1)}
-                              className="w-7 h-7 rounded-full flex items-center justify-center text-pink-600 hover:bg-pink-100 transition-colors active:scale-90"
+                              className="w-7 h-7 rounded-full flex items-center justify-center text-[#1F3C24] hover:bg-[#FAF4EB] transition-colors active:scale-90"
                               title="Decrease"
                             >
                               <Minus className="w-3.5 h-3.5" />
@@ -265,7 +265,7 @@ export default function Cart() {
                             </span>
                             <button
                               onClick={() => updateQuantity(item.id || item.slug, (item.quantity || 1) + 1)}
-                              className="w-7 h-7 rounded-full flex items-center justify-center text-pink-600 hover:bg-pink-100 transition-colors active:scale-90"
+                              className="w-7 h-7 rounded-full flex items-center justify-center text-[#1F3C24] hover:bg-[#FAF4EB] transition-colors active:scale-90"
                               title="Increase"
                             >
                               <Plus className="w-3.5 h-3.5" />
@@ -323,7 +323,7 @@ export default function Cart() {
             <div className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-orange-100 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Tag className="w-4 h-4 text-pink-500" />
+                  <Tag className="w-4 h-4 text-[#C89B58]" />
                   <h2 className="text-sm font-black text-slate-800">Apply Coupon Code</h2>
                 </div>
                 {appliedCoupon && (
@@ -344,7 +344,7 @@ export default function Cart() {
                   onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                   placeholder="Enter coupon (e.g. JOY30)"
                   aria-label="Enter coupon code"
-                  className="flex-1 uppercase font-bold text-xs bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-pink-500 focus:bg-white"
+                  className="flex-1 uppercase font-bold text-xs bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#1F3C24] focus:bg-white"
                 />
                 <button
                   onClick={() => handleApplyCoupon()}
@@ -381,7 +381,7 @@ export default function Cart() {
                         className={`cursor-pointer border rounded-2xl p-2.5 flex items-center justify-between transition-all ${
                           isSelected
                             ? 'border-emerald-500 bg-emerald-50/50'
-                            : 'border-dashed border-slate-200 hover:border-pink-300 hover:bg-pink-50/30'
+                            : 'border-dashed border-slate-200 hover:border-[#1F3C24]/30 hover:bg-[#FAF4EB]/30'
                         }`}
                       >
                         <div>
@@ -397,7 +397,7 @@ export default function Cart() {
                           </div>
                           <p className="text-[11px] text-slate-500">{coupon.description}</p>
                         </div>
-                        <span className="text-xs font-bold text-pink-600">
+                        <span className="text-xs font-bold text-[#1F3C24]">
                           {isSelected ? 'Applied' : 'Tap to Apply'}
                         </span>
                       </div>
@@ -470,7 +470,7 @@ export default function Cart() {
               {/* Checkout Button */}
               <button
                 onClick={() => navigate('/checkout/address')}
-                className="w-full bg-[#13805B] hover:bg-[#0E6346] text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg shadow-[#13805B]/25 transition-all transform active:scale-98 flex items-center justify-between"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg shadow-[#1F3C24]/20 transition-all transform active:scale-98 flex items-center justify-between"
               >
                 <div className="text-left">
                   <span className="block text-[10px] opacity-80 uppercase tracking-wider font-bold">Payable Amount</span>
@@ -489,7 +489,7 @@ export default function Cart() {
                   <span>100% Doctor Approved</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Truck className="w-3.5 h-3.5 text-pink-500" />
+                  <Truck className="w-3.5 h-3.5 text-[#C89B58]" />
                   <span>Express Dispatch</span>
                 </div>
               </div>

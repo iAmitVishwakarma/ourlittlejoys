@@ -13,7 +13,7 @@ import 'swiper/css/navigation';
 export default function ParentReviewsSection({
   eyebrow = "Happy Kids, Honest Reviews",
   title = "Hear from Real Parents",
-  subtitle = "Over 200,000+ mothers and fathers trust Little Joys for their child's daily nutrition.",
+  subtitle = "Over 200,000+ mothers and fathers trust Nestor for their child's daily nutrition.",
   testimonials = TESTIMONIALS,
   bgClass = "",
   sectionClass = "py-8 md:py-12 px-4 md:px-6"
@@ -26,10 +26,10 @@ export default function ParentReviewsSection({
       <div className="container mx-auto max-w-6xl">
         {/* Header Block */}
         <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#FF2F92] bg-pink-50 px-3 py-1 rounded-full border border-pink-100 inline-block">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#1F3C24] bg-[#FAF4EB] px-3.5 py-1 rounded-full border border-[#C89B58]/30 inline-block font-sans">
             {eyebrow}
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight font-brand-display">
             {title}
           </h2>
           <p className="text-xs sm:text-sm text-slate-500">
@@ -44,14 +44,14 @@ export default function ParentReviewsSection({
             <button
               ref={prevRef}
               aria-label="Previous Testimonial"
-              className="w-10 h-10 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer z-10"
+              className="w-10 h-10 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#1F3C24] hover:text-white hover:border-[#1F3C24] active:scale-95 transition-all cursor-pointer z-10"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               ref={nextRef}
               aria-label="Next Testimonial"
-              className="w-10 h-10 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#13805B] hover:text-white hover:border-[#13805B] active:scale-95 transition-all cursor-pointer z-10"
+              className="w-10 h-10 rounded-full bg-white text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center hover:bg-[#1F3C24] hover:text-white hover:border-[#1F3C24] active:scale-95 transition-all cursor-pointer z-10"
             >
               <ChevronRight className="w-5 h-5" />
             </button>

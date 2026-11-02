@@ -53,8 +53,8 @@ export default function WalletRecharge() {
   return (
     <div className="bg-white min-h-screen py-10 px-4 md:px-6">
       <SEO 
-        title="Recharge LJ Wallet | Little Joys"
-        description="Top up your Little Joys wallet and unlock up to 30% instant bonus credit for your child's nutrition orders."
+        title="Recharge Nestor Wallet | Nestor"
+        description="Top up your Nestor wallet and unlock up to 30% instant bonus credit for your child's nutrition orders."
       />
       <div className="container mx-auto max-w-xl">
         <button
@@ -71,7 +71,7 @@ export default function WalletRecharge() {
           <div className="flex items-center gap-3">
             <span className="text-xl" aria-hidden="true">👛</span>
             <div>
-              <span className="text-[11px] text-slate-400 block font-semibold">Your LJ Wallet balance</span>
+              <span className="text-[11px] text-slate-400 block font-semibold">Your Nestor Wallet balance</span>
               <span className="text-sm font-black text-slate-900">₹{user?.walletBalance || 0}</span>
             </div>
           </div>
@@ -81,14 +81,14 @@ export default function WalletRecharge() {
         {/* Header & Enter Amount Display */}
         <div className="text-center mb-8">
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-2">
-            Recharge LJ Wallet
+            Recharge Nestor Wallet
           </h1>
           <span className="text-xs font-bold text-slate-400 block mb-2">Select Top-Up Amount</span>
           <div className="inline-block bg-slate-50 border border-slate-200 rounded-2xl px-8 py-3 text-3xl md:text-4xl font-black text-slate-900 mb-2">
             ₹{selectedPlan.toLocaleString()}
           </div>
           <div className="text-xs font-bold text-slate-600">
-            Get <span className="bg-emerald-600 text-white px-2 py-0.5 rounded font-black">₹{currentGetAmount.toLocaleString()}</span> in your wallet
+            Get <span className="bg-[#1F3C24] text-white px-2 py-0.5 rounded font-black">₹{currentGetAmount.toLocaleString()}</span> in your wallet
           </div>
         </div>
 
@@ -103,18 +103,18 @@ export default function WalletRecharge() {
               onClick={() => setSelectedPlan(p.amount)}
               className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all min-h-[44px] ${
                 selectedPlan === p.amount
-                  ? 'border-emerald-500 bg-emerald-50/40 shadow-xs scale-102 ring-2 ring-emerald-500/20'
+                  ? 'border-[#1F3C24] bg-[#FAF4EB] shadow-xs scale-102 ring-2 ring-[#1F3C24]/20'
                   : 'border-slate-200 bg-white hover:border-slate-300'
               }`}
             >
-              <span className="text-[10px] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full block mb-2">
+              <span className="text-[10px] font-black text-[#1F3C24] bg-[#FAF4EB] border border-[#C89B58]/30 px-2 py-0.5 rounded-full block mb-2">
                 {p.bonus}
               </span>
               <div className="text-base font-black text-slate-900">₹{p.amount}</div>
               <div className="text-[11px] font-bold text-slate-500 mt-1">Get ₹{p.getAmount}</div>
               {p.tag && (
                 <span className={`text-[9px] font-extrabold block mt-2 ${
-                  p.tag.includes('Best') ? 'text-amber-600' : 'text-[#13805B]'
+                  p.tag.includes('Best') ? 'text-[#C89B58]' : 'text-[#1F3C24]'
                 }`}>
                   {p.tag}
                 </span>
@@ -139,19 +139,19 @@ export default function WalletRecharge() {
           </div>
           <div className="flex items-center gap-3">
             <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />
-            <span>Have concerns? <a href="#faq" className="text-[#13805B] font-bold underline">Check FAQs</a></span>
+            <span>Have concerns? <a href="#faq" className="text-[#1F3C24] font-bold underline">Check FAQs</a></span>
           </div>
         </div>
 
         {/* Success animation or Add Money button */}
         {isSuccess ? (
-          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center text-xs font-black text-emerald-800">
-            ✓ ₹{currentGetAmount} added successfully to your LJ Wallet!
+          <div className="bg-[#FAF4EB] border border-[#C89B58]/40 rounded-2xl p-4 text-center text-xs font-black text-[#1F3C24]">
+            ✓ ₹{currentGetAmount} added successfully to your Nestor Wallet!
           </div>
         ) : (
           <button
             onClick={handleRecharge}
-            className="w-full bg-[#13805B] hover:bg-[#0D6849] active:scale-98 text-white font-black py-4 rounded-xl text-sm uppercase tracking-wider shadow-lg shadow-emerald-700/20 transition-all"
+            className="w-full bg-[#1F3C24] hover:bg-[#142718] active:scale-98 text-white font-black py-4 rounded-xl text-sm uppercase tracking-wider shadow-lg shadow-[#1F3C24]/20 transition-all cursor-pointer"
           >
             Add Money
           </button>

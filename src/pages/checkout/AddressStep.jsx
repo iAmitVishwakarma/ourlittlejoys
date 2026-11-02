@@ -55,7 +55,7 @@ export default function AddressStep() {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-[#FFF9F5] py-12 px-4">
-        <SEO title="Checkout - Cart Empty | Little Joys" description="Your shopping cart is currently empty." />
+        <SEO title="Checkout - Cart Empty | Nestor" description="Your shopping cart is currently empty." />
         <div className="container mx-auto max-w-lg text-center bg-white rounded-3xl p-8 border border-orange-100 shadow-sm space-y-4">
           <div className="w-16 h-16 rounded-full bg-orange-50 text-orange-400 flex items-center justify-center mx-auto text-3xl">
             🛒
@@ -105,7 +105,7 @@ export default function AddressStep() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 md:pb-16">
-      <SEO title="Checkout - Delivery Address | Little Joys" description="Confirm shipping address for your Little Joys order." />
+      <SEO title="Checkout - Delivery Address | Nestor" description="Confirm shipping address for your Nestor order." />
       {/* 1. Myntra-Style Step Navigation */}
       <CheckoutStepper currentStep="address" />
 
@@ -117,7 +117,7 @@ export default function AddressStep() {
             Delivery Address
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Choose where you'd like your Little Joys order delivered.
+            Choose where you'd like your Nestor order delivered.
           </p>
         </div>
 

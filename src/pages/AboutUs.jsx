@@ -21,7 +21,7 @@ export default function AboutUs() {
       name: "Rohit Sharma",
       role: "Co-Founder",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
-      quote: "As a parent, I know how hard it is to find truly healthy options for kids. Little Joys is our answer."
+      quote: "As a parent, I know how hard it is to find truly healthy options for kids. Nestor is our answer."
     },
     {
       name: "Dr. Rhea Mehta",
@@ -48,7 +48,7 @@ export default function AboutUs() {
   return (
     <div className="bg-[#FFFDF9] min-h-screen text-slate-800 overflow-hidden font-sans">
       <SEO
-        title="About Us - Big Nutrition for Little Joys"
+        title="About Us - Pure Organic Pediatric Nutrition | Nestor"
         description="We're a team of parents, doctors and nutrition experts on a mission to make children's nutrition simple, honest and joyful. Zero refined sugar, pediatrician formulated."
       />
 
@@ -66,7 +66,7 @@ export default function AboutUs() {
         />
 
         {/* Ambient Blur Bubbles */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-pink-100/60 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#C89B58]/15 rounded-full blur-3xl pointer-events-none -z-10" />
         <div className="absolute bottom-10 left-10 w-80 h-80 bg-amber-100/50 rounded-full blur-3xl pointer-events-none -z-10" />
 
         <div className="container mx-auto max-w-6xl relative z-10">
@@ -80,9 +80,9 @@ export default function AboutUs() {
               </div>
 
               {/* Main Heading */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12] font-brand-display">
                 Big Nutrition <br />
-                for <span className="text-[#FF387A]">Little Joys</span><span className="text-[#FF387A]">.</span>
+                for <span className="text-[#1F3C24]">Growing Kids</span><span className="text-[#C89B58]">.</span>
               </h1>
 
               {/* Paragraph */}
@@ -101,7 +101,7 @@ export default function AboutUs() {
                   <span>Doctor Guided</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/95 px-4 py-2.5 rounded-full border border-orange-100 shadow-xs text-xs sm:text-sm font-bold text-slate-800">
-                  <span className="text-base">💖</span>
+                  <span className="text-base">🌿</span>
                   <span>Child Approved</span>
                 </div>
               </div>
@@ -120,7 +120,7 @@ export default function AboutUs() {
                   <CurlyArrowDoodle className="w-8 h-8 text-slate-400 rotate-[-12deg]" />
                   <div className="text-[11px] sm:text-xs text-slate-500 font-semibold italic">
                     loved daily by <br />
-                    <span className="text-pink-600 font-bold not-italic">happiest growing champions ✨</span>
+                    <span className="text-[#1F3C24] font-bold not-italic">happiest growing champions ✨</span>
                   </div>
                 </div>
               </div>
@@ -129,13 +129,13 @@ export default function AboutUs() {
             {/* Right Column: Hero Girl with Milk Glass & Nutrimix Jar */}
             <div className="lg:col-span-5 relative flex justify-center">
               {/* Floating Top-Right Note Badge */}
-              <div className="absolute -top-4 right-2 sm:right-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-pink-100 shadow-md flex items-center gap-2 text-xs font-black text-slate-800 z-20">
+              <div className="absolute -top-4 right-2 sm:right-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-[#C89B58]/30 shadow-md flex items-center gap-2 text-xs font-black text-slate-800 z-20">
                 <span>Good Nutrition Brighter Tomorrows</span>
-                <span className="text-pink-500">💖</span>
+                <span className="text-[#C89B58]">✨</span>
               </div>
 
               {/* Background Circular Halo */}
-              <div className="w-72 sm:w-84 md:w-96 h-72 sm:h-84 md:h-96 rounded-full bg-gradient-to-tr from-amber-100 via-orange-50 to-pink-100 p-2 sm:p-3 relative shadow-inner">
+              <div className="w-72 sm:w-84 md:w-96 h-72 sm:h-84 md:h-96 rounded-full bg-gradient-to-tr from-amber-100 via-orange-50 to-[#FAF4EB] p-2 sm:p-3 relative shadow-inner">
                 {/* Golden Crown Doodle over child's head */}
                 <div className="absolute -top-8 sm:-top-9 left-1/2 -translate-x-1/2 z-20 animate-bounce duration-1000">
                   <CrownDoodle className="w-14 h-11" />
@@ -216,9 +216,9 @@ export default function AboutUs() {
                 <span>"it started like every parent's worry…"</span>
               </div>
 
-              {/* Little pink heart doodle */}
+              {/* Little gold heart doodle */}
               <div className="absolute -top-3 left-4">
-                <HeartDoodle className="w-7 h-7 text-pink-500 rotate-[-12deg]" />
+                <HeartDoodle className="w-7 h-7 text-[#C89B58] rotate-[-12deg]" />
               </div>
             </div>
 
@@ -228,8 +228,8 @@ export default function AboutUs() {
                 <span>🌱</span> WHY WE STARTED
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                From our <span className="text-[#13805B]">home</span> to <span className="text-[#FF387A]">yours</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight font-brand-display">
+                From our <span className="text-brand-forest">home</span> to <span className="text-[#C89B58]">yours</span>
               </h2>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -273,8 +273,8 @@ export default function AboutUs() {
                 <span>🛡️</span> BACKED BY EXPERTS
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-                Nutrition you can <span className="text-[#13805B]">trust</span>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight font-brand-display">
+                Nutrition you can <span className="text-brand-forest">trust</span>
               </h2>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -284,7 +284,7 @@ export default function AboutUs() {
               <div className="pt-2">
                 <Link
                   to="/honest-report"
-                  className="inline-flex items-center gap-2 border-2 border-pink-500 hover:bg-pink-50 text-pink-600 font-extrabold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all"
+                  className="inline-flex items-center gap-2 border-2 border-brand-forest hover:bg-[#FAF4EB] text-brand-forest font-extrabold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all"
                 >
                   <span>See Our Honest Reports</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -305,7 +305,7 @@ export default function AboutUs() {
                   <p className="italic text-xs text-slate-700 font-semibold leading-relaxed">
                     "Good food today for a stronger tomorrow"
                   </p>
-                  <p className="text-pink-600 text-xs font-black mt-1">
+                  <p className="text-brand-forest text-xs font-black mt-1">
                     — Dr. Mehta, <span className="text-slate-500 font-medium">Pediatrician</span>
                   </p>
                 </div>
@@ -313,7 +313,7 @@ export default function AboutUs() {
 
               {/* Heart doodle next to doctor */}
               <div className="absolute -bottom-3 -left-3">
-                <HeartDoodle className="w-6 h-6 text-pink-400 rotate-[-10deg]" />
+                <HeartDoodle className="w-6 h-6 text-[#C89B58] rotate-[-10deg]" />
               </div>
             </div>
 
@@ -336,17 +336,17 @@ export default function AboutUs() {
 
       {/* 〰️ SCALLOP DIVIDER 2: Backed by Experts → Stats 〰️ */}
       <div className="container mx-auto max-w-5xl px-4 my-2">
-        <ScallopDivider direction="down" color="text-pink-200/90" />
+        <ScallopDivider direction="down" color="text-[#C89B58]/30" />
       </div>
 
       {/* =========================================================================
           SECTION 5: STATS BANNER - REAL FAMILIES. REAL STORIES. REAL IMPACT.
          ========================================================================= */}
       <section className="container mx-auto max-w-5xl px-4 sm:px-6 my-6">
-        <div className="bg-[#FFF0F3] border border-pink-100 rounded-3xl p-6 sm:p-10 shadow-xs relative overflow-hidden">
+        <div className="bg-[#FAF4EB] border border-[#C89B58]/30 rounded-3xl p-6 sm:p-10 shadow-xs relative overflow-hidden">
           {/* Subtle Ambient Heart Doodle */}
           <div className="absolute -right-4 -bottom-4 opacity-30 pointer-events-none">
-            <HeartDoodle className="w-24 h-24 text-pink-300" />
+            <HeartDoodle className="w-24 h-24 text-[#C89B58]/40" />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center text-center md:text-left">
@@ -409,7 +409,7 @@ export default function AboutUs() {
                 <span>🎨</span> MEET THE PEOPLE
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                The minds &amp; hearts behind <span className="text-[#FF387A]">Little Joys</span><span className="text-[#FF387A]">.</span>
+                The minds &amp; hearts behind <span className="text-[#1F3C24]">Nestor</span><span className="text-[#C89B58]">.</span>
               </h2>
               <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl font-medium">
                 A small but passionate team of parents, doctors, food scientists and dreamers — working together for healthier, happier kids.
@@ -418,7 +418,7 @@ export default function AboutUs() {
 
             <button
               onClick={() => {}}
-              className="inline-flex items-center gap-2 border border-pink-400 text-pink-600 hover:bg-pink-50 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider shrink-0 transition-all self-start sm:self-auto cursor-pointer"
+              className="inline-flex items-center gap-2 border border-[#1F3C24] text-[#1F3C24] hover:bg-[#FAF4EB] px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider shrink-0 transition-all self-start sm:self-auto cursor-pointer"
             >
               <span>Meet Our Team</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -433,7 +433,7 @@ export default function AboutUs() {
                 className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center group"
               >
                 {/* Circular Portrait Image */}
-                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-pink-200 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
+                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#1F3C24]/20 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
                   <img
                     src={member.image}
                     alt={member.name}
@@ -441,7 +441,7 @@ export default function AboutUs() {
                   />
                 </div>
 
-                <h3 className="text-base font-black text-slate-900 leading-tight group-hover:text-pink-600 transition-colors">
+                <h3 className="text-base font-black text-slate-900 leading-tight group-hover:text-[#1F3C24] transition-colors">
                   {member.name}
                 </h3>
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-0.5 mb-3 block">
@@ -500,7 +500,7 @@ export default function AboutUs() {
             <div className="md:col-span-8 md:pl-16 lg:pl-28 text-center  space-y-1">
               <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
                 Join our journey <br className="hidden sm:inline" />
-                towards a <span className="text-[#E11D48]">healthier</span> generation
+                towards a <span className="text-[#C89B58]">healthier</span> generation
               </h2>
 
               <p className="text-slate-600 text-sm sm:text-base text-center font-medium ">
@@ -510,7 +510,7 @@ export default function AboutUs() {
               <div className="pt-5">
                 <Link
                   to="/shop/all"
-                  className="inline-flex items-center gap-2 bg-[#13805B] hover:bg-[#0f6849] text-white font-black px-8 py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-emerald-900/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-[#1F3C24] hover:bg-[#142718] text-white font-black px-8 py-3.5 rounded-full text-xs uppercase tracking-wider shadow-lg shadow-[#1F3C24]/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
                 >
                   <span>Shop Now</span>
                   <ArrowRight className="w-4 h-4" />

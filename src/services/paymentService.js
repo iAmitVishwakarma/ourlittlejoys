@@ -131,16 +131,16 @@ export const paymentService = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || orderData.key_id,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: 'Little Joys',
+        name: 'Nestor',
         description: 'Order Payment - Child Nutrition Essentials',
         order_id: orderData.order_id,
         prefill: {
           name: customerDetails.name || 'Parent',
-          email: customerDetails.email || 'parent@littlejoys.com',
+          email: customerDetails.email || 'parent@nestorbio.com',
           contact: customerDetails.phone || '9999999999'
         },
         theme: {
-          color: '#FF4D7E'
+          color: '#1F3C24'
         },
         handler: async (response) => {
           const verification = await this.verifyPaymentSignature(response);

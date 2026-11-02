@@ -68,11 +68,11 @@ export default function PaymentStep() {
   if (cartItems.length === 0 && !isProcessing && !isSuccess) {
     return (
       <div className="min-h-screen bg-brand-cream py-12 px-4">
-        <SEO title="Checkout - Cart Empty | Little Joys" description="Your shopping cart is currently empty." />
+        <SEO title="Checkout - Cart Empty | Nestor" description="Your shopping cart is currently empty." />
         <div className="container mx-auto max-w-lg text-center bg-white rounded-3xl p-8 border border-orange-100 shadow-sm space-y-4">
           <h1 className="text-xl font-black text-slate-900">Your Cart is Empty</h1>
           <p className="text-xs text-slate-500 font-medium">Please add products to your cart before proceeding.</p>
-          <Link to="/cart" className="inline-block bg-[#13805B] text-white text-xs font-black px-6 py-3 rounded-full uppercase">
+          <Link to="/cart" className="inline-block bg-[#1F3C24] hover:bg-[#142718] text-white text-xs font-black px-6 py-3 rounded-full uppercase transition-colors">
             Go to Cart
           </Link>
         </div>
@@ -127,7 +127,7 @@ export default function PaymentStep() {
 
   return (
     <div className="min-h-screen bg-brand-cream pb-24 md:pb-16">
-      <SEO title="Checkout - Payment Method | Little Joys" description="Complete payment securely for your Little Joys order." />
+      <SEO title="Checkout - Payment Method | Nestor" description="Complete payment securely for your Nestor order." />
       {/* 1. Myntra-Style Step Navigation */}
       <CheckoutStepper currentStep="payment" />
 
@@ -136,7 +136,7 @@ export default function PaymentStep() {
         {/* Selected Address Snapshot Bar (Answers "Maine kaunsa address choose kiya tha?") */}
         <div className="bg-white rounded-3xl p-4 sm:p-5 border border-orange-100 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-start sm:items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-[#13805B] flex items-center justify-center border border-emerald-200 shrink-0">
+            <div className="w-9 h-9 rounded-2xl bg-[#FAF4EB] text-[#1F3C24] flex items-center justify-center border border-[#C89B58]/30 shrink-0">
               <MapPin className="w-4 h-4" />
             </div>
             <div className="text-xs sm:text-sm">
@@ -322,12 +322,12 @@ export default function PaymentStep() {
                 )}
               </div>
 
-              {/* Option 3: Little Joys Wallet */}
+              {/* Option 3: Nestor Wallet */}
               <div
                 onClick={() => setPaymentMethod('WALLET')}
                 className={`p-5 rounded-3xl border-2 transition-all cursor-pointer ${
                   paymentMethod === 'WALLET'
-                    ? 'border-[#13805B] bg-emerald-50/40 shadow-xs ring-2 ring-[#13805B]/15'
+                    ? 'border-[#1F3C24] bg-[#FAF4EB] shadow-xs ring-2 ring-[#1F3C24]/15'
                     : 'border-slate-200 bg-white hover:border-slate-300 shadow-2xs'
                 }`}
               >
@@ -342,8 +342,8 @@ export default function PaymentStep() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <Wallet className="w-4 h-4 text-[#FF2F92]" />
-                      <span className="text-sm font-black text-slate-900">Little Joys Wallet</span>
+                      <Wallet className="w-4 h-4 text-[#1F3C24]" />
+                      <span className="text-sm font-black text-slate-900">Nestor Wallet</span>
                     </div>
                   </div>
 
@@ -355,7 +355,7 @@ export default function PaymentStep() {
                 {paymentMethod === 'WALLET' && (
                   <div className="mt-3 pt-3 border-t border-emerald-100 flex items-center justify-between text-xs font-bold text-slate-600">
                     <span>1-Tap Instant Checkout with Parenting Credits</span>
-                    <Link to="/wallet-recharge" className="text-[#FF2F92] hover:underline">
+                    <Link to="/wallet-recharge" className="text-[#1F3C24] hover:text-[#C89B58] hover:underline">
                       Recharge for 30% Bonus →
                     </Link>
                   </div>

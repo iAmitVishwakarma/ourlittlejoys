@@ -100,7 +100,7 @@ export default function ProfileDetailsTab({
       <div className="bg-white rounded-3xl p-6 border border-orange-100/90 shadow-2xs space-y-4">
         <div className="flex items-center justify-between border-b border-orange-100/60 pb-3.5">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-pink-600 block">
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#C89B58] block">
               Personal Account
             </span>
             <h3 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
@@ -117,9 +117,9 @@ export default function ProfileDetailsTab({
           {!isEditing && (
             <button
               onClick={handleStartEdit}
-              className="text-xs font-black text-[#FF2F92] bg-pink-50/80 px-3.5 py-1.5 rounded-xl border border-pink-200 shadow-2xs hover:bg-pink-100 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="text-xs font-black text-[#1F3C24] bg-[#FAF4EB] px-3.5 py-1.5 rounded-xl border border-[#C89B58]/30 shadow-2xs hover:bg-[#F3EAD9] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <Edit2 className="w-3.5 h-3.5" />
+              <Edit2 className="w-3.5 h-3.5 text-[#1F3C24]" />
               <span>Edit Details &rarr;</span>
             </button>
           )}
@@ -149,7 +149,7 @@ export default function ProfileDetailsTab({
                 Email Address
               </span>
               <span className="text-slate-900 font-black text-sm">
-                {userEmail || 'parent@littlejoys.com'}
+                {userEmail || 'parent@nestorbio.com'}
               </span>
             </div>
           </div>
@@ -178,7 +178,7 @@ export default function ProfileDetailsTab({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Amit Vishwakarma"
-                  className="w-full text-xs font-bold px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  className="w-full text-xs font-bold px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24] transition-colors"
                   required
                 />
               </div>
@@ -191,7 +191,7 @@ export default function ProfileDetailsTab({
                 >
                   Mobile Number <span className="text-rose-500">*</span>
                 </label>
-                <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-pink-500 bg-white transition-colors">
+                <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-[#1F3C24] bg-white transition-colors">
                   <span className="px-3 text-xs font-bold text-slate-500 border-r border-slate-200 bg-slate-50">
                     +91
                   </span>
@@ -222,7 +222,7 @@ export default function ProfileDetailsTab({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="parent@example.com"
-                  className="w-full text-xs font-bold px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  className="w-full text-xs font-bold px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24] transition-colors"
                   required
                 />
               </div>
@@ -241,7 +241,7 @@ export default function ProfileDetailsTab({
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-5 py-2 bg-[#FF2F92] hover:bg-pink-600 text-white text-xs font-black rounded-xl shadow-xs transition-all active:scale-98 cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2 bg-[#1F3C24] hover:bg-[#142718] text-white text-xs font-black rounded-xl shadow-xs transition-all active:scale-98 cursor-pointer flex items-center gap-1.5"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span>{isSaving ? 'Saving...' : 'Save Parent Profile'}</span>
@@ -266,7 +266,7 @@ export default function ProfileDetailsTab({
               <span className="font-bold text-slate-800 block">WhatsApp Order Tracking</span>
               <span className="text-slate-400 text-[11px]">Receive live dispatch &amp; out-for-delivery alerts.</span>
             </div>
-            <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-600" />
+            <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#1F3C24]" />
           </div>
 
           <div className="pt-3 flex items-center justify-between">
@@ -274,7 +274,7 @@ export default function ProfileDetailsTab({
               <span className="font-bold text-slate-800 block">Weekly Pediatric Nutrition Tips</span>
               <span className="text-slate-400 text-[11px]">Bite-sized growth roadmap tailored to {childName || 'your child'}'s age.</span>
             </div>
-            <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-600" />
+            <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#1F3C24]" />
           </div>
 
           <div className="pt-3 flex items-center justify-between">
@@ -282,13 +282,13 @@ export default function ProfileDetailsTab({
               <span className="font-bold text-slate-800 block">Birthday Surprise Cash (₹200)</span>
               <span className="text-slate-400 text-[11px]">Automatic wallet credit on {childName || 'your child'}'s birthday month.</span>
             </div>
-            <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-600" />
+            <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#1F3C24]" />
           </div>
         </div>
 
         <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
           <span className="text-slate-500">Need help with your account?</span>
-          <Link to="/contact" className="text-[#FF2F92] font-black hover:underline">
+          <Link to="/contact" className="text-[#1F3C24] hover:text-[#C89B58] font-black hover:underline">
             Contact Support &rarr;
           </Link>
         </div>

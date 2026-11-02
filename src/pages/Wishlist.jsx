@@ -82,15 +82,15 @@ export default function Wishlist() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-cream pb-24 pt-4 md:pt-6 font-sans selection:bg-pink-100 selection:text-pink-600">
+    <div className="min-h-screen bg-brand-cream pb-24 pt-4 md:pt-6 font-sans selection:bg-[#FAF4EB] selection:text-[#B38644]">
       <SEO
-        title={`My Wishlist (${wishlistItems.length}) | Little Joys`}
-        description="View and manage your saved Little Joys pediatric nutrition powders, gummies, and healthy treats."
+        title={`My Wishlist (${wishlistItems.length}) | Nestor`}
+        description="View and manage your saved Nestor pediatric nutrition powders, gummies, and healthy treats."
       />
 
       {/* Floating Animated Feedback Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 animate-bounce max-w-md bg-white border border-pink-200 shadow-xl rounded-2xl p-4 flex items-start gap-3">
+        <div className="fixed bottom-6 right-6 z-50 animate-bounce max-w-md bg-white border border-brand-border shadow-xl rounded-2xl p-4 flex items-start gap-3">
           <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
             <CheckCircle2 className="w-5 h-5" />
           </div>
@@ -102,7 +102,7 @@ export default function Wishlist() {
           </div>
           <Link
             to="/cart"
-            className="text-[11px] font-extrabold text-[#FF2F92] hover:underline shrink-0 bg-pink-50 px-2.5 py-1 rounded-lg border border-pink-100"
+            className="text-[11px] font-extrabold text-[#C89B58] hover:underline shrink-0 bg-[#FAF4EB] px-2.5 py-1 rounded-lg border border-[#C89B58]/30"
           >
             View Cart &rarr;
           </Link>
@@ -119,7 +119,7 @@ export default function Wishlist() {
       <div className="container mx-auto px-4 md:px-6 max-w-6xl space-y-6">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-bold text-slate-500">
-          <Link to="/" className="hover:text-pink-600 transition-colors">
+          <Link to="/" className="hover:text-[#1F3C24] transition-colors">
             Home
           </Link>
           <span>/</span>
@@ -128,7 +128,7 @@ export default function Wishlist() {
 
         {/* Wishlist Header Banner */}
         <div className="relative bg-white rounded-3xl p-6 sm:p-8 border border-orange-100/90 shadow-2xs overflow-hidden">
-          <div className="absolute -top-3 -right-3 text-pink-100/60 pointer-events-none">
+          <div className="absolute -top-3 -right-3 text-emerald-100/60 pointer-events-none">
             <HeartDoodle className="w-24 h-24" />
           </div>
           <div className="absolute bottom-2 left-1/3 text-amber-200/40 pointer-events-none hidden sm:block">
@@ -138,14 +138,14 @@ export default function Wishlist() {
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2.5 mb-1.5">
-                <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-[#FF2F92] bg-pink-50 px-2.5 py-0.5 rounded-full border border-pink-100">
+                <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-[#C89B58] bg-[#FAF4EB] px-2.5 py-0.5 rounded-full border border-[#C89B58]/30">
                   <Sparkles className="w-3 h-3" />
                   Saved Favorites
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3 font-brand-display">
                 <span>My Wishlist</span>
-                <span className="text-sm sm:text-base font-bold text-slate-500 bg-slate-100 px-3 py-0.5 rounded-full">
+                <span className="text-sm sm:text-base font-bold text-slate-500 bg-slate-100 px-3 py-0.5 rounded-full font-sans">
                   {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"}
                 </span>
               </h1>
@@ -158,7 +158,7 @@ export default function Wishlist() {
               <div className="flex items-center gap-2.5 shrink-0 pt-2 sm:pt-0">
                 <button
                   onClick={handleMoveAllToBag}
-                  className="bg-[#FF2F92] hover:bg-pink-600 text-white text-xs font-black px-4 py-2.5 rounded-2xl shadow-xs transition-all active:scale-98 flex items-center gap-2 cursor-pointer"
+                  className="bg-[#1F3C24] hover:bg-[#142718] text-white text-xs font-black px-4 py-2.5 rounded-2xl shadow-xs transition-all active:scale-98 flex items-center gap-2 cursor-pointer"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   <span>Move All to Bag</span>
@@ -178,11 +178,11 @@ export default function Wishlist() {
         {wishlistItems.length === 0 ? (
           /* Empty State */
           <div className="bg-white rounded-3xl p-10 sm:p-14 text-center border border-orange-100 shadow-2xs space-y-4 max-w-xl mx-auto my-8">
-            <div className="w-20 h-20 mx-auto rounded-3xl bg-pink-50 border border-pink-100 flex items-center justify-center text-3xl shadow-xs">
+            <div className="w-20 h-20 mx-auto rounded-3xl bg-[#FAF4EB] border border-[#C89B58]/30 flex items-center justify-center text-3xl shadow-xs">
               ❤️
             </div>
             <div className="space-y-1.5">
-              <h2 className="text-lg sm:text-xl font-black text-slate-900">
+              <h2 className="text-lg sm:text-xl font-black text-slate-900 font-brand-display">
                 Your wishlist is empty
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
@@ -192,7 +192,7 @@ export default function Wishlist() {
             <div className="pt-3">
               <Link
                 to="/shop/all"
-                className="inline-flex items-center gap-2 bg-[#FF2F92] hover:bg-pink-600 text-white text-xs sm:text-sm font-black px-6 py-3 rounded-2xl shadow-sm transition-all active:scale-98"
+                className="inline-flex items-center gap-2 bg-[#1F3C24] hover:bg-[#142718] text-white text-xs sm:text-sm font-black px-6 py-3 rounded-2xl shadow-sm transition-all active:scale-98"
               >
                 <span>Explore Products</span>
                 <ArrowRight className="w-4 h-4" />
@@ -211,7 +211,7 @@ export default function Wishlist() {
               return (
                 <div
                   key={itemId}
-                  className="group bg-white rounded-3xl p-4 border border-orange-100/90 shadow-2xs hover:shadow-md hover:border-pink-200 transition-all flex flex-col justify-between"
+                  className="group bg-white rounded-3xl p-4 border border-orange-100/90 shadow-2xs hover:shadow-md hover:border-[#C89B58]/40 transition-all flex flex-col justify-between"
                 >
                   {/* Visual & Badges */}
                   <div className="relative">
@@ -254,13 +254,13 @@ export default function Wishlist() {
                   <div className="pt-3 pb-2 flex-1 flex flex-col justify-between">
                     <div>
                       {item.tag && (
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-pink-600 block mb-0.5">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#C89B58] block mb-0.5">
                           {item.tag}
                         </span>
                       )}
                       <Link
                         to={productPath}
-                        className="text-xs sm:text-sm font-black text-slate-800 hover:text-pink-600 transition-colors line-clamp-2"
+                        className="text-xs sm:text-sm font-black text-slate-800 hover:text-[#1F3C24] transition-colors line-clamp-2"
                       >
                         {item.title || item.name}
                       </Link>
@@ -290,7 +290,7 @@ export default function Wishlist() {
                   <div className="pt-2 border-t border-slate-100/80">
                     <button
                       onClick={() => handleMoveToBag(item)}
-                      className="w-full bg-[#FF2F92] hover:bg-pink-600 active:scale-98 text-white font-extrabold text-xs py-2.5 px-3 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full bg-[#1F3C24] hover:bg-[#142718] active:scale-98 text-white font-extrabold text-xs py-2.5 px-3 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <ShoppingCart className="w-3.5 h-3.5" />
                       <span>Move to Bag</span>
@@ -314,7 +314,7 @@ export default function Wishlist() {
 
           <Link
             to="/profile"
-            className="font-bold text-pink-600 hover:underline"
+            className="font-bold text-[#C89B58] hover:text-[#B38644] hover:underline"
           >
             Go to My Profile &rarr;
           </Link>

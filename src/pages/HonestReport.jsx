@@ -68,7 +68,7 @@ export default function HonestReport() {
   const faqs = [
     {
       q: "How accredited is the Lab where it is tested?",
-      a: "All Little Joys batches are tested exclusively at NABL (National Accreditation Board for Testing and Calibration Laboratories) accredited independent third-party laboratories such as Equinox Labs and Eurofins India, compliant with ISO/IEC 17025."
+      a: "All Nestor batches are tested exclusively at NABL (National Accreditation Board for Testing and Calibration Laboratories) accredited independent third-party laboratories such as Equinox Labs and Eurofins India, compliant with ISO/IEC 17025."
     },
     {
       q: "Are these reports verified by an independent lab?",
@@ -95,10 +95,10 @@ export default function HonestReport() {
   return (
     <div className="bg-brand-cream min-h-screen pb-28 sm:pb-20 font-sans">
       <SEO 
-        title="Nutrimix Honest Lab Reports | Verified NABL Third-Party Testing"
-        description="View independent NABL lab test results for Little Joys batches. Certified heavy-metal safe, 100% protein assay verified, 0% refined sugar."
-        keywords="NABL lab reports, Little Joys test results, heavy metal test kids nutrition, honest nutrition certificate"
-        canonical="https://ourlittlejoys.com/honest-report"
+        title="Nutrimix Honest Lab Reports | Verified NABL Third-Party Testing | Nestor"
+        description="View independent NABL lab test results for Nestor batches. Certified heavy-metal safe, 100% protein assay verified, 0% refined sugar."
+        keywords="NABL lab reports, Nestor test results, heavy metal test kids nutrition, honest nutrition certificate"
+        canonical="https://nestorbio.com/honest-report"
       />
       
       {/* 1. Hero Section - What? Why? How? */}
@@ -121,12 +121,12 @@ export default function HonestReport() {
               </span>
             </div>
             
-            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight font-brand-display">
               Nutrimix Honest Reports
             </h1>
             
             <div className="flex flex-col gap-1.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-pink-400">Why We Test?</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#C89B58]">Why We Test?</span>
               <p className="text-sm sm:text-base md:text-lg text-slate-300 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 Because your child's health deserves complete transparency. We test every single batch at independent NABL-accredited labs before release.
               </p>
@@ -144,7 +144,7 @@ export default function HonestReport() {
                   <span className="text-xs sm:text-sm font-semibold text-slate-200">Verified Nutrition</span>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-xl border border-white/10 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-pink-400 shrink-0" />
+                  <Sparkles className="w-4 h-4 text-[#C89B58] shrink-0" />
                   <span className="text-xs sm:text-sm font-semibold text-slate-200">Zero Heavy Metals</span>
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function HonestReport() {
           {/* Visual Content */}
           <div className="lg:w-2/5 flex justify-center lg:justify-end relative mt-4 lg:mt-0">
              <div className="relative w-56 h-56 sm:w-68 sm:h-68 md:w-80 md:h-80">
-                <div className="absolute inset-0 bg-linear-to-br from-pink-500/20 to-orange-500/20 rounded-full blur-2xl animate-pulse" />
+                <div className="absolute inset-0 bg-linear-to-br from-[#1F3C24]/20 to-[#C89B58]/20 rounded-full blur-2xl animate-pulse" />
                 <div className="absolute inset-2 sm:inset-4 bg-white/10 border border-white/20 backdrop-blur-xl rounded-4xl flex items-center justify-center shadow-2xl p-3">
                     <ResponsiveImage 
                       src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80" 
@@ -329,7 +329,7 @@ export default function HonestReport() {
                 <button
                   onClick={handleDownloadPdf}
                   aria-label="Download Official NABL Lab Certificate PDF"
-                  className="w-full sm:w-auto bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 text-xs font-bold px-4 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer min-h-10"
+                  className="w-full sm:w-auto bg-[#FAF4EB] hover:bg-[#F3EAD9] text-[#1F3C24] border border-[#C89B58]/30 text-xs font-bold px-4 py-2 sm:py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer min-h-10"
                 >
                   <Download className="w-4 h-4 shrink-0" />
                   <span>Download Original PDF</span>
@@ -482,11 +482,11 @@ export default function HonestReport() {
       {/* FAQs Section */}
       <section className="container mx-auto max-w-3xl px-3.5 sm:px-4 md:px-6 mb-12 sm:mb-16">
         <div className="text-center mb-6 sm:mb-10">
-          <div className="inline-flex items-center gap-1.5 text-pink-500 font-bold text-xs uppercase tracking-wider mb-2">
-            <HelpCircle className="w-4 h-4" />
+          <div className="inline-flex items-center gap-1.5 text-[#1F3C24] font-bold text-xs uppercase tracking-wider mb-2">
+            <HelpCircle className="w-4 h-4 text-[#C89B58]" />
             <span>Have Concerns?</span>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 font-brand-display">
             Commonly Asked Questions
           </h2>
         </div>
@@ -495,17 +495,17 @@ export default function HonestReport() {
           {faqs.map((faq, idx) => (
             <div
               key={idx}
-              className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${openFaq === idx ? 'border-pink-200 shadow-md shadow-pink-100/50' : 'border-slate-200 hover:border-slate-300'}`}
+              className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${openFaq === idx ? 'border-[#1F3C24]/30 shadow-md shadow-[#1F3C24]/10' : 'border-slate-200 hover:border-slate-300'}`}
             >
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                 aria-expanded={openFaq === idx}
-                className="w-full text-left px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 hover:text-pink-600 transition-colors cursor-pointer"
+                className="w-full text-left px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 hover:text-[#1F3C24] transition-colors cursor-pointer"
               >
                 <span className="pr-4 sm:pr-8 leading-snug">{faq.q}</span>
-                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${openFaq === idx ? 'bg-pink-50' : 'bg-slate-50'}`}>
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${openFaq === idx ? 'bg-[#FAF4EB]' : 'bg-slate-50'}`}>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 ${openFaq === idx ? 'rotate-180 text-pink-500' : 'text-slate-400'}`}
+                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 ${openFaq === idx ? 'rotate-180 text-[#1F3C24]' : 'text-slate-400'}`}
                   />
                 </div>
               </button>
@@ -533,7 +533,7 @@ export default function HonestReport() {
             <span className="text-[11px] sm:text-xs">NABL Accredited</span>
           </div>
           <div className="flex items-center gap-2 bg-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-slate-200 shadow-2xs">
-            <Sparkles className="w-4 h-4 text-pink-500 shrink-0" />
+            <Sparkles className="w-4 h-4 text-[#C89B58] shrink-0" />
             <span className="text-[11px] sm:text-xs">ISO 22000 Certified</span>
           </div>
         </div>

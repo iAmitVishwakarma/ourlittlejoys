@@ -33,7 +33,7 @@ export const HERO_SLIDES = [
     reviewCount: "3,890+",
     ctaText: "Explore Gummies",
     ctaLink: "/product/multivitamin-gummies",
-    theme: "pink"
+    theme: "gold"
   },
   {
     id: "slide-3",

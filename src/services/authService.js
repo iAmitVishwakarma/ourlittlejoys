@@ -381,7 +381,7 @@ export const authService = {
         success: true,
         user: safeUser,
         token,
-        message: 'Account created successfully! ₹200 welcome bonus added to your Little Joys Wallet.'
+        message: 'Account created successfully! ₹200 welcome bonus added to your Nestor Wallet.'
       };
     } catch (err) {
       console.warn('[authService] signupUser error:', err.message);

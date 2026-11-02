@@ -27,11 +27,11 @@ export default function Button({
   };
 
   const variantStyles = {
-    primary: 'bg-[#13805B] hover:bg-[#0E6346] text-white shadow-md shadow-[#13805B]/20 active:scale-97',
-    secondary: 'bg-[#FF2F92] hover:bg-[#E01E7E] text-white shadow-md shadow-[#FF2F92]/20 active:scale-97',
-    outline: 'border-2 border-slate-200 hover:border-slate-300 text-slate-700 bg-white hover:bg-slate-50',
-    ghost: 'text-slate-600 hover:text-slate-900 hover:bg-slate-100',
-    mint: 'bg-emerald-50 text-[#13805B] hover:bg-emerald-100 border border-emerald-200'
+    primary: 'bg-[#1F3C24] hover:bg-[#142718] text-white shadow-md shadow-[#1F3C24]/20 active:scale-97',
+    secondary: 'bg-[#C89B58] hover:bg-[#B38644] text-white shadow-md shadow-[#C89B58]/25 active:scale-97',
+    outline: 'border-2 border-slate-200 hover:border-[#1F3C24] text-slate-700 hover:text-[#1F3C24] bg-white hover:bg-[#F2F7F2]',
+    ghost: 'text-slate-600 hover:text-[#1F3C24] hover:bg-slate-100',
+    mint: 'bg-[#F2F7F2] text-[#1F3C24] hover:bg-[#DDECDD] border border-emerald-200'
   };
 
   const widthStyle = fullWidth ? 'w-full' : '';

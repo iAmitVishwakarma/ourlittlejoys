@@ -23,9 +23,9 @@ export default function AddressesTab({
         </div>
         <button
           onClick={() => setIsAddingAddress(true)}
-          className="text-xs font-black text-[#FF2F92] bg-pink-50 hover:bg-pink-100 px-3.5 py-2 rounded-xl border border-pink-200 transition-colors flex items-center gap-1.5"
+          className="text-xs font-black text-[#1F3C24] bg-[#FAF4EB] hover:bg-[#F3EAD9] px-3.5 py-2 rounded-xl border border-[#C89B58]/30 transition-colors flex items-center gap-1.5"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 text-[#1F3C24]" />
           <span>+ Add Address</span>
         </button>
       </div>
@@ -34,11 +34,11 @@ export default function AddressesTab({
         {addresses.map((addr) => (
           <div
             key={addr.id}
-            className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xs border-2 border-pink-300 relative space-y-3"
+            className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xs border-2 border-[#1F3C24]/20 relative space-y-3"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-black bg-[#FF2F92] text-white px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-black bg-[#1F3C24] text-white px-2.5 py-0.5 rounded-full">
                   {addr.label || 'HOME'}
                 </span>
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
@@ -47,7 +47,7 @@ export default function AddressesTab({
               </div>
               <button 
                 onClick={() => showToast && showToast("Edit address mode enabled")}
-                className="text-xs font-bold text-slate-400 hover:text-pink-600"
+                className="text-xs font-bold text-slate-400 hover:text-[#1F3C24]"
               >
                 Edit
               </button>
@@ -70,7 +70,7 @@ export default function AddressesTab({
       </div>
 
       {isAddingAddress && (
-        <div className="bg-white rounded-3xl p-6 border border-pink-200 shadow-sm space-y-4">
+        <div className="bg-white rounded-3xl p-6 border border-[#C89B58]/30 shadow-sm space-y-4">
           <h3 className="text-sm font-black text-slate-900">Add New Shipping Address</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div>
@@ -130,7 +130,7 @@ export default function AddressesTab({
             </button>
             <button
               onClick={onSaveAddress}
-              className="px-5 py-2 bg-[#FF2F92] text-white text-xs font-black rounded-xl shadow-xs"
+              className="px-5 py-2 bg-[#1F3C24] hover:bg-[#142718] text-white text-xs font-black rounded-xl shadow-xs transition-colors"
             >
               Save Address
             </button>

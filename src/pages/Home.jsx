@@ -110,7 +110,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       subtitle: '12 Essential Vitamins',
       link: '/shop/gummies',
       icon: GummiesCategorySVG,
-      bg: 'bg-gradient-to-b from-pink-50/90 to-white border-pink-200/90 hover:border-pink-400',
+      bg: 'bg-gradient-to-b from-[#FAF4EB] to-white border-[#C89B58]/30 hover:border-[#C89B58]',
       badge: 'ZERO SUGAR'
     },
     {
@@ -176,7 +176,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
   // FAQ list with clear, high-contrast answers
   const faqs = [
     {
-      q: "What age group is Little Joys Nutrimix suitable for?",
+      q: "What age group is Nestor Nutrimix suitable for?",
       a: "Our Nutrimix powders are calibrated for toddlers & growing kids (aged 2 to 6 years, and 7-12 years). Each serving delivers 100% of the daily RDA of essential vitamins, minerals, calcium, and iron recommended by the Indian Council of Medical Research (ICMR)."
     },
     {
@@ -185,7 +185,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
     },
     {
       q: "Are the gummies safe for daily consumption?",
-      a: "Yes! Little Joys Multivitamin and Brain DHA Gummies are gelatin-free, 100% vegetarian pectin-based, and designed specifically for daily nutritional support without stressing young digestive systems."
+      a: "Yes! Nestor Multivitamin and Brain DHA Gummies are gelatin-free, 100% vegetarian pectin-based, and designed specifically for daily nutritional support without stressing young digestive systems."
     },
     {
       q: "How can I verify the lab test reports for heavy metals?",
@@ -211,10 +211,10 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
     <div className="bg-brand-cream min-h-screen pb-20 sm:pb-16">
       {/* Dynamic Programmatic SEO & Structured Data */}
       <SEO
-        title="Little Joys | Expert-Formulated Nutrition & Wellness For Kids"
-        description="India's #1 Pediatrician-backed nutrition brand for kids. Shop Nutrimix sprouted millets, 12 essential multivitamin gummies, brain health kits & clean treats with zero refined sugar."
-        keywords="kids nutrition, sprouted millets, multivitamin gummies for kids, pediatric nutrition India, children health drink, clean ragi chocolate drink, Little Joys"
-        canonical="https://ourlittlejoys.com/"
+        title="Nestor | Nourishing Brighter Tomorrows - Pediatrician-Backed Nutrition"
+        description="Pediatrician-formulated clean nutrition, sprouted superfoods, essential gummies & whole-food organic wellness crafted for children's brighter tomorrows. Zero refined sugar."
+        keywords="Nestor nutrition, kids nutrition, sprouted millets, organic wellness, multivitamin gummies, pediatric nutrition India, clean ragi chocolate drink, Nestor"
+        canonical="https://nestorbio.com/"
         schemaData={{
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -231,7 +231,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
 
       {/* Primary Semantic H1 for SEO & Screen Readers */}
       <h1 className="sr-only">
-        Little Joys - Expert-Formulated Pediatric Nutrition &amp; Daily Wellness For Kids
+        Nestor - Expert-Formulated Pediatric Nutrition &amp; Daily Wellness For Kids
       </h1>
 
       {/* 1. HERO SLIDER SECTION (PREMIUM EDITORIAL HERO POWERED BY SWIPER.JS) */}
@@ -271,8 +271,8 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
             >
               {slides.map((slide, idx) => (
                 <SwiperSlide key={slide.id || idx}>
-                  <div className="w-full bg-linear-to-br from-[#FFFDF9] via-[#FFF0F7] to-brand-primary-50 py-5 sm:py-8 md:py-12 px-3.5 sm:px-8 md:px-14 relative overflow-hidden">
-                    {/* Subtle Little Joys Doodles */}
+                  <div className="w-full bg-linear-to-br from-[#FFFDF9] via-[#FAF4EB] to-brand-primary-50 py-5 sm:py-8 md:py-12 px-3.5 sm:px-8 md:px-14 relative overflow-hidden">
+                    {/* Subtle Nestor Organic Doodles */}
                     <SunDoodle className="w-7 h-7 sm:w-9 sm:h-9 text-amber-400/70 absolute -top-1 -right-1 sm:top-3 sm:right-6 pointer-events-none" />
                     <RainbowDoodle className="w-8 h-5 text-rose-300/60 opacity-60 absolute top-4 left-6 sm:left-8 pointer-events-none hidden sm:block" />
                     <StarDoodle className="w-3.5 h-3.5 text-amber-400/60 absolute bottom-6 right-1/2 pointer-events-none hidden lg:block" />
@@ -294,7 +294,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
                           {slide.title}<br />
                           <span className="text-brand-primary relative inline-block">
                             {slide.highlight}
-                            <WavyUnderline className="w-20 sm:w-24 h-1.5 text-pink-300/80 absolute -bottom-1 left-0 pointer-events-none" />
+                            <WavyUnderline className="w-20 sm:w-24 h-1.5 text-[#C89B58] absolute -bottom-1 left-0 pointer-events-none" />
                           </span>
                         </h2>
 
@@ -500,7 +500,7 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
               <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
                 <span>Top-Selling Favourites</span>
               </h2>
-              <WavyUnderline className="w-32 h-2.5 text-pink-300 mt-1" />
+              <WavyUnderline className="w-32 h-2.5 text-[#C89B58] mt-1" />
             </div>
 
             {/* Category Filter Pills */}
@@ -721,10 +721,10 @@ export default function Home({ onAddToCart, cartItems = [], onUpdateCartQuantity
       <div className="container mx-auto max-w-6xl px-4 my-2">
         <ScallopDivider 
           direction="up" 
-          color="text-pink-300/80" 
+          color="text-[#C89B58]/30" 
           centerBadge={
-            <div className="flex items-center gap-1.5 text-[11px] font-black text-brand-berry bg-white px-3.5 py-0.5 rounded-full border border-pink-200/80 shadow-2xs">
-              <HeartDoodle className="w-3.5 h-3.5 text-brand-berry" />
+            <div className="flex items-center gap-1.5 text-[11px] font-black text-[#1F3C24] bg-white px-3.5 py-0.5 rounded-full border border-[#C89B58]/30 shadow-2xs">
+              <HeartDoodle className="w-3.5 h-3.5 text-[#C89B58]" />
               <span>Real Stories From Real Parents</span>
             </div>
           } 

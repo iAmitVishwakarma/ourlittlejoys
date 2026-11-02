@@ -20,16 +20,16 @@ export function FAQPage() {
 
   const faqs = [
     {
-      q: "What age groups are Little Joys products suitable for?",
+      q: "What age groups are Nestor products suitable for?",
       a: "Our products are specifically formulated by pediatricians for different growth stages: Nutrimix is ideal for children aged 2–6 years, while our Gummies are recommended for children aged 4+ years. We also have specialized blends for teens and mothers."
     },
     {
-      q: "Are Little Joys products 100% natural and free from white sugar?",
+      q: "Are Nestor products 100% natural and free from white sugar?",
       a: "Yes, absolutely! We do not use any refined white sugar, artificial syrups, maltodextrin, or preservatives. Our Nutrimix is sweetened naturally with organic Dhampur jaggery, and our gummies are made from citrus pectin and real fruit pulp."
     },
     {
-      q: "How does the LJ Wallet work and how do I save 30%?",
-      a: "LJ Wallet is our exclusive prepaid parenting credit. When you recharge your wallet with any of our bonus packs (₹1,000, ₹2,000, or ₹3,000), you receive up to 30% extra cashback immediately credited to your balance, which applies automatically at checkout!"
+      q: "How does the Nestor Wallet work and how do I save 30%?",
+      a: "Nestor Wallet is our exclusive prepaid parenting credit. When you recharge your wallet with any of our bonus packs (₹1,000, ₹2,000, or ₹3,000), you receive up to 30% extra cashback immediately credited to your balance, which applies automatically at checkout!"
     },
     {
       q: "Can I review the lab test reports for my product batch?",
@@ -37,22 +37,22 @@ export function FAQPage() {
     },
     {
       q: "What is your return & replacement policy?",
-      a: "If your order arrives damaged, missing items, or expired, we provide an instant 100% free replacement or full refund to your LJ Wallet or original payment method within 7 days of delivery."
+      a: "If your order arrives damaged, missing items, or expired, we provide an instant 100% free replacement or full refund to your Nestor Wallet or original payment method within 7 days of delivery."
     }
   ];
 
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-8">
       <SEO 
-        title="Frequently Asked Questions | Little Joys"
+        title="Frequently Asked Questions | Nestor"
         description="Everything you need to know about our clean ingredients, doctor formulations, shipping, and wallet savings."
       />
       <div className="container mx-auto px-4 md:px-6 max-w-4xl">
         <div className="text-center space-y-3 mb-10">
-          <span className="text-xs font-black uppercase tracking-widest text-pink-600 bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
+          <span className="text-xs font-black uppercase tracking-widest text-[#C89B58] bg-[#FAF4EB] px-3 py-1 rounded-full border border-[#C89B58]/30">
             Parent Support Center
           </span>
-          <h1 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight font-brand-display">
             Frequently Asked Questions
           </h1>
           <p className="text-sm text-slate-500 max-w-lg mx-auto">
@@ -73,14 +73,14 @@ export function FAQPage() {
                 className="w-full flex items-center justify-between gap-4 text-left min-h-[44px]"
               >
                 <h2 className="text-sm md:text-base font-black text-slate-800 flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-xl bg-pink-50 text-pink-600 font-bold flex items-center justify-center text-xs shrink-0">
+                  <span className="w-7 h-7 rounded-xl bg-[#F2F7F2] text-[#1F3C24] font-bold flex items-center justify-center text-xs shrink-0">
                     Q{idx + 1}
                   </span>
                   <span>{faq.q}</span>
                 </h2>
                 <ChevronDown
                   className={`w-5 h-5 text-slate-400 transition-transform shrink-0 ${
-                    openIdx === idx ? 'rotate-180 text-pink-600' : ''
+                    openIdx === idx ? 'rotate-180 text-[#1F3C24]' : ''
                   }`}
                 />
               </button>
@@ -103,15 +103,15 @@ export function ContactPage() {
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-8">
       <SEO 
-        title="Contact Pediatric Nutrition Team | Little Joys"
-        description="Reach out to Little Joys pediatric nutrition team for guidance on child diet, order help, and customer support."
+        title="Contact Pediatric Nutrition Team | Nestor"
+        description="Reach out to Nestor pediatric nutrition team for guidance on child diet, order help, and customer support."
       />
       <div className="container mx-auto px-4 md:px-6 max-w-4xl">
         <div className="text-center space-y-3 mb-10">
-          <span className="text-xs font-black uppercase tracking-widest text-pink-600 bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
+          <span className="text-xs font-black uppercase tracking-widest text-[#C89B58] bg-[#FAF4EB] px-3 py-1 rounded-full border border-[#C89B58]/30">
             We Are Here For You
           </span>
-          <h1 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight font-brand-display">
             Contact Our Nutrition Team
           </h1>
           <p className="text-sm text-slate-500 max-w-lg mx-auto">
@@ -123,16 +123,16 @@ export function ContactPage() {
           {/* Contact Details (5 cols) */}
           <div className="md:col-span-5 space-y-4">
             <div className="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 space-y-4">
-              <h2 className="text-base font-black text-slate-800">Support Channels</h2>
+              <h2 className="text-base font-black text-slate-800 font-brand-display">Support Channels</h2>
               
               <div className="flex items-start gap-3 text-xs">
-                <div className="w-9 h-9 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[#F2F7F2] text-[#1F3C24] flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <span className="text-slate-400 font-bold block">Email Us</span>
-                  <a href="mailto:care@ourlittlejoys.com" className="font-bold text-slate-800 hover:text-pink-600">
-                    care@ourlittlejoys.com
+                  <a href="mailto:care@nestorbio.com" className="font-bold text-slate-800 hover:text-[#1F3C24]">
+                    care@nestorbio.com
                   </a>
                   <p className="text-[11px] text-slate-400">Response within 24 business hours</p>
                 </div>
@@ -188,7 +188,7 @@ export function ContactPage() {
                         type="text"
                         required
                         placeholder="e.g. Pooja Sharma"
-                        className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500"
+                        className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24]"
                       />
                     </div>
                     <div>
@@ -198,7 +198,7 @@ export function ContactPage() {
                         type="tel"
                         required
                         placeholder="10-digit number"
-                        className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500"
+                        className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24]"
                       />
                     </div>
                   </div>
@@ -209,7 +209,7 @@ export function ContactPage() {
                       id="contact-subject"
                       type="text"
                       placeholder="e.g. Question regarding Nutrimix age recommendations"
-                      className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500"
+                      className="w-full font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24]"
                     />
                   </div>
 
@@ -220,13 +220,13 @@ export function ContactPage() {
                       rows={4}
                       required
                       placeholder="Tell us how we can help..."
-                      className="w-full font-medium px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-pink-500"
+                      className="w-full font-medium px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#1F3C24]"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3 rounded-xl shadow-md transition-all active:scale-98 text-sm min-h-[44px]"
+                    className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3 rounded-xl shadow-md transition-all active:scale-98 text-sm min-h-[44px]"
                   >
                     Send Message
                   </button>
@@ -244,14 +244,14 @@ export function LegalPage({ title, lastUpdated = "September 2026", content }) {
   return (
     <div className="min-h-screen bg-[#FFF9F5] pb-24 pt-8">
       <SEO 
-        title={`${title} | Little Joys`}
-        description={`Official Little Joys ${title.toLowerCase()} policy and guidelines.`}
+        title={`${title} | Nestor`}
+        description={`Official Nestor ${title.toLowerCase()} policy and guidelines.`}
       />
       <div className="container mx-auto px-4 md:px-6 max-w-3xl">
         <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-orange-100 space-y-6">
           <div>
-            <span className="text-xs font-bold text-pink-600 uppercase tracking-widest">Official Policy</span>
-            <h1 className="text-2xl md:text-3xl font-black text-slate-800 mt-1">{title}</h1>
+            <span className="text-xs font-bold text-[#C89B58] uppercase tracking-widest">Official Policy</span>
+            <h1 className="text-2xl md:text-3xl font-black text-slate-800 mt-1 font-brand-display">{title}</h1>
             <p className="text-xs text-slate-400 mt-1">Last Updated: {lastUpdated}</p>
           </div>
 

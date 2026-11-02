@@ -5,17 +5,17 @@ import React, { useEffect } from 'react';
  * Dynamically injects title, description, canonical link, Open Graph, Twitter Cards, and JSON-LD schema.
  */
 export default function SEO({
-  title = "Little Joys | Expert-Formulated Nutrition & Wellness For Kids",
-  description = "India's #1 Pediatrician-backed nutrition brand for kids. Nutrimix sprouted millets, 12 essential multivitamin gummies, brain health kits & clean treats with zero refined sugar.",
-  keywords = "kids nutrition, sprouted millets, multivitamin gummies for kids, pediatric nutrition India, children health drink, clean ragi chocolate drink, Little Joys",
+  title = "Nestor | Nourishing Brighter Tomorrows - Pediatrician-Backed Nutrition",
+  description = "Pediatrician-formulated clean nutrition, sprouted superfoods, essential gummies & organic wellness crafted for children's brighter tomorrows. Zero refined sugar.",
+  keywords = "Nestor, kids nutrition, sprouted millets, multivitamin gummies for kids, pediatric nutrition India, children health drink, organic wellness",
   canonical = null,
-  ogImage = "https://ourlittlejoys.com/favicon.svg",
+  ogImage = "/logo-horizontal.png",
   ogType = "website",
   schemaData = null
 }) {
   useEffect(() => {
     // 1. Update Title
-    const formattedTitle = title.includes("Little Joys") ? title : `${title} | Little Joys`;
+    const formattedTitle = title.includes("Nestor") ? title : `${title} | Nestor`;
     document.title = formattedTitle;
 
     // Helper to update or create meta tags

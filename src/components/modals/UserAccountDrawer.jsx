@@ -38,9 +38,9 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
           className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300"
         >
           {/* Header */}
-          <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-pink-50 to-amber-50 flex items-center justify-between">
+          <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-[#FAF4EB] to-amber-50 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-pink-500 text-white flex items-center justify-center font-black text-lg shadow-md shadow-pink-500/20">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1F3C24] via-[#2A5232] to-[#C89B58] text-white flex items-center justify-center font-black text-lg shadow-md shadow-[#1F3C24]/20">
                 {user.name ? user.name.charAt(0).toUpperCase() : 'P'}
               </div>
               <div>
@@ -66,12 +66,12 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
               onClick={() => setActiveTab('wallet')}
               className={`pb-3 min-h-[44px] flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
                 activeTab === 'wallet'
-                  ? 'border-pink-500 text-pink-600'
+                  ? 'border-[#1F3C24] text-[#1F3C24]'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
               <Wallet className="w-3.5 h-3.5" />
-              <span>LJ Wallet</span>
+              <span>Nestor Wallet</span>
             </button>
 
             <button
@@ -80,7 +80,7 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
               onClick={() => setActiveTab('orders')}
               className={`pb-3 min-h-[44px] flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
                 activeTab === 'orders'
-                  ? 'border-pink-500 text-pink-600'
+                  ? 'border-[#1F3C24] text-[#1F3C24]'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
@@ -94,7 +94,7 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
               onClick={() => setActiveTab('child')}
               className={`pb-3 min-h-[44px] flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
                 activeTab === 'child'
-                  ? 'border-pink-500 text-pink-600'
+                  ? 'border-[#1F3C24] text-[#1F3C24]'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
@@ -108,11 +108,11 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
             {/* TAB 1: WALLET */}
             {activeTab === 'wallet' && (
               <div className="space-y-6">
-                <div className="bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 text-white rounded-3xl p-6 shadow-lg shadow-amber-500/20 relative overflow-hidden">
+                <div className="bg-gradient-to-br from-[#1F3C24] via-[#2A5232] to-[#C89B58] text-white rounded-3xl p-6 shadow-lg shadow-[#1F3C24]/20 relative overflow-hidden">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-100">
-                        Little Joys Wallet Balance
+                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-200">
+                        Nestor Wallet Balance
                       </span>
                       <div className="text-3xl font-black mt-1">₹{user.walletBalance || 200}</div>
                     </div>
@@ -123,27 +123,27 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
 
                   <div className="pt-4 border-t border-white/20 flex items-center justify-between text-xs font-bold text-amber-50">
                     <span>Active Member Cash</span>
-                    <span className="bg-white text-amber-800 px-2.5 py-0.5 rounded-full text-[10px]">
+                    <span className="bg-white text-[#1F3C24] font-black px-2.5 py-0.5 rounded-full text-[10px]">
                       Instant Checkout Auto-Apply
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-[#FFF9F5] p-4 rounded-2xl border border-orange-100 space-y-2">
+                <div className="bg-[#FAF4EB] p-4 rounded-2xl border border-[#C89B58]/30 space-y-2">
                   <h4 className="font-bold text-xs text-slate-800 flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-pink-500" />
-                    <span>How to use your LJ Wallet:</span>
+                    <Sparkles className="w-4 h-4 text-[#C89B58]" />
+                    <span>How to use your Nestor Wallet:</span>
                   </h4>
                   <ul className="text-xs text-slate-600 space-y-1.5 pl-5 list-disc leading-relaxed">
                     <li>Use on any order to save up to <strong>30% automatically</strong>.</li>
-                    <li>Earn 5% cashback on all recurring Nutrimix &amp; Gummies refills.</li>
+                    <li>Earn 5% cashback on all recurring organic nutrition refills.</li>
                     <li>Never expires as long as your account remains active.</li>
                   </ul>
                 </div>
 
                 <button
                   onClick={() => alert("Added ₹100 promotional cash! New balance: ₹300")}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-3 rounded-full text-xs uppercase tracking-wider transition-transform active:scale-95"
+                  className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3 rounded-full text-xs uppercase tracking-wider transition-transform active:scale-95"
                 >
                   + Add Wallet Cash / Redeem Gift Card
                 </button>
@@ -153,23 +153,23 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
             {/* TAB 2: ORDERS */}
             {activeTab === 'orders' && (
               <div className="space-y-4">
-                <div className="bg-[#FFF9F5] rounded-2xl p-4 border border-orange-100 space-y-3">
+                <div className="bg-[#FAF4EB] rounded-2xl p-4 border border-[#C89B58]/30 space-y-3">
                   <div className="flex justify-between items-start">
                     <div>
                       <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
                         Out for Delivery
                       </span>
-                      <h4 className="font-black text-sm text-slate-800 mt-1">Order #LJ-2026-9810</h4>
+                      <h4 className="font-black text-sm text-slate-800 mt-1">Order #NEST-2026-9810</h4>
                     </div>
                     <span className="text-xs font-black text-slate-900">₹999</span>
                   </div>
 
                   <p className="text-xs text-slate-500">
-                    Nutrimix Chocolate (350g) + Multivitamin Gummies 4+ (30N)
+                    Organic Nutrimix Chocolate (350g) + Multivitamin Gummies 4+ (30N)
                   </p>
 
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-600 pt-2 border-t border-orange-200/50">
-                    <Clock className="w-3.5 h-3.5 text-pink-500" />
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-600 pt-2 border-t border-[#C89B58]/20">
+                    <Clock className="w-3.5 h-3.5 text-[#C89B58]" />
                     <span>Expected by Monday, 14th Sept 2026</span>
                   </div>
                 </div>
@@ -180,7 +180,7 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
                       <span className="text-[10px] font-black uppercase text-slate-600 bg-slate-200 px-2 py-0.5 rounded-md">
                         Delivered
                       </span>
-                      <h4 className="font-black text-sm text-slate-700 mt-1">Order #LJ-2026-8431</h4>
+                      <h4 className="font-black text-sm text-slate-700 mt-1">Order #NEST-2026-8431</h4>
                     </div>
                     <span className="text-xs font-black text-slate-800">₹499</span>
                   </div>
@@ -196,12 +196,12 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
               <div className="space-y-4">
                 <div className="bg-white rounded-2xl p-5 border border-orange-100 shadow-xs space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center text-2xl">
+                    <div className="w-12 h-12 rounded-full bg-[#FAF4EB] border border-[#C89B58]/30 flex items-center justify-center text-2xl">
                       🧒
                     </div>
                     <div>
                       <h4 className="font-black text-base text-slate-800">{user.childName || 'Aarav'}</h4>
-                      <span className="text-xs text-pink-600 font-bold bg-pink-50 px-2.5 py-0.5 rounded-full">
+                      <span className="text-xs text-[#1F3C24] font-bold bg-[#FAF4EB] px-2.5 py-0.5 rounded-full border border-[#C89B58]/30">
                         {user.childAge || '2-6 Yr'}
                       </span>
                     </div>

@@ -123,8 +123,8 @@ export default function CheckoutOrderSummary({ showItemsList = true }) {
           </div>
 
           {useWalletBalance && walletDeduction > 0 && (
-            <div className="flex justify-between text-[#FF2F92] font-bold">
-              <span>LJ Wallet Balance</span>
+            <div className="flex justify-between text-[#1F3C24] font-bold">
+              <span>Nestor Wallet Balance</span>
               <span>- ₹{walletDeduction}</span>
             </div>
           )}

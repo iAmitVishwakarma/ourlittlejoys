@@ -21,8 +21,8 @@ export default function TrustBadge({
   const SelectedIcon = typeof icon === 'string' ? iconMap[icon] || ShieldCheck : icon;
 
   return (
-    <div className={`flex items-center gap-3 p-3.5 rounded-2xl bg-white/90 border border-orange-100/70 shadow-2xs ${className}`}>
-      <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#13805B] flex items-center justify-center shrink-0 border border-emerald-100/80">
+    <div className={`flex items-center gap-3 p-3.5 rounded-2xl bg-white/90 border border-brand-border shadow-2xs ${className}`}>
+      <div className="w-9 h-9 rounded-xl bg-[#F2F7F2] text-[#1F3C24] flex items-center justify-center shrink-0 border border-[#DDECDD]">
         <SelectedIcon className="w-5 h-5" />
       </div>
       <div className="text-left">

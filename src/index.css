@@ -1,53 +1,62 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── Premium Brand Color System ─── */
-  /* Primary: Rich Forest Green (Trust & Nature) */
-  --color-brand-primary: #13805B;
-  --color-brand-primary-hover: #0E6346;
-  --color-brand-primary-50: #ECFDF5;
-  --color-brand-primary-100: #D1FAE5;
-  --color-brand-forest: #0B6B4C;
-  --color-brand-emerald: #13805B;
-  --color-brand-emerald-hover: #0E6346;
-  --color-brand-mint: #EAF5EF;
+  /* ─── Nestor Organic Brand Color System ─── */
+  /* Primary: Deep Forest Green (Logo Typography & Nature Core) */
+  --color-brand-primary: #1F3C24;
+  --color-brand-primary-hover: #142718;
+  --color-brand-primary-50: #F2F7F2;
+  --color-brand-primary-100: #DDECDD;
+  --color-brand-forest: #142718;
+  --color-brand-emerald: #2A5232;
+  --color-brand-emerald-hover: #1F3C24;
+  --color-brand-mint: #EAF2E9;
 
-  /* Accent: Premium Berry Pink */
-  --color-brand-pink: #E8368F;
-  --color-brand-pink-hover: #D42A7E;
-  --color-brand-pink-light: #FFF0F7;
-  --color-brand-berry: #E8368F;
-  --color-brand-berry-hover: #D42A7E;
-  --color-brand-berry-light: #FFF0F7;
-  --color-brand-berry-50: #FDF2F8;
+  /* Leaf & Botanical Greens (From Logo Leaf Icon) */
+  --color-brand-leaf: #4A724B;
+  --color-brand-leaf-hover: #3D5E3E;
+  --color-brand-leaf-light: #F0F5EE;
+  --color-brand-sage: #8BA686;
+  --color-brand-sage-light: #DCE7DA;
 
-  /* Accent: Rich Amber Gold */
-  --color-brand-accent: #F59E0B;
-  --color-brand-amber: #F59E0B;
-  --color-brand-amber-hover: #D97706;
-  --color-brand-amber-light: #FEF3C7;
+  /* Accent: Golden Wheat (From Logo Grain & Star Icon - Replaced Old Berry Pink) */
+  --color-brand-pink: #C89B58;
+  --color-brand-pink-hover: #B38644;
+  --color-brand-pink-light: #FAF4EB;
+  --color-brand-berry: #C89B58;
+  --color-brand-berry-hover: #B38644;
+  --color-brand-berry-light: #FAF4EB;
+  --color-brand-berry-50: #FDFBF7;
 
-  /* Neutral Tones */
-  --color-brand-navy: #0F172A;
-  --color-brand-slate: #334155;
-  --color-brand-muted: #64748B;
+  /* Secondary Accent: Rich Amber Wheat Gold */
+  --color-brand-accent: #C89B58;
+  --color-brand-amber: #C89B58;
+  --color-brand-amber-hover: #B38644;
+  --color-brand-amber-light: #FAF4EB;
 
-  /* Surfaces & Backgrounds */
-  --color-brand-cream: #FFF9F5;
-  --color-brand-cream-deep: #FFF5ED;
+  /* Editorial & Text Tones */
+  --color-brand-navy: #1B3120;
+  --color-brand-slate: #3A483D;
+  --color-brand-muted: #6B7A6E;
+
+  /* Natural Surfaces & Clean Canvas */
+  --color-brand-cream: #FAFBF8;
+  --color-brand-cream-deep: #F3F5F0;
   --color-brand-surface: #FFFFFF;
-  --color-brand-surface-elevated: #FFFDFB;
-  --color-brand-border: #F1E5D8;
-  --color-brand-border-subtle: #F5ECE1;
+  --color-brand-surface-elevated: #FCFCFA;
+  --color-brand-border: #E3E8E1;
+  --color-brand-border-subtle: #EDF1EB;
 
-  /* Gradient Tokens (used via CSS vars) */
-  --gradient-hero: linear-gradient(135deg, #FFF9F5 0%, #FFF0F7 50%, #ECFDF5 100%);
-  --gradient-premium: linear-gradient(135deg, #13805B 0%, #0B6B4C 50%, #064E36 100%);
-  --gradient-announcement: linear-gradient(90deg, #D97706 0%, #E8368F 50%, #BE185D 100%);
-  --gradient-card-hover: linear-gradient(135deg, #FFF9F5 0%, #FDF2F8 100%);
+  /* Gradient Tokens (Organic Herbal Flow) */
+  --gradient-hero: linear-gradient(135deg, #FAFBF8 0%, #FAF4EB 50%, #F0F5EE 100%);
+  --gradient-premium: linear-gradient(135deg, #2A5232 0%, #1F3C24 50%, #142718 100%);
+  --gradient-announcement: linear-gradient(90deg, #C89B58 0%, #4A724B 50%, #1F3C24 100%);
+  --gradient-card-hover: linear-gradient(135deg, #FAFBF8 0%, #F4F7F2 100%);
 
   /* Typography */
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-serif: 'Fraunces', Georgia, serif;
 }
 
 html, body {
@@ -56,8 +65,8 @@ html, body {
 }
 
 body {
-  background-color: #FFF9F5;
-  color: #0F172A;
+  background-color: #FAFBF8;
+  color: #1B3120;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,11 +75,11 @@ body {
 
 /* ─── Glass Morphism ─── */
 .glass-effect {
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(227, 232, 225, 0.7);
+  box-shadow: 0 4px 24px -2px rgba(27, 49, 32, 0.05);
 }
 
 /* ─── Custom Scrollbar ─── */
@@ -79,14 +88,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFF9F5;
+  background: #FAFBF8;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #DCE7DA;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #13805B;
+  background: #2A5232;
 }
 
 /* ─── Hide Scrollbar (Mobile Category Pills, etc.) ─── */
@@ -118,9 +127,8 @@ body {
   padding-bottom: 42px !important;
 }
 .testimonials-swiper .swiper-pagination-bullet {
-  background: #CBD5E1 !important;
+  background: #DCE7DA !important;
   opacity: 0.8 !important;
-
   width: 8px !important;
   height: 8px !important;
   border-radius: 9999px !important;
@@ -129,7 +137,7 @@ body {
   will-change: transform, opacity;
 }
 .testimonials-swiper .swiper-pagination-bullet-active {
-  background: #13805B !important;
+  background: #1F3C24 !important;
   transform: scaleX(3.2) !important;
   opacity: 1 !important;
   margin: 0 10px !important;
@@ -158,17 +166,17 @@ body {
   gap: 4px !important;
   z-index: 25 !important;
   width: auto !important;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   padding: 4px 10px;
   border-radius: 9999px;
-  border: 1px solid rgba(251, 146, 60, 0.2);
+  border: 1px solid rgba(200, 155, 88, 0.25);
 }
 .hero-swiper-pagination .swiper-pagination-bullet {
   width: 6px !important;
   height: 6px !important;
-  background: #CBD5E1 !important;
+  background: #DCE7DA !important;
   opacity: 0.8 !important;
   border-radius: 9999px !important;
   margin: 0 2px !important;
@@ -176,7 +184,7 @@ body {
 }
 .hero-swiper-pagination .swiper-pagination-bullet-active {
   width: 24px !important;
-  background: #13805B !important;
+  background: #1F3C24 !important;
   opacity: 1 !important;
   border-radius: 9999px !important;
 }
@@ -194,11 +202,11 @@ body {
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    #F1F5F9 0%,
-    #E2E8F0 25%,
-    #CBD5E1 50%,
-    #E2E8F0 75%,
-    #F1F5F9 100%
+    #F3F5F0 0%,
+    #E8ECE5 25%,
+    #DCE7DA 50%,
+    #E8ECE5 75%,
+    #F3F5F0 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite linear;
@@ -207,11 +215,11 @@ body {
 .skeleton-shimmer-warm {
   background: linear-gradient(
     90deg,
-    #FFF7ED 0%,
-    #FFEDD5 25%,
-    #FED7AA 50%,
-    #FFEDD5 75%,
-    #FFF7ED 100%
+    #FAF4EB 0%,
+    #F3E8D7 25%,
+    #E8CA9D 50%,
+    #F3E8D7 75%,
+    #FAF4EB 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite linear;
@@ -223,7 +231,7 @@ body {
 }
 .card-interactive:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 12px 28px -4px rgba(27, 49, 32, 0.08), 0 4px 10px -2px rgba(27, 49, 32, 0.03);
 }
 
 .btn-interactive {
@@ -238,8 +246,8 @@ body {
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 .focus-ring:focus-visible {
-  border-color: #13805B;
-  box-shadow: 0 0 0 3px rgba(19, 128, 91, 0.2);
+  border-color: #1F3C24;
+  box-shadow: 0 0 0 3px rgba(31, 60, 36, 0.2);
 }
 
 /* ─── Active NavLink Indicator ─── */
@@ -264,7 +272,16 @@ body {
   transform: translateX(-50%);
   width: 20px;
   height: 3px;
-  background: linear-gradient(90deg, #E8368F, #13805B);
+  background: linear-gradient(90deg, #C89B58, #1F3C24);
   border-radius: 9999px;
   animation: nav-dot-pulse 2.5s ease-in-out infinite;
 }
+
+/* ─── Typography Utilities ─── */
+.font-brand-display {
+  font-family: var(--font-display);
+}
+
+.font-brand-sans {
+  font-family: var(--font-sans);
+}

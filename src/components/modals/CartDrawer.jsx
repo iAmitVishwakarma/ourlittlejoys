@@ -92,7 +92,7 @@ export default function CartDrawer({
                 <p className="text-sm text-slate-400 mb-6">Start nourishing your little ones today!</p>
                 <button
                   onClick={onClose}
-                  className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-2.5 rounded-full text-sm"
+                  className="bg-[#1F3C24] hover:bg-[#142718] text-white font-bold px-6 py-2.5 rounded-full text-sm"
                 >
                   Explore Products
                 </button>
@@ -182,7 +182,7 @@ export default function CartDrawer({
                   onClose();
                   navigate('/checkout/address');
                 }}
-                className="w-full bg-[#13805B] hover:bg-[#0E6346] text-white font-bold py-3.5 rounded-full flex items-center justify-center space-x-2 shadow-lg shadow-[#13805B]/25 transition-transform active:scale-95"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-bold py-3.5 rounded-full flex items-center justify-center space-x-2 shadow-lg shadow-[#1F3C24]/20 transition-transform active:scale-95"
               >
                 <span>Proceed To Checkout</span>
                 <ArrowRight className="w-4 h-4" />

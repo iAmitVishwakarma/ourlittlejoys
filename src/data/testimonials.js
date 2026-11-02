@@ -46,7 +46,7 @@ export const TESTIMONIALS = [
   {
     id: 'review-picky-eater',
     title: "Doctor recommended & truly effective for growth",
-    quote: "Our pediatrician advised adding sprouted millets for healthy weight gain. Little Joys has been a complete game changer for our picky eater. Energy and appetite improved within 3 weeks!",
+    quote: "Our pediatrician advised adding sprouted millets for healthy weight gain. Nestor has been a complete game changer for our picky eater. Energy and appetite improved within 3 weeks!",
     author: "Amit Sharma",
     child: "Father of 3-year-old Aarav",
     location: "Bengaluru, KA",

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Check, ShieldCheck, ArrowLeft, Lock, HelpCircle } from 'lucide-react';
+import NestorLogo from '@/components/common/NestorLogo';
 
 export default function CheckoutStepper({ currentStep = 'address' }) {
   const navigate = useNavigate();
@@ -20,15 +21,10 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-brand-border shadow-xs py-3 sm:py-3.5 px-4 sm:px-6">
       <div className="container mx-auto max-w-6xl flex items-center justify-between gap-3 sm:gap-6">
         
-        {/* Left: Little Joys Logo & Back to Bag */}
-        {/* <div className="flex items-center gap-3 shrink-0">
-          <Link to="/" className="flex items-center gap-1.5 group select-none">
-            <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 group-hover:text-pink-600 transition-colors">
-              little<span className="text-pink-500">joys</span>
-            </span>
-            <span className="text-base sm:text-lg">🍓</span>
-          </Link>
-          </div> */}
+        {/* Left: Nestor Logo & Back to Bag */}
+        <div className="flex items-center gap-3 shrink-0">
+          <NestorLogo variant="horizontal" linkTo="/" imgClassName="h-7 sm:h-8 w-auto" />
+        </div>
 
           {currentStep !== 'confirmation' && (
             <Link

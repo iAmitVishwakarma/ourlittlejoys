@@ -35,7 +35,7 @@ export default function BrandPaymentSection() {
           direction="up"
           color="text-slate-200/80"
           centerBadge={
-            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#13805B] px-3.5 py-1 rounded-full text-[11px] font-black tracking-wider uppercase border border-emerald-200/70 shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 bg-[#FAF4EB] text-[#1F3C24] px-3.5 py-1 rounded-full text-[11px] font-black tracking-wider uppercase border border-[#C89B58]/30 shadow-2xs">
               <span>100% Safe & Encrypted</span>
             </div>
           }
@@ -59,7 +59,7 @@ export default function BrandPaymentSection() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-slate-700 leading-tight">
             Life is full of
             <br />
-            <span className="text-[#13805B] font-black">little joys...</span>
+            <span className="text-[#1F3C24] font-black">little joys...</span>
           </h2>
         </div>
 

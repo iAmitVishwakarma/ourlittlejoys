@@ -291,23 +291,23 @@ export default function Profile({ defaultTab }) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-brand-cream">
         <SEO
-          title="Parent Account Login | Little Joys"
-          description="Sign in to your Little Joys account to track orders, manage your child's nutrition profile, and view your LJ Wallet."
+          title="Parent Account Login | Nestor"
+          description="Sign in to your Nestor account to track orders, manage your child's nutrition profile, and view your Nestor Wallet."
         />
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-sm border border-orange-100 p-6 sm:p-8 space-y-6">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-sm border border-[#C89B58]/30 p-6 sm:p-8 space-y-6">
           <div className="text-center space-y-2">
             <div
-              className="w-16 h-16 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center mx-auto text-3xl shadow-xs"
+              className="w-16 h-16 rounded-2xl bg-[#FAF4EB] border border-[#C89B58]/30 flex items-center justify-center mx-auto text-3xl shadow-xs"
               aria-hidden="true"
             >
-              🧸
+              🌿
             </div>
-            <h1 className="text-2xl font-black text-slate-800 tracking-tight">
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight font-brand-display">
               Parent Account Login
             </h1>
             <p className="text-xs text-slate-500 font-medium">
               Sign in with your mobile number to view orders, track delivery,
-              and use your LJ Wallet balance.
+              and use your Nestor Wallet balance.
             </p>
           </div>
 
@@ -320,7 +320,7 @@ export default function Profile({ defaultTab }) {
                 >
                   Mobile Number
                 </label>
-                <div className="flex items-center border border-slate-200 rounded-2xl overflow-hidden focus-within:border-pink-500 bg-slate-50 transition-colors">
+                <div className="flex items-center border border-slate-200 rounded-2xl overflow-hidden focus-within:border-[#1F3C24] bg-slate-50 transition-colors">
                   <span className="px-3.5 text-xs font-bold text-slate-500 border-r border-slate-200">
                     +91
                   </span>
@@ -345,7 +345,7 @@ export default function Profile({ defaultTab }) {
 
               <button
                 type="submit"
-                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-11"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-11"
               >
                 Send OTP
               </button>
@@ -361,19 +361,19 @@ export default function Profile({ defaultTab }) {
               <button
                 type="button"
                 onClick={handleQuickDemoLogin}
-                className="w-full bg-emerald-50 hover:bg-emerald-100 text-[#13805B] border border-emerald-200 font-extrabold py-3 rounded-2xl text-xs flex items-center justify-center gap-2 transition-colors"
+                className="w-full bg-[#FAF4EB] hover:bg-[#F3EAD9] text-[#1F3C24] border border-[#C89B58]/40 font-extrabold py-3 rounded-2xl text-xs flex items-center justify-center gap-2 transition-colors"
               >
                 <span>⚡ Quick Login as Amit Vishwakarma</span>
               </button>
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <div className="bg-pink-50/70 border border-pink-100 rounded-2xl p-3 text-xs text-pink-700 flex justify-between items-center">
+              <div className="bg-[#FAF4EB] border border-[#C89B58]/30 rounded-2xl p-3 text-xs text-[#1F3C24] flex justify-between items-center">
                 <span>OTP sent to +91 {phoneNumber}</span>
                 <button
                   type="button"
                   onClick={() => setOtpSent(false)}
-                  className="font-bold underline text-pink-600"
+                  className="font-bold underline text-[#C89B58] hover:text-[#1F3C24]"
                 >
                   Edit
                 </button>
@@ -393,7 +393,7 @@ export default function Profile({ defaultTab }) {
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   placeholder="Enter 1234"
-                  className="w-full text-center tracking-widest text-lg font-black py-3 border border-slate-200 rounded-2xl focus:outline-none focus:border-pink-500 bg-slate-50"
+                  className="w-full text-center tracking-widest text-lg font-black py-3 border border-slate-200 rounded-2xl focus:outline-none focus:border-[#1F3C24] bg-slate-50"
                   required
                 />
               </div>
@@ -404,15 +404,15 @@ export default function Profile({ defaultTab }) {
 
               <button
                 type="submit"
-                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-11"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3.5 rounded-2xl shadow-sm transition-all active:scale-98 min-h-11"
               >
                 Verify &amp; Login
               </button>
             </form>
           )}
 
-          <div className="bg-amber-50/80 rounded-2xl p-3.5 border border-amber-200/60 text-center">
-            <p className="text-[11px] font-bold text-amber-900">
+          <div className="bg-[#FAF4EB] rounded-2xl p-3.5 border border-[#C89B58]/30 text-center">
+            <p className="text-[11px] font-bold text-[#1F3C24]">
               🎁 Instant ₹200 welcome wallet cash credited to all verified parent accounts!
             </p>
           </div>
@@ -422,15 +422,15 @@ export default function Profile({ defaultTab }) {
   }
 
   return (
-    <div className="min-h-screen bg-brand-cream pb-24 pt-3 md:pt-5 font-sans selection:bg-pink-100 selection:text-pink-600">
+    <div className="min-h-screen bg-brand-cream pb-24 pt-3 md:pt-5 font-sans selection:bg-[#FAF4EB] selection:text-[#1F3C24]">
       <SEO
-        title="Parent Account & Orders | Little Joys"
-        description="Manage your Little Joys orders, child nutrition profile, saved delivery addresses, and LJ Wallet."
+        title="Parent Account & Orders | Nestor"
+        description="Manage your Nestor orders, child nutrition profile, saved delivery addresses, and Nestor Wallet."
       />
 
       {/* Floating Animated Feedback Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 animate-bounce max-w-md bg-white border border-pink-200 shadow-xl rounded-2xl p-4 flex items-start gap-3">
+        <div className="fixed bottom-6 right-6 z-50 animate-bounce max-w-md bg-white border border-[#C89B58]/40 shadow-xl rounded-2xl p-4 flex items-start gap-3">
           <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
             <CheckCircle2 className="w-5 h-5" />
           </div>
@@ -442,7 +442,7 @@ export default function Profile({ defaultTab }) {
           </div>
           <Link
             to="/cart"
-            className="text-[11px] font-extrabold text-[#FF2F92] hover:underline shrink-0 bg-pink-50 px-2.5 py-1 rounded-lg border border-pink-100"
+            className="text-[11px] font-extrabold text-[#1F3C24] hover:underline shrink-0 bg-[#FAF4EB] px-2.5 py-1 rounded-lg border border-[#C89B58]/30"
           >
             View Cart &rarr;
           </Link>
@@ -478,7 +478,7 @@ export default function Profile({ defaultTab }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-1 min-w-0">
               {/* Initial Avatar */}
               <div 
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-tr from-[#FF2F92] via-pink-500 to-rose-400 text-white font-black text-2xl sm:text-3xl flex items-center justify-center shadow-md shadow-pink-500/20 border-3 border-white shrink-0"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-tr from-[#1F3C24] via-[#2A5232] to-[#C89B58] text-white font-black text-2xl sm:text-3xl flex items-center justify-center shadow-md shadow-[#1F3C24]/20 border-3 border-white shrink-0"
                 aria-label="Parent avatar"
               >
                 {initialLetter}
@@ -488,11 +488,11 @@ export default function Profile({ defaultTab }) {
               <div className="space-y-1.5 min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2.5">
                   <span className="text-xs sm:text-sm font-bold text-slate-500">Hello,</span>
-                  <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight truncate">
+                  <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight truncate font-brand-display">
                     {currentUserName}
                   </h1>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-extrabold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                    <Check className="w-3 h-3 stroke-3" />
+                  <span className="inline-flex items-center gap-1 text-[11px] font-extrabold bg-[#FAF4EB] text-[#1F3C24] px-2.5 py-0.5 rounded-full border border-[#C89B58]/30">
+                    <Check className="w-3 h-3 stroke-3 text-[#1F3C24]" />
                     <span>Verified Parent</span>
                   </span>
                 </div>
@@ -512,13 +512,13 @@ export default function Profile({ defaultTab }) {
 
                 {/* Child Persona & Brand Warmth */}
                 <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-pink-700 bg-pink-50/90 px-3 py-1 rounded-full border border-pink-100">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3C24] bg-[#FAF4EB] px-3 py-1 rounded-full border border-[#C89B58]/30">
                     <span>👦</span>
                     <span>Parent of {currentChildName} ({currentChildAge} Years Old)</span>
                   </span>
                   <span className="hidden sm:inline-flex items-center gap-1 text-xs font-extrabold text-slate-600">
-                    <span>Healthy kids, Happier Tomorrows</span>
-                    <HeartDoodle className="w-3.5 h-3.5 text-rose-500 inline-block" />
+                    <span>Nourishing Brighter Tomorrows</span>
+                    <HeartDoodle className="w-3.5 h-3.5 text-[#C89B58] inline-block" />
                   </span>
                 </div>
               </div>
@@ -566,12 +566,12 @@ export default function Profile({ defaultTab }) {
             onClick={() => setActiveTab("orders")}
             className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all ${
               activeTab === "orders"
-                ? "bg-white border-pink-300 shadow-xs ring-2 ring-pink-100"
+                ? "bg-white border-[#1F3C24] shadow-xs ring-2 ring-[#1F3C24]/10"
                 : "bg-white border-slate-200/70 hover:border-slate-300 shadow-2xs"
             }`}
           >
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center shrink-0 border border-pink-100">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FAF4EB] text-[#1F3C24] flex items-center justify-center shrink-0 border border-[#C89B58]/30">
                 <Package className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
@@ -588,17 +588,17 @@ export default function Profile({ defaultTab }) {
           {/* Stat 2: Wishlist (Dedicated Page Link) */}
           <Link
             to="/wishlist"
-            className="p-3.5 sm:p-4 rounded-2xl border text-left transition-all bg-white border-slate-200/70 hover:border-pink-300 hover:shadow-xs shadow-2xs group"
+            className="p-3.5 sm:p-4 rounded-2xl border text-left transition-all bg-white border-slate-200/70 hover:border-[#1F3C24]/40 hover:shadow-xs shadow-2xs group"
           >
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 border border-rose-100 group-hover:bg-rose-100 transition-colors">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-[#C89B58] flex items-center justify-center shrink-0 border border-amber-200 group-hover:bg-[#FAF4EB] transition-colors">
                 <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
                 <span className="text-xs sm:text-sm font-black text-slate-900 block truncate">
                   {wishlistItems.length} Wishlist
                 </span>
-                <span className="text-[10px] sm:text-xs text-slate-400 font-medium block truncate group-hover:text-pink-600 transition-colors">
+                <span className="text-[10px] sm:text-xs text-slate-400 font-medium block truncate group-hover:text-[#1F3C24] transition-colors">
                   Saved favorites &rarr;
                 </span>
               </div>
@@ -657,8 +657,8 @@ export default function Profile({ defaultTab }) {
                 onClick={() => handleTabSelect("orders")}
                 className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "orders"
-                    ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
-                    : "text-slate-700 hover:bg-orange-50/60"
+                    ? "bg-[#1F3C24] text-white shadow-xs shadow-[#1F3C24]/25"
+                    : "text-slate-700 hover:bg-[#FAF4EB]"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -667,7 +667,7 @@ export default function Profile({ defaultTab }) {
                 </div>
                 <span
                   className={`text-[11px] font-black px-2 py-0.5 rounded-full ${
-                    activeTab === "orders" ? "bg-white/20 text-white" : "bg-pink-100 text-pink-700"
+                    activeTab === "orders" ? "bg-white/20 text-white" : "bg-[#FAF4EB] text-[#1F3C24]"
                   }`}
                 >
                   {orders.length}
@@ -681,8 +681,8 @@ export default function Profile({ defaultTab }) {
                 onClick={() => handleTabSelect("profile")}
                 className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "profile"
-                    ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
-                    : "text-slate-700 hover:bg-orange-50/60"
+                    ? "bg-[#1F3C24] text-white shadow-xs shadow-[#1F3C24]/25"
+                    : "text-slate-700 hover:bg-[#FAF4EB]"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -699,8 +699,8 @@ export default function Profile({ defaultTab }) {
                 onClick={() => handleTabSelect("addresses")}
                 className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "addresses"
-                    ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
-                    : "text-slate-700 hover:bg-orange-50/60"
+                    ? "bg-[#1F3C24] text-white shadow-xs shadow-[#1F3C24]/25"
+                    : "text-slate-700 hover:bg-[#FAF4EB]"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -717,13 +717,13 @@ export default function Profile({ defaultTab }) {
                 onClick={() => handleTabSelect("wallet")}
                 className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "wallet"
-                    ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
-                    : "text-slate-700 hover:bg-orange-50/60"
+                    ? "bg-[#1F3C24] text-white shadow-xs shadow-[#1F3C24]/25"
+                    : "text-slate-700 hover:bg-[#FAF4EB]"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Wallet className={`w-4 h-4 ${activeTab === "wallet" ? "text-white" : "text-slate-500"}`} />
-                  <span>LJ Wallet Ledger</span>
+                  <span>Nestor Wallet Ledger</span>
                 </div>
                 <span
                   className={`text-[11px] font-black px-2 py-0.5 rounded-full ${
@@ -741,8 +741,8 @@ export default function Profile({ defaultTab }) {
                 onClick={() => handleTabSelect("settings")}
                 className={`w-full flex items-center justify-between p-3 rounded-2xl font-bold text-xs md:text-sm transition-all min-h-11 ${
                   activeTab === "settings"
-                    ? "bg-[#FF2F92] text-white shadow-xs shadow-pink-500/25"
-                    : "text-slate-700 hover:bg-orange-50/60"
+                    ? "bg-[#1F3C24] text-white shadow-xs shadow-[#1F3C24]/25"
+                    : "text-slate-700 hover:bg-[#FAF4EB]"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -916,7 +916,7 @@ export default function Profile({ defaultTab }) {
                     navigate("/shop/all");
                   }
                 }}
-                className="w-full bg-[#FF2F92] hover:bg-pink-600 text-white font-black text-xs py-2.5 px-4 rounded-full shadow-xs transition-all active:scale-98 flex items-center justify-center gap-1.5"
+                className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black text-xs py-2.5 px-4 rounded-full shadow-xs transition-all active:scale-98 flex items-center justify-center gap-1.5"
               >
                 <span>Shop Again</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -961,9 +961,9 @@ export default function Profile({ defaultTab }) {
             </div>
 
             {/* Card 3: Give the Gift of Health (Referral Card) */}
-            <div className="bg-[#FFF5F7] rounded-3xl p-5 border border-pink-200/70 shadow-2xs space-y-3">
+            <div className="bg-[#FAF4EB] rounded-3xl p-5 border border-[#C89B58]/30 shadow-2xs space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-white text-2xl flex items-center justify-center border border-pink-100 shrink-0 shadow-2xs">
+                <div className="w-10 h-10 rounded-2xl bg-white text-2xl flex items-center justify-center border border-[#C89B58]/20 shrink-0 shadow-2xs">
                   🎁
                 </div>
                 <div>
@@ -971,17 +971,17 @@ export default function Profile({ defaultTab }) {
                     Give the gift of health
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-snug">
-                    Share Little Joys with friends &amp; family.
+                    Share Nestor with friends &amp; family.
                   </p>
                 </div>
               </div>
 
               <button
                 onClick={() => {
-                  navigator.clipboard?.writeText("https://littlejoys.in?ref=AMIT200");
+                  navigator.clipboard?.writeText("https://nestorhealth.in?ref=AMIT200");
                   showToast("Referral link copied! 📋", "Share with fellow parents to give ₹200 & get ₹200.");
                 }}
-                className="text-xs font-black text-[#FF2F92] hover:underline flex items-center gap-1 pt-1"
+                className="text-xs font-black text-[#1F3C24] hover:text-[#C89B58] hover:underline flex items-center gap-1 pt-1"
               >
                 <span>Refer Now &rarr;</span>
               </button>
@@ -1065,7 +1065,7 @@ export default function Profile({ defaultTab }) {
                   handleReorderWholeOrder(selectedOrderDetail);
                   setSelectedOrderDetail(null);
                 }}
-                className="flex-1 bg-[#FF2F92] hover:bg-pink-600 text-white font-black text-xs py-2.5 rounded-xl shadow-xs transition-colors"
+                className="flex-1 bg-[#1F3C24] hover:bg-[#142718] text-white font-black text-xs py-2.5 rounded-xl shadow-xs transition-colors"
               >
                 Reorder All Items
               </button>

@@ -68,9 +68,14 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
 
   const searchQuery = (searchParams.get('search') || '').trim();
 
+  const isFirstMount = React.useRef(true);
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
     setIsFiltering(true);
-    const timer = setTimeout(() => setIsFiltering(false), 240);
+    const timer = setTimeout(() => setIsFiltering(false), 200);
     return () => clearTimeout(timer);
   }, [selectedCategory, selectedAge, sortBy, searchQuery]);
 
@@ -172,8 +177,8 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
   const totalCartAmount = effectiveCartItems.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
 
   const pageTitle = selectedCategory === 'All' 
-    ? 'Shop All Kids Nutrition Essentials | Little Joys'
-    : `${selectedCategory} for Kids Nutrition | Little Joys`;
+    ? 'Shop All Kids Nutrition Essentials | Nestor'
+    : `${selectedCategory} for Kids Nutrition | Nestor`;
   const pageDescription = `Explore pediatrician-formulated ${selectedCategory.toLowerCase()} nutrition for toddlers, kids, and mothers. Zero refined sugar, 100% clean ingredients.`;
 
   return (
@@ -194,7 +199,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
         />
 
         {/* Ambient Soft Color Halos */}
-        <div className="absolute -top-16 -left-16 w-72 h-72 bg-pink-200/50 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-16 -left-16 w-72 h-72 bg-emerald-200/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 -right-16 w-72 h-72 bg-amber-200/50 rounded-full blur-3xl pointer-events-none" />
 
         {/* Playful Floating Doodles */}
@@ -210,8 +215,8 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
           </span>
         </div>
         <div className="hidden xl:block absolute bottom-10 right-28">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-pink-200 shadow-xs text-[11px] font-black text-pink-700 rotate-3">
-            <span>🍓</span> Real Fruit Pectin
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-[#C89B58]/30 shadow-xs text-[11px] font-black text-[#B38644] rotate-3">
+            <span>🌾</span> 100% Clean Whole Foods
           </span>
         </div>
 
@@ -219,8 +224,8 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
           {/* Central Header */}
           <div className="text-center max-w-3xl mx-auto mb-8">
             {/* Eyebrow Pill */}
-            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-pink-200 shadow-xs mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-pink-500 animate-spin duration-3000" />
+            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-brand-border shadow-xs mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-[#C89B58] animate-spin duration-3000" />
               <span className="text-[11px] md:text-xs font-black uppercase tracking-wider text-slate-800">
                 100% Honest Nutrition • Doctor Formulated
               </span>
@@ -323,8 +328,8 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
                 onClick={() => handleCategoryClick(cat)}
                 className={`px-4 py-2.5 min-h-11 rounded-full text-xs md:text-sm font-extrabold whitespace-nowrap transition-all flex items-center justify-center ${
                   selectedCategory === cat
-                    ? 'bg-pink-500 text-white shadow-md shadow-pink-500/25 scale-105'
-                    : 'bg-slate-100/80 text-slate-700 hover:bg-pink-50 hover:text-pink-600'
+                    ? 'bg-[#1F3C24] text-white shadow-md shadow-[#1F3C24]/20 scale-105'
+                    : 'bg-slate-100/80 text-slate-700 hover:bg-[#FAF4EB] hover:text-[#C89B58]'
                 }`}
               >
                 {cat}
@@ -369,7 +374,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               aria-label="Sort products by"
-              className="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 rounded-xl px-3 py-2 min-h-10 focus:outline-none focus:border-pink-400"
+              className="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 rounded-xl px-3 py-2 min-h-10 focus:outline-none focus:border-[#1F3C24]"
             >
               <option value="popular">Most Popular</option>
               <option value="rating">Highest Rated</option>
@@ -385,7 +390,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
         <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
           <div className="flex flex-wrap items-center gap-2">
             {searchQuery && (
-              <span className="inline-flex items-center gap-1.5 bg-pink-100 text-pink-700 text-xs font-black px-3 py-1 rounded-full border border-pink-200">
+              <span className="inline-flex items-center gap-1.5 bg-[#FAF4EB] text-[#B38644] text-xs font-black px-3 py-1 rounded-full border border-[#C89B58]/30">
                 <Search className="w-3.5 h-3.5" />
                 <span>Results for: "{searchQuery}"</span>
                 <button
@@ -396,7 +401,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
                       return next;
                     });
                   }}
-                  className="hover:text-pink-900 cursor-pointer ml-1"
+                  className="hover:text-[#1F3C24] cursor-pointer ml-1"
                   aria-label="Clear search"
                   title="Clear search"
                 >
@@ -414,7 +419,7 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
               <button
                 onClick={() => setSelectedAge('All')}
                 aria-label="Clear age filter"
-                className="text-xs text-pink-600 hover:underline font-bold min-h-9 px-2 cursor-pointer"
+                className="text-xs text-[#C89B58] hover:text-[#B38644] hover:underline font-bold min-h-9 px-2 cursor-pointer"
               >
                 Clear Age Filter
               </button>
@@ -480,20 +485,20 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
       {/* Sticky Bottom Cart Bar (as seen on ourlittlejoys.com: "View cart 1 item") */}
       {totalCartCount > 0 && (
         <div className="fixed bottom-16 lg:bottom-4 left-0 right-0 z-40 px-4 flex justify-center">
-          <div className="bg-slate-900 text-white rounded-2xl shadow-2xl p-3.5 md:p-4 flex items-center justify-between gap-6 max-w-md w-full border border-slate-700 animate-in slide-in-from-bottom duration-300">
+          <div className="bg-[#142718] text-white rounded-2xl shadow-2xl p-3.5 md:p-4 flex items-center justify-between gap-6 max-w-md w-full border border-emerald-900/60 animate-in slide-in-from-bottom duration-300">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-pink-500 flex items-center justify-center text-white font-black text-sm shadow-md">
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#C89B58] flex items-center justify-center text-white font-black text-sm shadow-md">
                 {totalCartCount}
               </div>
               <div>
-                <div className="text-[11px] text-slate-400 font-semibold">Total Cart Value</div>
+                <div className="text-[11px] text-emerald-200/70 font-semibold">Total Cart Value</div>
                 <div className="text-sm md:text-base font-black text-white">₹{totalCartAmount}</div>
               </div>
             </div>
 
             <Link
               to="/cart"
-              className="bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-black text-xs uppercase px-4 md:px-5 py-2.5 rounded-xl flex items-center gap-1.5 shadow-lg shadow-pink-500/30 transition-transform"
+              className="bg-[#C89B58] hover:bg-[#B38644] active:scale-95 text-white font-black text-xs uppercase px-4 md:px-5 py-2.5 rounded-xl flex items-center gap-1.5 shadow-lg shadow-black/20 transition-transform"
             >
               <span>View Cart</span>
               <ArrowRight className="w-4 h-4" />

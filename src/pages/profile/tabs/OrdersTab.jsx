@@ -25,11 +25,11 @@ export default function OrdersTab({
       <div className="flex items-center justify-between gap-3">
         <div>
           <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-            <Package className="w-5 h-5 text-pink-600" />
+            <Package className="w-5 h-5 text-[#1F3C24]" />
             <span>My Orders ({filteredOrders.length})</span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Track, manage and reorder your Little Joys purchases.
+            Track, manage and reorder your Nestor purchases.
           </p>
         </div>
 
@@ -37,7 +37,7 @@ export default function OrdersTab({
         <div className="relative">
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-xl border border-slate-200/80 shadow-2xs hover:border-pink-300 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-xl border border-slate-200/80 shadow-2xs hover:border-[#1F3C24]/30 transition-colors"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-slate-400" />
             <span>
@@ -53,7 +53,7 @@ export default function OrdersTab({
                   setOrderFilter("all");
                   setIsFilterOpen(false);
                 }}
-                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "all" ? "text-pink-600 font-black" : ""}`}
+                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "all" ? "text-[#1F3C24] font-black" : ""}`}
               >
                 All Orders
               </button>
@@ -62,7 +62,7 @@ export default function OrdersTab({
                   setOrderFilter("delivered");
                   setIsFilterOpen(false);
                 }}
-                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "delivered" ? "text-pink-600 font-black" : ""}`}
+                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "delivered" ? "text-[#1F3C24] font-black" : ""}`}
               >
                 Delivered
               </button>
@@ -71,7 +71,7 @@ export default function OrdersTab({
                   setOrderFilter("processing");
                   setIsFilterOpen(false);
                 }}
-                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "processing" ? "text-pink-600 font-black" : ""}`}
+                className={`w-full text-left px-3.5 py-2 hover:bg-orange-50 ${orderFilter === "processing" ? "text-[#1F3C24] font-black" : ""}`}
               >
                 Processing
               </button>
@@ -89,12 +89,12 @@ export default function OrdersTab({
           <div className="space-y-1">
             <h3 className="text-base font-black text-slate-800">No orders found</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
-              Start exploring healthy doctor-formulated little joys for your family.
+              Start exploring healthy doctor-formulated Nestor nutrition for your family.
             </p>
           </div>
           <Link
             to="/shop/all"
-            className="inline-block bg-[#FF2F92] text-white text-xs font-black px-6 py-2.5 rounded-full shadow-xs hover:bg-pink-600 transition-all"
+            className="inline-block bg-[#1F3C24] text-white text-xs font-black px-6 py-2.5 rounded-full shadow-xs hover:bg-[#142718] transition-all"
           >
             Shop Now &rarr;
           </Link>
@@ -104,7 +104,7 @@ export default function OrdersTab({
           {filteredOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xs border border-orange-100/90 space-y-5 hover:border-pink-200 transition-colors"
+              className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xs border border-orange-100/90 space-y-5 hover:border-[#C89B58]/40 transition-colors"
             >
               {/* Order Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
@@ -180,7 +180,7 @@ export default function OrdersTab({
 
                     <button
                       onClick={() => onBuyAgain(item)}
-                      className="shrink-0 bg-pink-50 hover:bg-[#FF2F92] text-[#FF2F92] hover:text-white font-black text-xs px-3.5 py-1.5 rounded-xl border border-pink-200/80 shadow-2xs transition-all flex items-center gap-1.5"
+                      className="shrink-0 bg-[#FAF4EB] hover:bg-[#1F3C24] text-[#1F3C24] hover:text-white font-black text-xs px-3.5 py-1.5 rounded-xl border border-[#C89B58]/30 shadow-2xs transition-all flex items-center gap-1.5"
                       title={`Reorder ${item.title}`}
                     >
                       <ShoppingCart className="w-3.5 h-3.5" />
@@ -199,7 +199,7 @@ export default function OrdersTab({
 
                 <button
                   onClick={() => onSelectOrder(order)}
-                  className="text-xs font-black text-[#FF2F92] hover:underline flex items-center gap-1 shrink-0 ml-auto"
+                  className="text-xs font-black text-[#1F3C24] hover:text-[#C89B58] hover:underline flex items-center gap-1 shrink-0 ml-auto"
                 >
                   <span>View Details</span>
                   <ChevronRight className="w-3.5 h-3.5" />

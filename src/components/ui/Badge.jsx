@@ -20,12 +20,12 @@ export default function Badge({
   };
 
   const variantStyles = {
-    trust: 'bg-emerald-50 text-[#13805B] border border-emerald-200/80',
-    berry: 'bg-[#FF2F92] text-white shadow-2xs',
-    berryLight: 'bg-pink-50 text-pink-700 border border-pink-200',
+    trust: 'bg-[#F2F7F2] text-[#1F3C24] border border-[#DDECDD]',
+    berry: 'bg-[#C89B58] text-white shadow-2xs',
+    berryLight: 'bg-[#FAF4EB] text-[#B38644] border border-[#C89B58]/30',
     amber: 'bg-amber-100 text-amber-900 border border-amber-200/70',
     age: 'bg-slate-100 text-slate-700 border border-slate-200/80',
-    discount: 'bg-[#13805B] text-white shadow-2xs',
+    discount: 'bg-[#1F3C24] text-white shadow-2xs',
     neutral: 'bg-slate-50 text-slate-600 border border-slate-200'
   };
 

@@ -64,8 +64,8 @@ export default function OrderSuccessStep() {
   return (
     <div className="min-h-screen bg-brand-cream pb-24 md:pb-16">
       <SEO 
-        title="Order Confirmed | Little Joys"
-        description="Your Little Joys order has been placed successfully and is being packed with love."
+        title="Order Confirmed | Nestor"
+        description="Your Nestor order has been placed successfully and is being packed with love."
       />
       {/* 1. Stepper with all 4 steps completed */}
       <CheckoutStepper currentStep="confirmation" />
@@ -79,7 +79,7 @@ export default function OrderSuccessStep() {
           <MiniStarCluster className="text-amber-400 absolute top-6 right-8 hidden sm:inline-flex" />
 
           {/* Big Green Checkmark */}
-          <div className="w-20 h-20 rounded-full bg-emerald-100 text-[#13805B] flex items-center justify-center mx-auto mb-4 ring-8 ring-emerald-50">
+          <div className="w-20 h-20 rounded-full bg-[#FAF4EB] text-[#1F3C24] flex items-center justify-center mx-auto mb-4 ring-8 ring-[#FAF4EB]/60">
             <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
           </div>
 
@@ -111,7 +111,7 @@ export default function OrderSuccessStep() {
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-orange-100 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
             <div>
-              <span className="text-xs font-black uppercase text-[#13805B] tracking-wider">
+              <span className="text-xs font-black uppercase text-[#1F3C24] tracking-wider">
                 Estimated Delivery
               </span>
               <h2 className="text-lg font-black text-slate-900 mt-0.5">
@@ -119,8 +119,8 @@ export default function OrderSuccessStep() {
               </h2>
             </div>
 
-            <span className="inline-flex items-center gap-1.5 text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full self-start sm:self-auto">
-              <Truck className="w-3.5 h-3.5 text-[#13805B]" />
+            <span className="inline-flex items-center gap-1.5 text-xs font-black text-[#1F3C24] bg-[#FAF4EB] border border-[#C89B58]/30 px-3 py-1 rounded-full self-start sm:self-auto">
+              <Truck className="w-3.5 h-3.5 text-[#1F3C24]" />
               <span>BlueDart Express Shipping</span>
             </span>
           </div>
@@ -128,7 +128,7 @@ export default function OrderSuccessStep() {
           {/* Stepper Timeline */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-2 relative">
             <div className="flex sm:flex-col items-center sm:text-center gap-3 sm:gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#13805B] text-white flex items-center justify-center text-xs font-black">
+              <div className="w-8 h-8 rounded-full bg-[#1F3C24] text-white flex items-center justify-center text-xs font-black">
                 ✓
               </div>
               <div>
@@ -138,7 +138,7 @@ export default function OrderSuccessStep() {
             </div>
 
             <div className="flex sm:flex-col items-center sm:text-center gap-3 sm:gap-2">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-[#13805B] flex items-center justify-center text-xs font-black border-2 border-[#13805B]">
+              <div className="w-8 h-8 rounded-full bg-[#FAF4EB] text-[#1F3C24] flex items-center justify-center text-xs font-black border-2 border-[#1F3C24]">
                 2
               </div>
               <div>
@@ -175,7 +175,7 @@ export default function OrderSuccessStep() {
           {/* Shipping Address Recap */}
           <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-sm space-y-3">
             <div className="flex items-center gap-2 text-xs font-black uppercase text-slate-400 tracking-wider">
-              <MapPin className="w-4 h-4 text-[#13805B]" />
+              <MapPin className="w-4 h-4 text-[#1F3C24]" />
               <span>Delivering To</span>
             </div>
             <div className="text-xs sm:text-sm space-y-1 text-slate-700 font-medium">
@@ -191,7 +191,7 @@ export default function OrderSuccessStep() {
           {/* Payment & Total Recap */}
           <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-sm space-y-3">
             <div className="flex items-center gap-2 text-xs font-black uppercase text-slate-400 tracking-wider">
-              <Calendar className="w-4 h-4 text-[#13805B]" />
+              <Calendar className="w-4 h-4 text-[#1F3C24]" />
               <span>Payment Info</span>
             </div>
             <div className="text-xs sm:text-sm space-y-2 text-slate-700 font-medium">
@@ -201,7 +201,7 @@ export default function OrderSuccessStep() {
               </div>
               <div className="flex justify-between">
                 <span>Payment Status:</span>
-                <span className="text-emerald-700 font-black">Paid Successfully ✓</span>
+                <span className="text-[#1F3C24] font-black">Paid Successfully ✓</span>
               </div>
               <div className="flex justify-between border-t border-slate-100 pt-2 text-sm sm:text-base font-black text-slate-900">
                 <span>Total Amount:</span>
@@ -217,7 +217,7 @@ export default function OrderSuccessStep() {
           <Link
             to="/orders"
             replace
-            className="w-full sm:w-auto bg-[#13805B] hover:bg-[#0E6346] text-white font-black py-4 px-8 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-4 px-8 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
           >
             <span>View Orders &amp; Track</span>
             <ExternalLink className="w-4 h-4" />

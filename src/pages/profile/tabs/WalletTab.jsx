@@ -7,7 +7,7 @@ export default function WalletTab({
 }) {
   return (
     <div className="space-y-5">
-      <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-3xl p-6 text-white shadow-md shadow-orange-500/15 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-gradient-to-r from-[#1F3C24] via-[#2A5232] to-[#C89B58] rounded-3xl p-6 text-white shadow-md shadow-[#1F3C24]/15 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <span className="text-xs font-bold text-white/80 uppercase tracking-widest">
             Available Balance
@@ -21,9 +21,9 @@ export default function WalletTab({
         </div>
         <Link
           to="/wallet-recharge"
-          className="bg-white hover:bg-orange-50 text-slate-900 text-xs font-black px-5 py-3 rounded-2xl shadow-xs transition-transform active:scale-95 flex items-center gap-2"
+          className="bg-white hover:bg-[#FAF4EB] text-slate-900 text-xs font-black px-5 py-3 rounded-2xl shadow-xs transition-transform active:scale-95 flex items-center gap-2"
         >
-          <Plus className="w-4 h-4 text-pink-600" />
+          <Plus className="w-4 h-4 text-[#1F3C24]" />
           <span>Top-up Wallet (+30% Extra)</span>
         </Link>
       </div>
@@ -42,14 +42,14 @@ export default function WalletTab({
           </div>
           <div className="py-3 flex justify-between items-center">
             <div>
-              <p className="font-bold text-slate-800">Used on Order #LJ-ORD-9824</p>
+              <p className="font-bold text-slate-800">Used on Order #NEST-ORD-9824</p>
               <span className="text-[11px] text-slate-400">08 Sep, 2026</span>
             </div>
             <span className="font-black text-slate-800 text-sm">- ₹298</span>
           </div>
           <div className="py-3 flex justify-between items-center">
             <div>
-              <p className="font-bold text-slate-800">LJ Wallet 30% Bonus Top-up</p>
+              <p className="font-bold text-slate-800">Nestor Wallet 30% Bonus Top-up</p>
               <span className="text-[11px] text-slate-400">10 Sep, 2026</span>
             </div>
             <span className="font-black text-emerald-600 text-sm">+ ₹300</span>

@@ -269,7 +269,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
     if (navigator.share) {
       navigator.share({
         title: product.title,
-        text: `Check out ${product.title} on Little Joys!`,
+        text: `Check out ${product.title} on Nestor!`,
         url: window.location.href
       }).catch(() => {});
     } else {
@@ -419,8 +419,8 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
       )}
 
       <SEO
-        title={`${product.title} - Pediatrician Formulated Kids Nutrition`}
-        description={product.description || `Shop ${product.title} at Little Joys. 100% lab tested clean nutrition with zero refined sugar.`}
+        title={`${product.title} - Pediatrician Formulated Kids Nutrition | Nestor`}
+        description={product.description || `Shop ${product.title} at Nestor. 100% lab tested clean nutrition with zero refined sugar.`}
         ogImage={product.image}
         ogType="product"
         schemaData={{
@@ -494,11 +494,11 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               {/* Floating Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                 {product.tag && (
-                  <span className="bg-[#FF2F92] text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-2xs">
+                  <span className="bg-[#C89B58] text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-2xs">
                     {product.tag}
                   </span>
                 )}
-                <span className="bg-[#13805B] text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-2xs">
+                <span className="bg-[#1F3C24] text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-2xs">
                   NABL Tested
                 </span>
               </div>
@@ -532,7 +532,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   onClick={() => setSelectedThumbnail(idx)}
                   className={`aspect-square rounded-2xl overflow-hidden p-1 border-2 transition-all ${
                     selectedThumbnail === idx 
-                      ? 'border-[#13805B] shadow-sm scale-102 bg-emerald-50/40' 
+                      ? 'border-[#1F3C24] shadow-sm scale-102 bg-emerald-50/40' 
                       : 'border-slate-100 hover:border-slate-300 bg-white opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -547,7 +547,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             <div>
               {/* Category & Ratings Row */}
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <span className="text-xs font-black uppercase tracking-wider text-[#FF2F92] bg-pink-50 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-black uppercase tracking-wider text-[#C89B58] bg-[#FAF4EB] px-2.5 py-0.5 rounded-full border border-[#C89B58]/30">
                   {product.subCategory || product.category}
                 </span>
 
@@ -624,19 +624,19 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                       onClick={() => setSelectedPackIndex(idx)}
                       className={`relative p-3 rounded-2xl text-left border-2 transition-all flex flex-col justify-between ${
                         isSelected 
-                          ? 'border-[#13805B] bg-emerald-50/50 shadow-xs ring-2 ring-[#13805B]/20' 
+                          ? 'border-[#1F3C24] bg-emerald-50/50 shadow-xs ring-2 ring-[#1F3C24]/20' 
                           : 'border-slate-200/90 hover:border-slate-300 bg-white'
                       }`}
                     >
                       {pack.badge && (
-                        <span className="absolute -top-2.5 right-2 bg-[#FF2F92] text-white text-[9px] font-black px-2 py-0.2 rounded-full uppercase tracking-wider">
+                        <span className="absolute -top-2.5 right-2 bg-[#C89B58] text-white text-[9px] font-black px-2 py-0.2 rounded-full uppercase tracking-wider">
                           {pack.badge}
                         </span>
                       )}
 
                       {/* Selected Indicator Pill */}
                       {isSelected && (
-                        <span className="absolute -top-2 left-2 bg-[#13805B] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider flex items-center gap-0.5">
+                        <span className="absolute -top-2 left-2 bg-[#1F3C24] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider flex items-center gap-0.5">
                           <Check className="w-2.5 h-2.5 stroke-3" /> Selected
                         </span>
                       )}
@@ -665,14 +665,14 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                 <span className="text-xl">🪙</span>
                 <div>
                   <span className="text-xs font-black text-amber-950 block">
-                    Get ₹150 Cashback with LJ Wallet
+                    Get ₹150 Cashback with Nestor Wallet
                   </span>
                   <span className="text-[11px] text-amber-800">
                     Use your parenting balance for an instant 30% bonus.
                   </span>
                 </div>
               </div>
-              <Link to="/wallet" className="text-xs font-black text-amber-900 underline shrink-0">
+              <Link to="/wallet-recharge" className="text-xs font-black text-amber-900 underline shrink-0">
                 Top Up →
               </Link>
             </div>
@@ -685,7 +685,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     aria-label="Decrease quantity"
-                    className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#13805B] font-bold shadow-xs active:scale-90 cursor-pointer"
+                    className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#1F3C24] font-bold shadow-xs active:scale-90 cursor-pointer"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
@@ -693,7 +693,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     aria-label="Increase quantity"
-                    className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#13805B] font-bold shadow-xs active:scale-90 cursor-pointer"
+                    className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-700 hover:text-[#1F3C24] font-bold shadow-xs active:scale-90 cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -704,8 +704,8 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   onClick={handleAdd}
                   className={`flex-1 font-black py-4 rounded-full text-xs sm:text-sm uppercase tracking-wider transition-all transform active:scale-95 shadow-md flex items-center justify-center gap-2 ${
                     addedAnimation
-                      ? 'bg-[#13805B] text-white shadow-[#13805B]/30'
-                      : 'bg-[#13805B] hover:bg-[#0E6346] text-white shadow-[#13805B]/25'
+                      ? 'bg-[#1F3C24] text-white shadow-[#1F3C24]/30'
+                      : 'bg-[#1F3C24] hover:bg-[#142718] text-white shadow-[#1F3C24]/25'
                   }`}
                 >
                   {addedAnimation ? (
@@ -725,7 +725,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               {/* Instant Buy Now Button */}
               <button
                 onClick={handleBuyNow}
-                className="w-full bg-[#FF2F92] hover:bg-[#E11D74] text-white font-black py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-[#FF2F92]/25 flex items-center justify-center gap-2 transition-all transform active:scale-95"
+                className="w-full bg-[#C89B58] hover:bg-[#B38644] text-white font-black py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-[#C89B58]/25 flex items-center justify-center gap-2 transition-all transform active:scale-95 cursor-pointer"
               >
                 <span>BUY NOW WITH 1-CLICK</span>
                 <ArrowRight className="w-4 h-4" />
@@ -814,7 +814,7 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               Evidence-Backed Nutrition
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Why Little Joys Works So Well
+              Why Nestor Works So Well
             </h2>
             <p className="text-sm text-slate-500 font-medium">
               Formulated to fill vital nutrient gaps without upsetting delicate young tummies.
@@ -832,31 +832,31 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#13805B] transition-all space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-pink-50 text-[#FF2F92] flex items-center justify-center text-2xl shadow-2xs">
+            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#1F3C24] transition-all space-y-2">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-[#C89B58] flex items-center justify-center text-2xl shadow-2xs">
                 🧠
               </div>
-              <h3 className="text-base font-black text-slate-900">Sharper Focus &amp; Memory</h3>
+              <h3 className="text-base font-black text-slate-900 font-brand-display">Sharper Focus &amp; Memory</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
                 Pure cocoa polyphenols, iron, and choline fuel growing neural pathways for sustained concentration during school and study hours.
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#13805B] transition-all space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#13805B] flex items-center justify-center text-2xl shadow-2xs">
+            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#1F3C24] transition-all space-y-2">
+              <div className="w-12 h-12 rounded-2xl bg-[#F2F7F2] text-[#1F3C24] flex items-center justify-center text-2xl shadow-2xs">
                 🛡️
               </div>
-              <h3 className="text-base font-black text-slate-900">Stronger Daily Immunity</h3>
+              <h3 className="text-base font-black text-slate-900 font-brand-display">Stronger Daily Immunity</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
                 Provides 100% RDA of essential Zinc, Vitamin C, and Vitamin D3 to build daily resistance against seasonal colds and coughs.
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#13805B] transition-all space-y-2">
+            <div className="bg-white rounded-3xl p-6 border border-orange-100 shadow-xs hover:border-[#1F3C24] transition-all space-y-2">
               <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shadow-2xs">
                 🥣
               </div>
-              <h3 className="text-base font-black text-slate-900">Gentle Tummy Digestion</h3>
+              <h3 className="text-base font-black text-slate-900 font-brand-display">Gentle Tummy Digestion</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
                 Sprouting breaks down complex starches into simple, easily absorbable nutrients with zero bloating, heaviness, or white sugar spikes.
               </p>
@@ -870,11 +870,11 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-500" />
-                <h2 className="text-lg sm:text-xl font-black text-slate-900">
+                <h2 className="text-lg sm:text-xl font-black text-slate-900 font-brand-display">
                   Frequently Bought Together
                 </h2>
               </div>
-              <span className="bg-[#FF2F92] text-white text-xs font-black px-3 py-1 rounded-full uppercase shadow-2xs">
+              <span className="bg-[#C89B58] text-white text-xs font-black px-3 py-1 rounded-full uppercase shadow-2xs">
                 Save ₹149 Combo Discount
               </span>
             </div>
@@ -973,10 +973,10 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               <span className="text-amber-500 inline-block hover:scale-110 transition-transform">T</span>
               <span className="text-orange-500 inline-block hover:scale-110 transition-transform">A</span>
               <span className="text-rose-500 inline-block hover:scale-110 transition-transform">R</span>
-              <span className="text-pink-500 inline-block hover:scale-110 transition-transform mr-2 sm:mr-3">T</span>
+              <span className="text-emerald-600 inline-block hover:scale-110 transition-transform mr-2 sm:mr-3">T</span>
 
               <span className="text-rose-600 inline-block hover:scale-110 transition-transform">H</span>
-              <span className="text-pink-600 inline-block hover:scale-110 transition-transform">E</span>
+              <span className="text-[#C89B58] inline-block hover:scale-110 transition-transform">E</span>
               <span className="text-purple-600 inline-block hover:scale-110 transition-transform">R</span>
               <span className="text-red-500 inline-block hover:scale-110 transition-transform">E</span>
               <span className="text-red-600 inline-block hover:scale-110 transition-transform">...</span>
@@ -1013,8 +1013,8 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-5 border border-orange-100 text-center shadow-xs space-y-2 hover:border-[#13805B] transition-all">
-              <div className="w-10 h-10 rounded-full bg-pink-100 text-[#FF2F92] font-black text-sm flex items-center justify-center mx-auto">
+            <div className="bg-white rounded-3xl p-5 border border-orange-100 text-center shadow-xs space-y-2 hover:border-[#1F3C24] transition-all">
+              <div className="w-10 h-10 rounded-full bg-amber-100 text-[#C89B58] font-black text-sm flex items-center justify-center mx-auto">
                 3
               </div>
               <h4 className="text-base font-black text-slate-900">Shake / Stir</h4>
@@ -1323,10 +1323,10 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
         <div className="max-w-6xl mx-auto px-4 my-6">
           <ScallopDivider 
             direction="up" 
-            color="text-pink-300/80" 
+            color="text-amber-200/80" 
             centerBadge={
-              <div className="flex items-center gap-1.5 text-xs font-black text-[#FF2F92] bg-white px-3.5 py-0.5 rounded-full border border-pink-200 shadow-2xs">
-                <HeartDoodle className="w-3.5 h-3.5 text-[#FF2F92]" />
+              <div className="flex items-center gap-1.5 text-xs font-black text-[#C89B58] bg-white px-3.5 py-0.5 rounded-full border border-[#C89B58]/30 shadow-2xs">
+                <HeartDoodle className="w-3.5 h-3.5 text-[#C89B58]" />
                 <span>Verified Parent Reviews</span>
               </div>
             } 
@@ -1497,8 +1497,8 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                   </Link>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] font-extrabold text-[#FF2F92] uppercase">{p.subCategory}</span>
-                    <Link to={`/product/${p.slug}`} className="text-xs sm:text-sm font-black text-slate-900 block line-clamp-2 hover:text-[#13805B]">
+                    <span className="text-[10px] font-extrabold text-[#C89B58] uppercase">{p.subCategory}</span>
+                    <Link to={`/product/${p.slug}`} className="text-xs sm:text-sm font-black text-slate-900 block line-clamp-2 hover:text-[#1F3C24]">
                       {p.title}
                     </Link>
                     <div className="flex items-center justify-between pt-2 border-t border-slate-100">
@@ -1507,8 +1507,8 @@ export default function ProductDetail({ onAddToCart, cartItems = [] }) {
                         onClick={() => effectiveAddToCart && effectiveAddToCart(p)}
                         className={`text-[11px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider transition-all ${
                           inCart 
-                            ? 'bg-emerald-100 text-[#13805B] border border-emerald-300' 
-                            : 'bg-[#13805B] hover:bg-[#0E6346] text-white'
+                            ? 'bg-emerald-100 text-[#1F3C24] border border-emerald-300' 
+                            : 'bg-[#1F3C24] hover:bg-[#142718] text-white'
                         }`}
                       >
                         {inCart ? 'IN BAG' : 'ADD'}
