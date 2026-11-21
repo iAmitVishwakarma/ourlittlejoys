@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { User, ChevronDown, Package, Wallet, LogOut } from 'lucide-react';
+import { User, ChevronDown, Package, LogOut } from 'lucide-react';
 
 export default function NavUserDropdown({
   isAuthenticated,
@@ -74,14 +74,6 @@ export default function NavUserDropdown({
             >
               <Package className="w-4 h-4 text-slate-400" />
               <span>My Orders</span>
-            </Link>
-            <Link
-              to="/wallet-recharge"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2.5 px-4 py-2 hover:bg-amber-50 hover:text-amber-800 transition-colors"
-            >
-              <Wallet className="w-4 h-4 text-amber-500" />
-              <span>Recharge Wallet</span>
             </Link>
           </div>
 

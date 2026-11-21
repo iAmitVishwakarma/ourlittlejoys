@@ -86,7 +86,7 @@ export default function ProfileHeaderBanner({
             </div>
             <div>
               <span className="text-[11px] font-extrabold text-amber-900 uppercase tracking-wider block">
-                LJ Wallet Balance
+                NESTOR WALLET
               </span>
               <span className="text-2xl font-black text-slate-900 tracking-tight">
                 ₹{currentWalletBalance}
@@ -95,7 +95,7 @@ export default function ProfileHeaderBanner({
           </div>
 
           <Link
-            to="/wallet-recharge"
+            to="/wallet"
             className="w-full bg-linear-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs py-2.5 px-4 rounded-xl shadow-xs transition-transform active:scale-98 flex items-center justify-center gap-1.5"
           >
             <span>Recharge &amp; Get 30% Extra</span>

@@ -59,9 +59,9 @@ export default function Navbar({ cartCount = 0 }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -99,12 +99,13 @@ export default function Navbar({ cartCount = 0 }) {
       <AnnouncementBar
         effectiveCartCount={effectiveCartCount}
         cartTotal={cartTotal}
+        isScrolled={isScrolled}
       />
 
       <nav
-        className={`w-full transition-all duration-300 ${
+        className={`w-full transition-all duration-200 ${
           isScrolled
-            ? 'glass-effect py-2 sm:py-2.5 shadow-md'
+            ? 'bg-white/85 backdrop-blur-md border-b border-stone-200/70 shadow-sm py-2 sm:py-2.5'
             : 'bg-white/95 backdrop-blur-md py-2.5 sm:py-3.5 border-b border-orange-100'
         }`}
       >

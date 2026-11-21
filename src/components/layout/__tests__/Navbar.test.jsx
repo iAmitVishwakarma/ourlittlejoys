@@ -123,7 +123,7 @@ describe('Navbar Component', () => {
     await user.click(userMenuButton);
     expect(screen.getByText('My Account')).toBeInTheDocument();
     expect(screen.getByText('My Orders')).toBeInTheDocument();
-    expect(screen.getByText('Recharge Wallet')).toBeInTheDocument();
+    expect(screen.queryByText('Recharge Wallet')).not.toBeInTheDocument();
     expect(screen.getByText('Log Out')).toBeInTheDocument();
 
     const logoutButton = screen.getByText('Log Out');

@@ -1,24 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, X } from 'lucide-react';
+import { CheckCircle2, X, ArrowRight } from 'lucide-react';
 import SEO from '@/components/common/SEO';
-import { OrderCardSkeleton } from '@/components/common/Skeleton';
 import { useProfile } from '@/hooks/useProfile';
 import ProfileLoginView from './profile/ProfileLoginView';
 import ProfileHeaderBanner from './profile/ProfileHeaderBanner';
-import ProfileQuickStats from './profile/ProfileQuickStats';
-import ProfileNavSidebar from './profile/ProfileNavSidebar';
-import ProfileRightSidebar from './profile/ProfileRightSidebar';
-import OrderDetailModal from './profile/OrderDetailModal';
+import ParentDetailsCard from './profile/ParentDetailsCard';
+import ChildProfileCard from './profile/ChildProfileCard';
+import AccountPreferencesCard from './profile/AccountPreferencesCard';
+import ProfileActionCards from './profile/ProfileActionCards';
 
-import ProfileDetailsTab from './profile/tabs/ProfileDetailsTab';
-import ChildProfileTab from './profile/tabs/ChildProfileTab';
-import OrdersTab from './profile/tabs/OrdersTab';
-import AddressesTab from './profile/tabs/AddressesTab';
-import WalletTab from './profile/tabs/WalletTab';
-
-export default function Profile({ defaultTab }) {
-  const profile = useProfile(defaultTab);
+export default function Profile() {
+  const profile = useProfile();
 
   if (!profile.isAuthenticated) {
     return (
@@ -40,13 +33,17 @@ export default function Profile({ defaultTab }) {
   return (
     <div className="min-h-screen bg-brand-cream pb-24 pt-3 md:pt-5 font-sans selection:bg-[#FAF4EB] selection:text-[#1F3C24]">
       <SEO
-        title="Parent Account & Orders | Nestor"
-        description="Manage your Nestor orders, child nutrition profile, saved delivery addresses, and Nestor Wallet."
+        title="Parent Account | Nestor"
+        description="Manage your Nestor child nutrition profile, parent account details, and preferences."
       />
 
       {/* Floating Animated Feedback Toast */}
       {profile.toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 animate-bounce max-w-md bg-white border border-[#C89B58]/40 shadow-xl rounded-2xl p-4 flex items-start gap-3">
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 right-6 z-50 animate-bounce max-w-md bg-white border border-[#C89B58]/40 shadow-xl rounded-2xl p-4 flex items-start gap-3"
+        >
           <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
             <CheckCircle2 className="w-5 h-5" />
           </div>
@@ -58,13 +55,15 @@ export default function Profile({ defaultTab }) {
           </div>
           <Link
             to="/cart"
-            className="text-[11px] font-extrabold text-[#1F3C24] hover:underline shrink-0 bg-[#FAF4EB] px-2.5 py-1 rounded-lg border border-[#C89B58]/30"
+            className="text-[11px] font-extrabold text-[#1F3C24] hover:underline shrink-0 bg-[#FAF4EB] px-2.5 py-1 rounded-lg border border-[#C89B58]/30 inline-flex items-center gap-1"
           >
-            View Cart &rarr;
+            <span>View Cart</span>
+            <ArrowRight className="w-3 h-3" />
           </Link>
           <button
             onClick={() => profile.setToastMessage(null)}
-            className="text-slate-400 hover:text-slate-600 ml-1"
+            aria-label="Close notification"
+            className="text-slate-400 hover:text-slate-600 ml-1 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -72,7 +71,7 @@ export default function Profile({ defaultTab }) {
       )}
 
       <div className="container mx-auto px-4 md:px-6 max-w-6xl space-y-6">
-        {/* Welcome Header */}
+        {/* Top Hero Banner */}
         <ProfileHeaderBanner
           currentUserName={profile.currentUserName}
           currentUserPhone={profile.currentUserPhone}
@@ -83,133 +82,34 @@ export default function Profile({ defaultTab }) {
           initialLetter={profile.initialLetter}
         />
 
-        {/* Quick Stats */}
-        <ProfileQuickStats
-          activeTab={profile.activeTab}
-          setActiveTab={profile.setActiveTab}
-          ordersCount={profile.orders.length}
-          wishlistCount={profile.wishlistItems.length}
-          walletBalance={profile.currentWalletBalance}
-        />
+        {/* Row 1: Balanced 2-Column Bento Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* Left Column (7 cols): Parent Details + Child Profile */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            <ParentDetailsCard
+              userName={profile.currentUserName}
+              userPhone={profile.currentUserPhone}
+              userEmail={profile.currentUserEmail}
+              onSaveParentProfile={profile.handleSaveParentProfile}
+            />
 
-        {/* Main 3-Column Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Navigation Sidebar */}
-          <ProfileNavSidebar
-            activeTab={profile.activeTab}
-            onTabSelect={profile.handleTabSelect}
-            ordersCount={profile.orders.length}
-            walletBalance={profile.currentWalletBalance}
-          />
+            <ChildProfileCard
+              childName={profile.currentChildName}
+              childAge={profile.currentChildAge}
+              nutritionGoal={profile.nutritionGoal}
+              onSaveChildProfile={profile.handleSaveChildProfile}
+            />
+          </div>
 
-          {/* Central Active Tab */}
-          <main className="lg:col-span-6 space-y-6">
-            {profile.isTabLoading ? (
-              <div className="space-y-4 animate-in fade-in duration-200">
-                <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-xs space-y-3">
-                  <div className="w-36 h-6 skeleton-shimmer rounded-md" />
-                  <div className="w-64 h-4 skeleton-shimmer rounded-md" />
-                </div>
-                <OrderCardSkeleton />
-                <OrderCardSkeleton />
-              </div>
-            ) : (
-              <>
-                {profile.activeTab === 'orders' && (
-                  <OrdersTab
-                    filteredOrders={profile.filteredOrders}
-                    orderFilter={profile.orderFilter}
-                    setOrderFilter={profile.setOrderFilter}
-                    isFilterOpen={profile.isFilterOpen}
-                    setIsFilterOpen={profile.setIsFilterOpen}
-                    onSelectOrder={profile.setSelectedOrderDetail}
-                    onBuyAgain={profile.handleBuyAgain}
-                  />
-                )}
-
-                {profile.activeTab === 'profile' && (
-                  <div className="space-y-6">
-                    <ChildProfileTab
-                      childName={profile.currentChildName}
-                      childAge={profile.currentChildAge}
-                      nutritionGoal={profile.nutritionGoal}
-                      isEditingChild={profile.isEditingChild}
-                      setIsEditingChild={profile.setIsEditingChild}
-                      editName={profile.childName}
-                      setEditName={profile.setChildName}
-                      editAge={profile.childAge}
-                      setEditAge={profile.setChildAge}
-                      editGoal={profile.nutritionGoal}
-                      setEditGoal={profile.setNutritionGoal}
-                      onSaveChildProfile={profile.handleSaveChildProfile}
-                    />
-                    <ProfileDetailsTab
-                      userName={profile.currentUserName}
-                      userPhone={profile.currentUserPhone}
-                      userEmail={profile.currentUserEmail}
-                      childName={profile.currentChildName}
-                      onSaveParentProfile={profile.handleSaveParentProfile}
-                    />
-                  </div>
-                )}
-
-                {profile.activeTab === 'addresses' && (
-                  <AddressesTab
-                    addresses={profile.addresses}
-                    isAddingAddress={profile.isAddingAddress}
-                    setIsAddingAddress={profile.setIsAddingAddress}
-                    newAddress={profile.newAddress}
-                    setNewAddress={profile.setNewAddress}
-                    onSaveAddress={() => {
-                      if (profile.newAddress.line1 && profile.newAddress.pincode) {
-                        profile.setAddresses([
-                          ...profile.addresses,
-                          {
-                            ...profile.newAddress,
-                            id: `addr_${Date.now()}`,
-                            isDefault: false,
-                          },
-                        ]);
-                        profile.setIsAddingAddress(false);
-                        profile.showToast('New address saved!');
-                      }
-                    }}
-                    showToast={profile.showToast}
-                  />
-                )}
-
-                {profile.activeTab === 'wallet' && (
-                  <WalletTab walletBalance={profile.currentWalletBalance} />
-                )}
-
-                {profile.activeTab === 'settings' && (
-                  <ProfileDetailsTab
-                    userName={profile.currentUserName}
-                    userPhone={profile.currentUserPhone}
-                    userEmail={profile.currentUserEmail}
-                    childName={profile.currentChildName}
-                    onSaveParentProfile={profile.handleSaveParentProfile}
-                  />
-                )}
-              </>
-            )}
-          </main>
-
-          {/* Right Utility Sidebar */}
-          <ProfileRightSidebar
-            orders={profile.orders}
-            onReorderWholeOrder={profile.handleReorderWholeOrder}
-            onShowToast={profile.showToast}
-          />
+          {/* Right Column (5 cols): Account Preferences */}
+          <div className="lg:col-span-5">
+            <AccountPreferencesCard childName={profile.currentChildName} />
+          </div>
         </div>
-      </div>
 
-      {/* Order Detail Modal */}
-      <OrderDetailModal
-        order={profile.selectedOrderDetail}
-        onClose={() => profile.setSelectedOrderDetail(null)}
-        onReorderWholeOrder={profile.handleReorderWholeOrder}
-      />
+        {/* Row 2: Balanced 3-Column Equal-Height Action Row */}
+        <ProfileActionCards onShowToast={profile.showToast} />
+      </div>
     </div>
   );
 }

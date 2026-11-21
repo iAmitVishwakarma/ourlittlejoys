@@ -15,6 +15,7 @@ const AboutUs = React.lazy(() => import('@/pages/AboutUs'));
 const WalletRecharge = React.lazy(() => import('@/pages/WalletRecharge'));
 const Cart = React.lazy(() => import('@/pages/Cart'));
 const Profile = React.lazy(() => import('@/pages/Profile'));
+const Orders = React.lazy(() => import('@/pages/Orders'));
 const Wishlist = React.lazy(() => import('@/pages/Wishlist'));
 const Login = React.lazy(() => import('@/pages/Login'));
 const FAQPage = React.lazy(() =>
@@ -90,7 +91,7 @@ export default function AppRoutes({
           path="/orders"
           element={
             <ProtectedRoute>
-              <Profile defaultTab="orders" />
+              <Orders />
             </ProtectedRoute>
           }
         />
@@ -106,7 +107,7 @@ export default function AppRoutes({
           path="/wallet"
           element={
             <ProtectedRoute>
-              <Profile defaultTab="wallet" />
+              <WalletRecharge />
             </ProtectedRoute>
           }
         />

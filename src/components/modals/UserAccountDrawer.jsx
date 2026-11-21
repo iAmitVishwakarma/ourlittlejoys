@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { resetAppSession } from '@/utils/session';
 import { 
@@ -137,12 +138,13 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
                   </ul>
                 </div>
 
-                <button
-                  onClick={() => alert("Added ₹100 promotional cash! New balance: ₹300")}
-                  className="w-full bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3 rounded-full text-xs uppercase tracking-wider transition-transform active:scale-95"
+                <Link
+                  to="/wallet"
+                  onClick={onClose}
+                  className="w-full block text-center bg-[#1F3C24] hover:bg-[#142718] text-white font-black py-3 rounded-full text-xs uppercase tracking-wider transition-transform active:scale-95"
                 >
-                  + Add Wallet Cash / Redeem Gift Card
-                </button>
+                  + Add Wallet Cash / Recharge
+                </Link>
               </div>
             )}
 
@@ -184,6 +186,14 @@ export default function UserAccountDrawer({ isOpen, onClose }) {
                     Multivitamin Gummies 4+ (30N) • Delivered on 28th Aug 2026
                   </p>
                 </div>
+
+                <Link
+                  to="/orders"
+                  onClick={onClose}
+                  className="w-full block text-center py-2.5 rounded-xl bg-[#FAF4EB] border border-[#C89B58]/30 text-xs font-black text-[#1F3C24] hover:bg-[#F3EAD9] transition-colors"
+                >
+                  View All Orders &rarr;
+                </Link>
               </div>
             )}
 

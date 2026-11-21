@@ -13,6 +13,7 @@ export const ROUTES = {
   CHECKOUT_SUCCESS: '/checkout/success',
   PROFILE: '/profile',
   ORDERS: '/orders',
+  WALLET: '/wallet',
   HONEST_REPORT: '/honest-report',
   WALLET_RECHARGE: '/wallet-recharge',
   ABOUT_US: '/aboutus',
