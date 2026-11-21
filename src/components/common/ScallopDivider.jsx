@@ -8,7 +8,6 @@ export default function ScallopDivider({
   variant = 'line', // 'line' | 'fill' | 'waves'
   color = 'text-orange-200/80',
   fillColor = '#FFF9F5',
-  bgFill = 'transparent',
   strokeWidth = 1.75,
   direction = 'up', // 'up' (⌒⌒⌒) or 'down' (︶︶︶)
   className = '',

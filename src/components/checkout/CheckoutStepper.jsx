@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, ShieldCheck, ArrowLeft, Lock, HelpCircle } from 'lucide-react';
+import { Check, ArrowLeft, Lock, HelpCircle } from 'lucide-react';
 import NestorLogo from '@/components/common/NestorLogo';
 
 export default function CheckoutStepper({ currentStep = 'address' }) {
@@ -42,7 +42,6 @@ export default function CheckoutStepper({ currentStep = 'address' }) {
           {steps.map((step, idx) => {
             const isCompleted = idx < currentIndex;
             const isCurrent = idx === currentIndex;
-            const isFuture = idx > currentIndex;
             const isClickable = isCompleted && currentStep !== 'confirmation';
 
             return (

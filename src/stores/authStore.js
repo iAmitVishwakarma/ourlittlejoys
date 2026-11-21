@@ -1,10 +1,17 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { authService } from '@/services/authService';
 import { setAuthTokenGetter } from '@/services/apiClient';
+import { safeStorage } from '@/utils/storage';
 import { useCartStore } from './cartStore';
 import { useWishlistStore } from './wishlistStore';
 import { useCheckoutStore } from './checkoutStore';
+
+const safeLocalStorage = {
+  getItem: (name) => safeStorage.getItem(name),
+  setItem: (name, value) => safeStorage.setItem(name, value),
+  removeItem: (name) => safeStorage.removeItem(name)
+};
 
 export const useAuthStore = create(
   persist(
@@ -12,11 +19,8 @@ export const useAuthStore = create(
       user: null,
       token: null,
       isAuthenticated: false,
-      isLoading: true, // Used for initial session restoration to prevent route flashing
+      isLoading: true, // Prevents route flashing during initial session check
 
-      /**
-       * Login user with verified credentials & session token
-       */
       login: (userData, token = null) => {
         const activeToken = token || `mock_token_${userData.id || 'usr'}_${Date.now()}`;
         set({
@@ -26,7 +30,6 @@ export const useAuthStore = create(
           isLoading: false
         });
 
-        // Initialize user-scoped cart, wishlist, and addresses
         if (userData?.id) {
           try {
             useCartStore.getState().loadUserCart(userData.id);
@@ -38,16 +41,13 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Logout user and cleanly wipe client state
-       */
       logout: () => {
         authService.logoutUser();
 
-        // Clear user-scoped stores so no data leaks
         try {
           useCartStore.getState().clearCart();
           useWishlistStore.getState().clearWishlist();
+          useCheckoutStore.getState().resetCheckout();
         } catch (e) {
           console.warn('[authStore] Error clearing user stores upon logout:', e);
         }
@@ -60,11 +60,8 @@ export const useAuthStore = create(
         });
       },
 
-      /**
-       * Restore persisted session on app startup
-       */
       restoreSession: async () => {
-        const currentToken = get().token || (typeof window !== 'undefined' ? localStorage.getItem('lj_auth_token') : null);
+        const currentToken = get().token || safeStorage.getItem('lj_auth_token');
         const currentUser = get().user;
 
         if (!currentToken || !currentUser) {
@@ -73,7 +70,6 @@ export const useAuthStore = create(
         }
 
         try {
-          // Validate session with service
           const validatedUser = await authService.checkSession(currentToken);
           if (validatedUser) {
             set({
@@ -83,12 +79,10 @@ export const useAuthStore = create(
               isLoading: false
             });
 
-            // Sync user stores
             useCartStore.getState().loadUserCart(validatedUser.id);
             useWishlistStore.getState().loadUserWishlist(validatedUser.id);
             useCheckoutStore.getState().loadUserAddresses(validatedUser.id);
           } else {
-            // Invalid session
             get().logout();
           }
         } catch (err) {
@@ -97,9 +91,6 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Update user profile
-       */
       updateProfile: async (updatedFields) => {
         const currentUser = get().user;
         if (!currentUser) return;
@@ -112,9 +103,6 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Personalize child profile
-       */
       updateChildProfile: async ({ childName, childAge, nutritionGoal }) => {
         const currentUser = get().user;
         if (!currentUser) return;
@@ -122,9 +110,6 @@ export const useAuthStore = create(
         await get().updateProfile({ childName, childAge, nutritionGoal });
       },
 
-      /**
-       * Update parent profile details
-       */
       updateParentProfile: async ({ name, phone, email }) => {
         const currentUser = get().user;
         if (!currentUser) return;
@@ -132,9 +117,6 @@ export const useAuthStore = create(
         await get().updateProfile({ name, phone, email });
       },
 
-      /**
-       * Fast OTP login simulation helper
-       */
       loginWithOtp: async (phone) => {
         const res = await authService.loginUser({ phone, otp: '1234' });
         if (res.success && res.user) {
@@ -146,6 +128,7 @@ export const useAuthStore = create(
     }),
     {
       name: 'lj_auth_session_v3',
+      storage: createJSONStorage(() => safeLocalStorage),
       partialize: (state) => ({
         user: state.user,
         token: state.token,

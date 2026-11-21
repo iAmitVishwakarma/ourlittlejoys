@@ -23,9 +23,7 @@ import {
   STANDARD_SHIPPING_FEE,
 } from '@/utils/pricing';
 
-// ============================================================================
 // calculateItemTotal
-// ============================================================================
 describe('calculateItemTotal', () => {
   it('calculates price * quantity for normal values', () => {
     expect(calculateItemTotal(499, 2)).toBe(998);
@@ -64,9 +62,7 @@ describe('calculateItemTotal', () => {
   });
 });
 
-// ============================================================================
 // calculateSubtotal
-// ============================================================================
 describe('calculateSubtotal', () => {
   it('returns 0 for empty array', () => {
     expect(calculateSubtotal([])).toBe(0);
@@ -113,9 +109,7 @@ describe('calculateSubtotal', () => {
   });
 });
 
-// ============================================================================
 // calculateMrpTotal
-// ============================================================================
 describe('calculateMrpTotal', () => {
   it('returns 0 for empty array', () => {
     expect(calculateMrpTotal([])).toBe(0);
@@ -141,9 +135,7 @@ describe('calculateMrpTotal', () => {
   });
 });
 
-// ============================================================================
 // calculateCouponDiscount
-// ============================================================================
 describe('calculateCouponDiscount', () => {
   it('returns 0 when no coupon is provided', () => {
     expect(calculateCouponDiscount(1000, null)).toBe(0);
@@ -207,9 +199,7 @@ describe('calculateCouponDiscount', () => {
   });
 });
 
-// ============================================================================
 // calculateShipping
-// ============================================================================
 describe('calculateShipping', () => {
   it('returns 0 when subtotal is 0 (empty cart)', () => {
     expect(calculateShipping(0)).toBe(0);
@@ -237,9 +227,7 @@ describe('calculateShipping', () => {
   });
 });
 
-// ============================================================================
 // calculateTax
-// ============================================================================
 describe('calculateTax', () => {
   it('returns 0 with default 0 tax rate', () => {
     expect(calculateTax(1000)).toBe(0);
@@ -262,9 +250,7 @@ describe('calculateTax', () => {
   });
 });
 
-// ============================================================================
 // calculateDiscountPercentage
-// ============================================================================
 describe('calculateDiscountPercentage', () => {
   it('calculates percentage correctly', () => {
     expect(calculateDiscountPercentage(699, 499)).toBe(Math.round(((699 - 499) / 699) * 100));
@@ -288,9 +274,7 @@ describe('calculateDiscountPercentage', () => {
   });
 });
 
-// ============================================================================
 // calculateDiscount (compound: mrpSavings + couponDiscount)
-// ============================================================================
 describe('calculateDiscount', () => {
   it('calculates combined savings', () => {
     const mrpTotal = 1200;
@@ -309,9 +293,7 @@ describe('calculateDiscount', () => {
   });
 });
 
-// ============================================================================
 // calculateOrderPricing (comprehensive)
-// ============================================================================
 describe('calculateOrderPricing', () => {
   const sampleItems = [
     { price: 499, originalPrice: 699, quantity: 2 },
@@ -392,9 +374,7 @@ describe('calculateOrderPricing', () => {
   });
 });
 
-// ============================================================================
 // calculateOrderTotal (shorthand)
-// ============================================================================
 describe('calculateOrderTotal', () => {
   it('calculates total for items only', () => {
     const items = [{ price: 499, quantity: 2 }];

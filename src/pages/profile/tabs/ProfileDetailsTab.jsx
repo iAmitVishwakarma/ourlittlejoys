@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Edit2, Check, AlertCircle, Save, X } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
@@ -19,6 +19,13 @@ export default function ProfileDetailsTab({
   const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const successTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+    };
+  }, []);
 
   // Keep form in sync if store/props update
   useEffect(() => {
@@ -87,7 +94,8 @@ export default function ProfileDetailsTab({
       setIsSaving(false);
       setIsEditing(false);
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      successTimerRef.current = setTimeout(() => setSaveSuccess(false), 3000);
     } catch {
       setIsSaving(false);
       setError('Failed to update profile. Please try again.');

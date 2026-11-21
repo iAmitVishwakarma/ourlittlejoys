@@ -29,9 +29,7 @@ beforeEach(() => {
   });
 });
 
-// ============================================================================
 // Initial State
-// ============================================================================
 describe('cartStore - initial state', () => {
   it('starts with empty cart', () => {
     const state = useCartStore.getState();
@@ -44,9 +42,7 @@ describe('cartStore - initial state', () => {
   });
 });
 
-// ============================================================================
 // addToCart
-// ============================================================================
 describe('cartStore - addToCart', () => {
   it('adds a new product to cart', async () => {
     const product = { id: 'prod_1', name: 'Nutrimix', price: 499, slug: 'nutrimix' };
@@ -99,9 +95,7 @@ describe('cartStore - addToCart', () => {
   });
 });
 
-// ============================================================================
 // updateQuantity
-// ============================================================================
 describe('cartStore - updateQuantity', () => {
   beforeEach(() => {
     useCartStore.setState({
@@ -132,9 +126,7 @@ describe('cartStore - updateQuantity', () => {
   });
 });
 
-// ============================================================================
 // removeFromCart
-// ============================================================================
 describe('cartStore - removeFromCart', () => {
   it('removes an item by id', async () => {
     useCartStore.setState({
@@ -169,9 +161,7 @@ describe('cartStore - removeFromCart', () => {
   });
 });
 
-// ============================================================================
 // clearCart
-// ============================================================================
 describe('cartStore - clearCart', () => {
   it('clears all items and resets state', () => {
     useCartStore.setState({
@@ -189,9 +179,7 @@ describe('cartStore - clearCart', () => {
   });
 });
 
-// ============================================================================
 // Coupon Engine
-// ============================================================================
 describe('cartStore - applyCoupon', () => {
   beforeEach(() => {
     useCartStore.setState({
@@ -239,9 +227,7 @@ describe('cartStore - applyCoupon', () => {
   });
 });
 
-// ============================================================================
 // Constants
-// ============================================================================
 describe('cartStore - constants', () => {
   it('exports VALID_COUPONS', () => {
     expect(VALID_COUPONS).toBeDefined();

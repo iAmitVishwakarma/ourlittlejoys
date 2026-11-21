@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import { ShieldCheck, Heart } from 'lucide-react';
 import ScallopDivider from '../common/ScallopDivider';
 import NestorLogo from '../common/NestorLogo';
 

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { useCartStore } from "@/stores/cartStore";
 import SEO from "@/components/common/SEO";
 import ProductVisual from "@/components/product/ProductVisual";
 import {
-  Heart,
   ShoppingCart,
   Trash2,
   ArrowRight,
@@ -25,10 +24,18 @@ export default function Wishlist() {
 
   // Toast feedback state
   const [toastMessage, setToastMessage] = useState(null);
+  const toastTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
 
   const showToast = (title, subtext = "") => {
     setToastMessage({ title, subtext });
-    setTimeout(() => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
       setToastMessage(null);
     }, 3200);
   };

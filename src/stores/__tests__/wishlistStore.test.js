@@ -26,9 +26,7 @@ beforeEach(() => {
   });
 });
 
-// ============================================================================
 // Initial State
-// ============================================================================
 describe('wishlistStore - initial state', () => {
   it('starts with empty wishlist', () => {
     expect(useWishlistStore.getState().wishlistItems).toEqual([]);
@@ -39,9 +37,7 @@ describe('wishlistStore - initial state', () => {
   });
 });
 
-// ============================================================================
 // toggleWishlist
-// ============================================================================
 describe('wishlistStore - toggleWishlist', () => {
   it('adds a product when not in wishlist', async () => {
     const product = { id: 'prod_1', name: 'Nutrimix', slug: 'nutrimix', price: 499 };
@@ -64,9 +60,7 @@ describe('wishlistStore - toggleWishlist', () => {
   });
 });
 
-// ============================================================================
 // isInWishlist
-// ============================================================================
 describe('wishlistStore - isInWishlist', () => {
   beforeEach(() => {
     useWishlistStore.setState({
@@ -101,9 +95,7 @@ describe('wishlistStore - isInWishlist', () => {
   });
 });
 
-// ============================================================================
 // clearWishlist
-// ============================================================================
 describe('wishlistStore - clearWishlist', () => {
   it('clears all items and resets user', () => {
     useWishlistStore.setState({
@@ -119,9 +111,7 @@ describe('wishlistStore - clearWishlist', () => {
   });
 });
 
-// ============================================================================
 // removeFromWishlist
-// ============================================================================
 describe('wishlistStore - removeFromWishlist', () => {
   it('removes item by id', async () => {
     useWishlistStore.setState({

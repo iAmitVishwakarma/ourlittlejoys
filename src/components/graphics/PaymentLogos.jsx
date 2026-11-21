@@ -220,14 +220,3 @@ export function CashOnDeliveryLogoSVG({ className = "h-6" }) {
     </svg>
   );
 }
-
-export const PAYMENT_PARTNERS = [
-  { id: 'amex', name: 'American Express', Component: AmexLogoSVG },
-  { id: 'mastercard', name: 'Mastercard', Component: MastercardLogoSVG },
-  { id: 'visa', name: 'VISA', Component: VisaLogoSVG },
-  { id: 'upi', name: 'UPI', Component: UpiLogoSVG },
-  { id: 'gpay', name: 'Google Pay', Component: GPayLogoSVG },
-  { id: 'pluxee', name: 'Pluxee', Component: PluxeeLogoSVG },
-  { id: 'netbanking', name: 'Net Banking', Component: NetBankingLogoSVG },
-  { id: 'cod', name: 'Cash on Delivery', Component: CashOnDeliveryLogoSVG },
-];

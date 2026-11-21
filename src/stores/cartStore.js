@@ -1,7 +1,14 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { cartService } from '@/services/cartService';
 import { calculateOrderPricing, calculateSubtotal } from '@/utils/pricing';
+import { safeStorage } from '@/utils/storage';
+
+const safeLocalStorage = {
+  getItem: (name) => safeStorage.getItem(name),
+  setItem: (name, value) => safeStorage.setItem(name, value),
+  removeItem: (name) => safeStorage.removeItem(name)
+};
 
 export const VALID_COUPONS = [
   { code: 'JOY30', type: 'percent', value: 22, minOrder: 499, description: '22% Flat Instant Joy Discount' },
@@ -9,8 +16,8 @@ export const VALID_COUPONS = [
   { code: 'LJWALLET', type: 'percent', value: 30, minOrder: 899, description: 'Extra 30% Value with LJ Wallet' }
 ];
 
-/** Maximum allowed quantity per cart item to prevent abuse */
 export const MAX_ITEM_QUANTITY = 10;
+
 export const useCartStore = create(
   persist(
     (set, get) => ({
@@ -18,9 +25,6 @@ export const useCartStore = create(
       activeUserId: null,
       appliedCoupon: { code: 'JOY30', type: 'percent', value: 22, description: '22% Flat Instant Joy Discount' },
 
-      /**
-       * Load cart for a specific authenticated user
-       */
       loadUserCart: async (userId) => {
         if (!userId) return;
         set({ activeUserId: userId });
@@ -28,14 +32,10 @@ export const useCartStore = create(
         set({ cartItems: items || [] });
       },
 
-      /**
-       * Add item to cart scoped to user
-       */
       addToCart: async (product, quantity = 1) => {
-        const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : null);
+        const userId = get().activeUserId || safeStorage.getJSON('lj_user_data')?.id || null;
         const qtyToAdd = product.quantity || quantity || 1;
 
-        // Optimistic update
         set((state) => {
           const targetId = String(product.id || product.productId || '');
           const targetSlug = String(product.slug || '');
@@ -70,16 +70,12 @@ export const useCartStore = create(
           return { cartItems: [...state.cartItems, newItem] };
         });
 
-        // Sync with service if userId is present
         if (userId) {
           const syncedItems = await cartService.addToCart(userId, product, qtyToAdd);
           set({ cartItems: syncedItems, activeUserId: userId });
         }
       },
 
-      /**
-       * Update item quantity
-       */
       updateQuantity: async (id, newQty) => {
         const userId = get().activeUserId;
         const targetId = String(id);
@@ -102,9 +98,6 @@ export const useCartStore = create(
         }
       },
 
-      /**
-       * Remove item from cart
-       */
       removeFromCart: async (id) => {
         const userId = get().activeUserId;
         const targetId = String(id);
@@ -122,16 +115,10 @@ export const useCartStore = create(
         }
       },
 
-      /**
-       * Clean wipe cart upon logout
-       */
       clearCart: () => {
         set({ cartItems: [], activeUserId: null, appliedCoupon: null });
       },
 
-      /**
-       * Coupon actions
-       */
       applyCoupon: (code) => {
         const state = get();
         const subtotal = calculateSubtotal(state.cartItems);
@@ -156,12 +143,12 @@ export const useCartStore = create(
       }
     }),
     {
-      name: 'lj_user_cart_store_v3'
+      name: 'lj_user_cart_store_v3',
+      storage: createJSONStorage(() => safeLocalStorage)
     }
   )
 );
 
-// Derived selectors for computed cart values using pure pricing engine
 export function useCartDerived() {
   const cartItems = useCartStore((s) => s.cartItems);
   const appliedCoupon = useCartStore((s) => s.appliedCoupon);

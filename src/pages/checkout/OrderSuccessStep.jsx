@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCheckoutStore } from '@/stores/checkoutStore';
 import CheckoutStepper from '@/components/checkout/CheckoutStepper';
 import { 
   SunDoodle, 
-  HeartDoodle, 
   KidStampBadge, 
   MiniStarCluster,
   FlyingKidDoodle
@@ -12,19 +11,17 @@ import {
 import SEO from '@/components/common/SEO';
 import { 
   CheckCircle2, 
-  Package, 
   Truck, 
   MapPin, 
   Calendar, 
-  ArrowRight, 
   ShoppingBag,
-  Sparkles,
   ExternalLink
 } from 'lucide-react';
 
 export default function OrderSuccessStep() {
-  const navigate = useNavigate();
-  const { lastOrder, orders, clearActiveCheckoutDraft } = useCheckoutStore();
+  const lastOrder = useCheckoutStore((s) => s.lastOrder);
+  const orders = useCheckoutStore((s) => s.orders);
+  const clearActiveCheckoutDraft = useCheckoutStore((s) => s.clearActiveCheckoutDraft);
 
   // Reset active checkout step & replace browser history entry so pressing Back does not return to payment submission (F-3.2)
   useEffect(() => {

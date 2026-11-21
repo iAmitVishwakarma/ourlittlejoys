@@ -1,8 +1,14 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { addressService } from '@/services/addressService';
 import { orderService } from '@/services/orderService';
-import { apiClient } from '@/services/apiClient';
+import { safeStorage } from '@/utils/storage';
+
+const safeLocalStorage = {
+  getItem: (name) => safeStorage.getItem(name),
+  setItem: (name, value) => safeStorage.setItem(name, value),
+  removeItem: (name) => safeStorage.removeItem(name)
+};
 
 export const useCheckoutStore = create(
   persist(
@@ -10,17 +16,14 @@ export const useCheckoutStore = create(
       savedAddresses: [],
       selectedAddressId: null,
       activeUserId: null,
-      paymentMethod: 'UPI', // 'UPI' | 'CARD' | 'WALLET' | 'COD'
-      upiApp: 'GPAY', // 'GPAY' | 'PHONEPE' | 'PAYTM' | 'CRED' | 'CUSTOM'
+      paymentMethod: 'UPI',
+      upiApp: 'GPAY',
       customUpiId: '',
       useWalletBalance: false,
       walletBalance: 450,
       orders: [],
       lastOrder: null,
 
-      /**
-       * Load addresses for active user
-       */
       loadUserAddresses: async (userId) => {
         if (!userId) return;
         set({ activeUserId: userId });
@@ -28,12 +31,11 @@ export const useCheckoutStore = create(
         const defaultAddr = addresses.find((a) => a.isDefault) || addresses[0];
         set({
           savedAddresses: addresses || [],
-          selectedAddressId: defaultAddr?.id || null
+          selectedAddressId: defaultAddr?.id ? String(defaultAddr.id) : null
         });
 
-        // Also fetch user-scoped orders
         try {
-          const res = await apiClient.get('/orders', { params: { userId } });
+          const res = await orderService.getUserOrders(userId);
           if (res.success && Array.isArray(res.data)) {
             set({ orders: res.data });
           }
@@ -42,12 +44,10 @@ export const useCheckoutStore = create(
         }
       },
 
-      // Address Selection
       selectAddress: (id) => set({ selectedAddressId: id ? String(id) : null }),
 
-      // Add Address
       addAddress: async (addressData) => {
-        const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : 'user_001');
+        const userId = get().activeUserId || safeStorage.getJSON('lj_user_data')?.id || 'user_001';
         const updated = await addressService.addAddress(userId, addressData);
         const newlyAdded = updated.find((a) => a.name === addressData.name && a.pincode === addressData.pincode) || updated[0];
         
@@ -59,7 +59,6 @@ export const useCheckoutStore = create(
         return newlyAdded?.id || updated[0]?.id;
       },
 
-      // Update Address
       updateAddress: async (id, updatedData) => {
         const userId = get().activeUserId;
         const targetId = String(id);
@@ -73,7 +72,6 @@ export const useCheckoutStore = create(
         }
       },
 
-      // Remove Address
       removeAddress: async (id) => {
         const userId = get().activeUserId;
         const targetId = String(id);
@@ -93,7 +91,6 @@ export const useCheckoutStore = create(
         }
       },
 
-      // Set Default Address
       setDefaultAddress: async (id) => {
         const userId = get().activeUserId;
         const targetId = String(id);
@@ -110,15 +107,13 @@ export const useCheckoutStore = create(
         }
       },
 
-      // Payment Actions
       setPaymentMethod: (method) => set({ paymentMethod: method }),
       setUpiApp: (app) => set({ upiApp: app }),
       setCustomUpiId: (id) => set({ customUpiId: id }),
       toggleUseWallet: () => set((state) => ({ useWalletBalance: !state.useWalletBalance })),
 
-      // Order Placement (Delegated to backend-ready orderService)
       createOrder: async (orderPayload) => {
-        const userId = get().activeUserId || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('lj_user_data') || '{}')?.id : 'user_001');
+        const userId = get().activeUserId || safeStorage.getJSON('lj_user_data')?.id || 'user_001';
 
         const createdOrder = await orderService.createOrder({
           userId,
@@ -138,9 +133,6 @@ export const useCheckoutStore = create(
         return newOrder;
       },
 
-      /**
-       * Reset draft payment & checkout step state after successful order (F-3.2)
-       */
       clearActiveCheckoutDraft: () => {
         set({
           paymentMethod: 'UPI',
@@ -150,9 +142,6 @@ export const useCheckoutStore = create(
         });
       },
 
-      /**
-       * Reset checkout session on logout (F-4.4)
-       */
       resetCheckout: () => {
         set({
           savedAddresses: [],
@@ -169,6 +158,7 @@ export const useCheckoutStore = create(
     }),
     {
       name: 'littlejoys-checkout-storage-v3',
+      storage: createJSONStorage(() => safeLocalStorage),
       partialize: (state) => ({
         paymentMethod: state.paymentMethod,
         upiApp: state.upiApp,

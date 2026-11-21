@@ -1,64 +1,54 @@
-/**
- * ============================================================================
- * USER-SCOPED WISHLIST SERVICE - OUR LITTLE JOYS
- * ============================================================================
- * Manages parent favorites scoped strictly to the authenticated userId.
- * ============================================================================
- */
-
 import { apiClient } from './apiClient';
+import { safeStorage } from '@/utils/storage';
 
 function getLocalUserWishlist(userId) {
-  try {
-    const raw = localStorage.getItem(`lj_wishlist_${userId}`);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
+  if (!userId) return [];
+  const stored = safeStorage.getJSON(`lj_wishlist_${userId}`);
+  return Array.isArray(stored) ? stored : [];
 }
 
 function saveLocalUserWishlist(userId, items) {
-  try {
-    localStorage.setItem(`lj_wishlist_${userId}`, JSON.stringify(items));
-  } catch (e) {
-    console.error(e);
-  }
+  if (!userId) return;
+  safeStorage.setJSON(`lj_wishlist_${userId}`, items);
 }
 
 export const wishlistService = {
-  /**
-   * Fetch wishlist items for current user
-   */
   async getUserWishlist(userId) {
     if (!userId) return [];
-    try {
-      const res = await apiClient.get('/wishlist', { userId });
-      if (res.success && Array.isArray(res.data)) {
-        saveLocalUserWishlist(userId, res.data);
-        return res.data;
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+
+    if (!isMock) {
+      try {
+        const res = await apiClient.get('/wishlist');
+        if (res.success && Array.isArray(res.data)) {
+          saveLocalUserWishlist(userId, res.data);
+          return res.data;
+        }
+      } catch (err) {
+        console.warn('[wishlistService] getUserWishlist error, using local fallback:', err);
       }
-    } catch (err) {
-      console.warn('[wishlistService] getUserWishlist fallback:', err.message);
     }
+
     return getLocalUserWishlist(userId);
   },
 
-  /**
-   * Toggle item in user's wishlist
-   */
   async toggleWishlist(userId, product) {
     if (!userId) throw new Error('Authentication required for wishlist');
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
 
     const currentItems = await this.getUserWishlist(userId);
     const existingIndex = currentItems.findIndex(
-      (item) => item.productId === (product.id || product.slug) || item.slug === product.slug || item.id === product.id
+      (item) =>
+        item.productId === (product.id || product.slug) ||
+        item.slug === product.slug ||
+        item.id === product.id
     );
 
     let updatedItems = [];
     if (existingIndex > -1) {
       const itemToRemove = currentItems[existingIndex];
       updatedItems = currentItems.filter((_, idx) => idx !== existingIndex);
-      if (itemToRemove.id && typeof itemToRemove.id === 'string' && itemToRemove.id.startsWith('wish_')) {
+      if (!isMock && itemToRemove.id && !String(itemToRemove.id).startsWith('wish_')) {
         await apiClient.delete(`/wishlist/${itemToRemove.id}`).catch(() => {});
       }
     } else {
@@ -70,9 +60,13 @@ export const wishlistService = {
         price: product.price,
         originalPrice: product.originalPrice || product.mrp || product.price,
         image: product.image || '',
-        slug: product.slug || ''
+        slug: product.slug || '',
       };
-      await apiClient.post('/wishlist', newWishlistItem).catch(() => {});
+
+      if (!isMock) {
+        await apiClient.post('/wishlist', newWishlistItem).catch(() => {});
+      }
+
       updatedItems = [...currentItems, newWishlistItem];
     }
 
@@ -80,30 +74,36 @@ export const wishlistService = {
     return updatedItems;
   },
 
-  /**
-   * Remove from wishlist
-   */
   async removeFromWishlist(userId, productIdOrSlug) {
     if (!userId) return [];
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
     const currentItems = await this.getUserWishlist(userId);
     const updatedItems = currentItems.filter(
-      (item) => item.id !== productIdOrSlug && item.productId !== productIdOrSlug && item.slug !== productIdOrSlug
+      (item) =>
+        item.id !== productIdOrSlug &&
+        item.productId !== productIdOrSlug &&
+        item.slug !== productIdOrSlug
     );
+
+    if (!isMock) {
+      await apiClient.delete(`/wishlist/${productIdOrSlug}`).catch(() => {});
+    }
+
     saveLocalUserWishlist(userId, updatedItems);
     return updatedItems;
   },
 
-  /**
-   * Clear user's wishlist
-   */
   clearUserWishlist(userId) {
     if (!userId) return;
-    try {
-      localStorage.removeItem(`lj_wishlist_${userId}`);
-    } catch (e) {
-      console.error(e);
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+
+    if (!isMock) {
+      apiClient.delete('/wishlist').catch(() => {});
     }
-  }
+
+    saveLocalUserWishlist(userId, []);
+    safeStorage.removeItem(`lj_wishlist_${userId}`);
+  },
 };
 
 export default wishlistService;

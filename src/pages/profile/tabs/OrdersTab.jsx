@@ -159,7 +159,7 @@ export default function OrdersTab({
               {/* Product Items List */}
               <div className="space-y-3 divide-y divide-slate-50">
                 {order.items?.map((item, idx) => (
-                  <div key={idx} className="pt-2 first:pt-0 flex items-center justify-between gap-4">
+                  <div key={item.id || item.productId || item.slug || `order-item-${idx}`} className="pt-2 first:pt-0 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3.5 min-w-0">
                       <div className="w-14 h-14 rounded-2xl bg-orange-50/80 p-1.5 flex items-center justify-center border border-orange-100 shrink-0">
                         <ProductVisual

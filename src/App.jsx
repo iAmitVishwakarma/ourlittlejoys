@@ -1,55 +1,18 @@
-import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
-import { useCartStore } from "./stores/cartStore";
-import { useAuthStore } from "./stores/authStore";
-import ProtectedRoute from "./components/common/ProtectedRoute";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import { useCartStore } from './stores/cartStore';
+import { useAuthStore } from './stores/authStore';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import MobileBottomNav from './components/layout/MobileBottomNav';
+import AppRoutes from './routes/AppRoutes';
 
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import MobileBottomNav from "./components/layout/MobileBottomNav";
-import { PageSkeleton } from "./components/common/Skeleton";
+const CartDrawer = React.lazy(() => import('./components/modals/CartDrawer'));
+const AuthModal = React.lazy(() => import('./components/modals/AuthModal'));
+const UserAccountDrawer = React.lazy(() => import('./components/modals/UserAccountDrawer'));
+const CheckoutFooter = React.lazy(() => import('./components/layout/CheckoutFooter'));
 
-// Interaction-only components — lazy-loaded since they're hidden until user clicks
-const CartDrawer = React.lazy(() => import("./components/modals/CartDrawer"));
-const AuthModal = React.lazy(() => import("./components/modals/AuthModal"));
-const UserAccountDrawer = React.lazy(
-  () => import("./components/modals/UserAccountDrawer"),
-);
-const CheckoutFooter = React.lazy(() => import("./components/layout/CheckoutFooter"));
-
-// Pages - All routes lazy-loaded for optimal code splitting
-const Home = React.lazy(() => import("./pages/Home"));
-const ShopAll = React.lazy(() => import("./pages/ShopAll"));
-const HonestReport = React.lazy(() => import("./pages/HonestReport"));
-const AddressStep = React.lazy(() => import("./pages/checkout/AddressStep"));
-const PaymentStep = React.lazy(() => import("./pages/checkout/PaymentStep"));
-const OrderSuccessStep = React.lazy(
-  () => import("./pages/checkout/OrderSuccessStep"),
-);
-const ProductDetail = React.lazy(() => import("./pages/ProductDetail"));
-const AboutUs = React.lazy(() => import("./pages/AboutUs"));
-const WalletRecharge = React.lazy(() => import("./pages/WalletRecharge"));
-const Cart = React.lazy(() => import("./pages/Cart"));
-const Profile = React.lazy(() => import("./pages/Profile"));
-const Wishlist = React.lazy(() => import("./pages/Wishlist"));
-const Login = React.lazy(() => import("./pages/Login"));
-const FAQPage = React.lazy(() =>
-  import("./pages/StaticPages").then((m) => ({ default: m.FAQPage })),
-);
-const ContactPage = React.lazy(() =>
-  import("./pages/StaticPages").then((m) => ({ default: m.ContactPage })),
-);
-const LegalPage = React.lazy(() =>
-  import("./pages/StaticPages").then((m) => ({ default: m.LegalPage })),
-);
-const NotFound = React.lazy(() => import("./pages/NotFound"));
-
-// Scroll to top helper on route change
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -71,22 +34,23 @@ function AppContent() {
 
   const cartCount = cartItems.reduce(
     (sum, item) => sum + (item.quantity || 1),
-    0,
+    0
   );
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const location = useLocation();
-  const isCheckoutRoute = location.pathname.startsWith("/checkout");
+  const isCheckoutRoute = location.pathname.startsWith('/checkout');
 
   return (
     <div
-      className={`flex flex-col min-h-screen bg-brand-cream text-slate-800 antialiased selection:bg-[#C89B58]/25 selection:text-[#1F3C24] font-sans ${isCheckoutRoute ? "" : "pb-16 lg:pb-0"}`}
+      className={`flex flex-col min-h-screen bg-brand-cream text-slate-800 antialiased selection:bg-[#C89B58]/25 selection:text-[#1F3C24] font-sans ${
+        isCheckoutRoute ? '' : 'pb-16 lg:pb-0'
+      }`}
     >
       <ScrollToTop />
 
-      {/* Navbar with announcement bar, categories (Hidden on checkout for distraction-free flow) */}
       {!isCheckoutRoute && (
         <Navbar
           cartCount={cartCount}
@@ -96,264 +60,16 @@ function AppContent() {
         />
       )}
 
-      {/* Main Pages Router (pt-0 on checkout routes) */}
-      <main
-        className={`grow ${isCheckoutRoute ? "pt-0" : "pt-22.5 md:pt-24.5"}`}
-      >
-        <React.Suspense fallback={<PageSkeleton />}>
-          <Routes>
-            {/* Home Page */}
-            <Route
-              path="/"
-              element={
-                <Home
-                  onAddToCart={addToCart}
-                  cartItems={cartItems}
-                  onUpdateCartQuantity={updateQuantity}
-                />
-              }
-            />
-
-            {/* Shop Catalog & Dynamic Category Route */}
-            <Route
-              path="/shop/all"
-              element={
-                <ShopAll
-                  onAddToCart={addToCart}
-                  cartItems={cartItems}
-                  onUpdateCartQuantity={updateQuantity}
-                />
-              }
-            />
-            <Route
-              path="/shop/:category"
-              element={
-                <ShopAll
-                  onAddToCart={addToCart}
-                  cartItems={cartItems}
-                  onUpdateCartQuantity={updateQuantity}
-                />
-              }
-            />
-
-            {/* Auth Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Login />} />
-
-            {/* Dedicated Shopping Bag / Cart Page (Public, checkout is protected) */}
-            <Route path="/cart" element={<Cart />} />
-
-            {/* Dedicated Parent Account & Orders Dashboard (Protected) */}
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/orders"
-              element={
-                <ProtectedRoute>
-                  <Profile defaultTab="orders" />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/wishlist"
-              element={
-                <ProtectedRoute>
-                  <Wishlist />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/wallet"
-              element={
-                <ProtectedRoute>
-                  <Profile defaultTab="wallet" />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Step-Based Myntra-Style Checkout Flow (Protected) */}
-            <Route
-              path="/checkout"
-              element={
-                <ProtectedRoute>
-                  <AddressStep />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkout/address"
-              element={
-                <ProtectedRoute>
-                  <AddressStep />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkout/payment"
-              element={
-                <ProtectedRoute>
-                  <PaymentStep />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkout/success"
-              element={
-                <ProtectedRoute>
-                  <OrderSuccessStep />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkout-v2"
-              element={
-                <ProtectedRoute>
-                  <AddressStep />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Product Detail Page */}
-            <Route
-              path="/product/:slug"
-              element={
-                <ProductDetail onAddToCart={addToCart} cartItems={cartItems} />
-              }
-            />
-
-            {/* Honest Reports & Lab Testing */}
-            <Route path="/honest-report" element={<HonestReport />} />
-
-            {/* LJ Wallet Recharge (Protected) */}
-            <Route
-              path="/wallet-recharge"
-              element={
-                <ProtectedRoute>
-                  <WalletRecharge />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Brand & Support Pages */}
-            <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route
-              path="/returns"
-              element={
-                <LegalPage
-                  title="Returns & Refunds Policy"
-                  content={
-                    <>
-                      <p>
-                        At Nestor, your child's health, safety, and delight
-                        are our highest priorities. We formulate every product
-                        with medical-grade clean ingredients and transparent lab
-                        reporting.
-                      </p>
-                      <h3 className="text-sm font-black text-slate-800 mt-4">
-                        7-Day Replacement Guarantee
-                      </h3>
-                      <p>
-                        If any product you receive is damaged in transit,
-                        expired, or defective, you are entitled to an immediate
-                        100% free replacement or full refund to your original
-                        payment method or Nestor Wallet within 7 days of delivery.
-                      </p>
-                      <h3 className="text-sm font-black text-slate-800 mt-4">
-                        How to Initiate a Return
-                      </h3>
-                      <p>
-                        Simply contact our care team at care@nestorbio.com
-                        or via WhatsApp helpline with your Order ID and photo of
-                        the damaged package.
-                      </p>
-                    </>
-                  }
-                />
-              }
-            />
-            <Route
-              path="/terms"
-              element={
-                <LegalPage
-                  title="Terms & Conditions"
-                  content={
-                    <>
-                      <p>
-                        Welcome to Nestor. By accessing and purchasing
-                        from our website, you agree to comply with and be bound
-                        by the following terms of service.
-                      </p>
-                      <h3 className="text-sm font-black text-slate-800 mt-4">
-                        Product Quality & Advisory
-                      </h3>
-                      <p>
-                        All our formulations are created in consultation with
-                        pediatricians. While our products support daily
-                        nutrition and immunity, they are nutritional dietary
-                        supplements and not intended to replace prescription
-                        medicine.
-                      </p>
-                      <h3 className="text-sm font-black text-slate-800 mt-4">
-                        Nestor Wallet Terms
-                      </h3>
-                      <p>
-                        Nestor Wallet bonus credits cannot be withdrawn as hard cash
-                        to bank accounts, but can be redeemed on any purchase on
-                        nestorbio.com without expiry.
-                      </p>
-                    </>
-                  }
-                />
-              }
-            />
-            <Route
-              path="/privacy"
-              element={
-                <LegalPage
-                  title="Privacy & Data Protection Policy"
-                  content={
-                    <>
-                      <p>
-                        Your privacy and your family's personal data are
-                        strictly safeguarded. We do not sell or rent your
-                        personal contact information to any third parties.
-                      </p>
-                      <h3 className="text-sm font-black text-slate-800 mt-4">
-                        Data We Collect
-                      </h3>
-                      <p>
-                        We collect basic contact information (phone number,
-                        shipping address) to deliver orders, and child age
-                        preferences to personalize nutritional recommendations.
-                      </p>
-                      <h3 className="text-sm font-black text-slate-800 mt-4">
-                        Security
-                      </h3>
-                      <p>
-                        All transaction data is processed using 256-bit SSL
-                        encryption adhering to PCI-DSS payment compliance
-                        standards.
-                      </p>
-                    </>
-                  }
-                />
-              }
-            />
-            {/* 404 Fallback Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </React.Suspense>
+      <main className={`grow ${isCheckoutRoute ? 'pt-0' : 'pt-22.5 md:pt-24.5'}`}>
+        <ErrorBoundary>
+          <AppRoutes
+            cartItems={cartItems}
+            addToCart={addToCart}
+            updateQuantity={updateQuantity}
+          />
+        </ErrorBoundary>
       </main>
 
-      {/* Footer with safety guarantees & page links (Switches to clean minimal CheckoutFooter on checkout) */}
       {isCheckoutRoute ? (
         <React.Suspense fallback={<footer className="h-16 bg-white" />}>
           <CheckoutFooter />
@@ -362,12 +78,10 @@ function AppContent() {
         <Footer />
       )}
 
-      {/* Mobile Bottom Navigation (Hidden during checkout) */}
       {!isCheckoutRoute && (
         <MobileBottomNav onOpenAuth={() => setIsAuthOpen(true)} />
       )}
 
-      {/* Interactive Sliding Cart Drawer */}
       <React.Suspense fallback={null}>
         <CartDrawer
           isOpen={isCartOpen}
@@ -376,11 +90,7 @@ function AppContent() {
           onUpdateQuantity={updateQuantity}
           onRemoveItem={removeFromCart}
         />
-
-        {/* Auth & LJ Wallet Modal */}
         <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
-
-        {/* Logged in User Account & Wallet Drawer */}
         <UserAccountDrawer
           isOpen={isAccountOpen}
           onClose={() => setIsAccountOpen(false)}
@@ -392,8 +102,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <AppContent />
+      </Router>
+    </ErrorBoundary>
   );
 }

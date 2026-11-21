@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Star, Plus, Minus, Check, Heart, Eye } from 'lucide-react';
 import ProductVisual from './ProductVisual';
@@ -30,6 +30,13 @@ export default function ProductCard({
   onUpdateCartQuantity
 }) {
   const [justAdded, setJustAdded] = useState(false);
+  const justAddedTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (justAddedTimerRef.current) clearTimeout(justAddedTimerRef.current);
+    };
+  }, []);
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const wishlistItems = useWishlistStore((s) => s.wishlistItems);
@@ -100,7 +107,8 @@ export default function ProductCard({
         slug: productSlug
       });
     }
-    setTimeout(() => setJustAdded(false), 1200);
+    if (justAddedTimerRef.current) clearTimeout(justAddedTimerRef.current);
+    justAddedTimerRef.current = setTimeout(() => setJustAdded(false), 1200);
   };
 
   return (

@@ -7,23 +7,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-docs
-*.local
+# Dependencies
+node_modules/
+
+# Production Build Output
+dist/
+dist-ssr/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Coverage and Test Output
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# Test reports and outputs
-test-results/
-playwright-report/

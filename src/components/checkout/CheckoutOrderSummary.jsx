@@ -6,7 +6,8 @@ import { ShieldCheck, Truck, ChevronDown, Tag } from 'lucide-react';
 
 export default function CheckoutOrderSummary({ showItemsList = true }) {
   const { cartItems, appliedCoupon } = useCartDerived();
-  const { useWalletBalance, walletBalance } = useCheckoutStore();
+  const useWalletBalance = useCheckoutStore((s) => s.useWalletBalance);
+  const walletBalance = useCheckoutStore((s) => s.walletBalance);
 
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 

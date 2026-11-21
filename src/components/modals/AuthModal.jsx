@@ -10,8 +10,6 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   Clock, 
-  User, 
-  Heart,
   Wallet
 } from 'lucide-react';
 
@@ -35,6 +33,7 @@ export default function AuthModal({ isOpen, onClose }) {
   const [childAge, setChildAge] = useState('2-6 Yr');
 
   const inputRefs = useRef([]);
+  const successTimeoutRef = useRef(null);
 
   useEffect(() => {
     let interval = null;
@@ -55,9 +54,15 @@ export default function AuthModal({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+    };
+  }, []);
+
   if (!isOpen) return null;
 
-  // Handle Send OTP
   const handleSendOtp = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -78,7 +83,6 @@ export default function AuthModal({ isOpen, onClose }) {
     }
   };
 
-  // Handle OTP digit changes
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
     const newOtp = [...otpValues];
@@ -112,7 +116,7 @@ export default function AuthModal({ isOpen, onClose }) {
       await loginWithOtp(phoneNumber, fullOtp);
       setIsSubmitting(false);
       setStep(3); // Go to quick profile personalization
-    } catch (err) {
+    } catch {
       setIsSubmitting(false);
       setErrorMessage('Invalid OTP code. Please check or click Resend.');
     }
@@ -129,7 +133,9 @@ export default function AuthModal({ isOpen, onClose }) {
     });
     setIsSubmitting(false);
     setStep(4);
-    setTimeout(() => {
+
+    if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+    successTimeoutRef.current = setTimeout(() => {
       onClose();
       const rawFrom = location.state?.from;
       if (rawFrom) {

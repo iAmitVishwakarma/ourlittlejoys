@@ -23,11 +23,11 @@ const DEFAULT_REAL_IMAGES = {
 export default function ProductVisual({
   image = null,
   type = 'nutrimix',
-  flavor = 'chocolate',
-  age = '4+',
+  flavor: _flavor = 'chocolate',
+  age: _age = '4+',
   alt = 'Nestor Product',
   className = '',
-  ischeckedPage = false
+  ischeckedPage: _ischeckedPage = false
 }) {
   const [imgError, setImgError] = useState(false);
 

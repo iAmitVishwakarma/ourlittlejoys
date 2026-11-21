@@ -27,19 +27,17 @@ export default function PaymentStep() {
 
   const { cartItems } = useCartDerived();
   const clearCart = useCartStore((s) => s.clearCart);
-  const { 
-    savedAddresses, 
-    selectedAddressId, 
-    paymentMethod, 
-    setPaymentMethod,
-    upiApp,
-    setUpiApp,
-    customUpiId,
-    setCustomUpiId,
-    useWalletBalance,
-    walletBalance,
-    createOrder 
-  } = useCheckoutStore();
+  const savedAddresses = useCheckoutStore((s) => s.savedAddresses);
+  const selectedAddressId = useCheckoutStore((s) => s.selectedAddressId);
+  const paymentMethod = useCheckoutStore((s) => s.paymentMethod);
+  const setPaymentMethod = useCheckoutStore((s) => s.setPaymentMethod);
+  const upiApp = useCheckoutStore((s) => s.upiApp);
+  const setUpiApp = useCheckoutStore((s) => s.setUpiApp);
+  const customUpiId = useCheckoutStore((s) => s.customUpiId);
+  const setCustomUpiId = useCheckoutStore((s) => s.setCustomUpiId);
+  const useWalletBalance = useCheckoutStore((s) => s.useWalletBalance);
+  const walletBalance = useCheckoutStore((s) => s.walletBalance);
+  const createOrder = useCheckoutStore((s) => s.createOrder);
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

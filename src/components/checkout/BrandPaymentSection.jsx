@@ -1,7 +1,27 @@
 import React from 'react';
-import { PAYMENT_PARTNERS } from '../graphics/PaymentLogos';
+import {
+  AmexLogoSVG,
+  MastercardLogoSVG,
+  VisaLogoSVG,
+  UpiLogoSVG,
+  GPayLogoSVG,
+  PluxeeLogoSVG,
+  NetBankingLogoSVG,
+  CashOnDeliveryLogoSVG
+} from '../graphics/PaymentLogos';
 import { FlyingKidDoodle, SunDoodle } from '../graphics/KidsDoodles';
 import ScallopDivider from '../common/ScallopDivider';
+
+const PAYMENT_PARTNERS = [
+  { id: 'amex', name: 'American Express', Component: AmexLogoSVG },
+  { id: 'mastercard', name: 'Mastercard', Component: MastercardLogoSVG },
+  { id: 'visa', name: 'VISA', Component: VisaLogoSVG },
+  { id: 'upi', name: 'UPI', Component: UpiLogoSVG },
+  { id: 'gpay', name: 'Google Pay', Component: GPayLogoSVG },
+  { id: 'pluxee', name: 'Pluxee', Component: PluxeeLogoSVG },
+  { id: 'netbanking', name: 'Net Banking', Component: NetBankingLogoSVG },
+  { id: 'cod', name: 'Cash on Delivery', Component: CashOnDeliveryLogoSVG }
+];
 
 export default function BrandPaymentSection() {
   return (

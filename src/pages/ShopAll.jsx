@@ -7,8 +7,8 @@ import { productService } from '@/services/productService';
 import { useCartStore } from '@/stores/cartStore';
 import SEO from '@/components/common/SEO';
 
-import { ShoppingBag, Filter, Sparkles, ArrowRight, Check, ShieldCheck, X, Search } from 'lucide-react';
-import { RainbowDoodle, SunDoodle, MiniStarCluster } from '@/components/graphics/KidsDoodles';
+import { Filter, Sparkles, ArrowRight, ShieldCheck, X, Search } from 'lucide-react';
+import { RainbowDoodle, SunDoodle } from '@/components/graphics/KidsDoodles';
 
 const CATEGORY_SLUG_MAP = {
   'all': 'All',
@@ -103,7 +103,6 @@ export default function ShopAll({ onAddToCart, cartItems: propCartItems, onUpdat
     { label: "Moms", value: "Moms" }
   ];
 
-  // Update when URL query or route changes
   useEffect(() => {
     if (routeCategory && CATEGORY_SLUG_MAP[routeCategory.toLowerCase()]) {
       setSelectedCategory(CATEGORY_SLUG_MAP[routeCategory.toLowerCase()]);

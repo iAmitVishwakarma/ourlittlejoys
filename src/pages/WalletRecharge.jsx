@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import SEO from '@/components/common/SEO';
@@ -17,6 +17,13 @@ export default function WalletRecharge() {
   const updateProfile = useAuthStore((s) => s.updateProfile);
   const [selectedPlan, setSelectedPlan] = useState(1001);
   const [isSuccess, setIsSuccess] = useState(false);
+  const rechargeTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (rechargeTimerRef.current) clearTimeout(rechargeTimerRef.current);
+    };
+  }, []);
 
   const plans = [
     {
@@ -45,7 +52,8 @@ export default function WalletRecharge() {
     const newBalance = (user?.walletBalance || 0) + currentGetAmount;
     updateProfile({ walletBalance: newBalance });
     setIsSuccess(true);
-    setTimeout(() => {
+    if (rechargeTimerRef.current) clearTimeout(rechargeTimerRef.current);
+    rechargeTimerRef.current = setTimeout(() => {
       navigate(-1);
     }, 1800);
   };

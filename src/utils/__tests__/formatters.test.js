@@ -13,9 +13,7 @@ import {
   sanitizeInput,
 } from '@/utils/formatters';
 
-// ============================================================================
 // formatCurrency
-// ============================================================================
 describe('formatCurrency', () => {
   it('formats a standard INR amount', () => {
     expect(formatCurrency(1299)).toBe('₹1,299');
@@ -61,9 +59,7 @@ describe('formatCurrency', () => {
   });
 });
 
-// ============================================================================
 // calculateDiscountPercent
-// ============================================================================
 describe('calculateDiscountPercent', () => {
   it('calculates discount correctly', () => {
     expect(calculateDiscountPercent(699, 499)).toBe(Math.round(((699 - 499) / 699) * 100));
@@ -99,9 +95,7 @@ describe('calculateDiscountPercent', () => {
   });
 });
 
-// ============================================================================
 // sanitizeInput
-// ============================================================================
 describe('sanitizeInput', () => {
   it('returns empty string for non-string input', () => {
     expect(sanitizeInput(null)).toBe('');

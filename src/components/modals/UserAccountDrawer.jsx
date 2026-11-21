@@ -3,15 +3,11 @@ import { useAuthStore } from '@/stores/authStore';
 import { resetAppSession } from '@/utils/session';
 import { 
   X, 
-  User, 
   Wallet, 
   Package, 
   Heart, 
   LogOut, 
   Sparkles, 
-  ArrowRight, 
-  ShieldCheck,
-  CheckCircle2,
   Clock
 } from 'lucide-react';
 

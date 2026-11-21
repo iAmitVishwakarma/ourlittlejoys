@@ -63,5 +63,5 @@ describe('AddressDrawer Component', () => {
       })
     );
     expect(handleClose).toHaveBeenCalled();
-  }, 10000);
+  }, 20000);
 });

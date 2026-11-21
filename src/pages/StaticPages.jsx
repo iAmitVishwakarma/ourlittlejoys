@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import SEO from '@/components/common/SEO';
 import { 
-  HelpCircle, 
   ChevronDown, 
-  ShieldCheck, 
   Mail, 
   Phone, 
-  MapPin, 
-  FileText, 
-  RotateCcw, 
-  Lock,
-  ArrowRight,
-  CheckCircle2
+  MapPin
 } from 'lucide-react';
 
 export function FAQPage() {
@@ -63,7 +55,7 @@ export function FAQPage() {
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
             <div
-              key={idx}
+              key={faq.q || `faq-${idx}`}
               className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-orange-100 transition-all"
             >
               <button

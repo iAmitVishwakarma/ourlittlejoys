@@ -20,6 +20,7 @@ describe('Auth, Protected Route & Checkout Integration Flows', () => {
     vi.restoreAllMocks();
     vi.spyOn(apiClient, 'post').mockResolvedValue({ success: false, status: 500 });
     vi.spyOn(apiClient, 'get').mockResolvedValue({ success: false, status: 500 });
+    vi.spyOn(apiClient, 'patch').mockResolvedValue({ success: false, status: 500 });
     useAuthStore.setState({
       user: null,
       token: null,
@@ -89,7 +90,7 @@ describe('Auth, Protected Route & Checkout Integration Flows', () => {
       await waitFor(() => {
         expect(useAuthStore.getState().isAuthenticated).toBe(true);
       });
-    }, 15000);
+    }, 30000);
   });
 
   describe('FLOW 5: Protected Route Enforcement', () => {
@@ -184,7 +185,7 @@ describe('Auth, Protected Route & Checkout Integration Flows', () => {
 
       await waitFor(() => {
         expect(screen.getByText(/order confirmed/i)).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
   });
 });

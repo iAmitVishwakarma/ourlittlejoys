@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NestorLogo from '@/components/common/NestorLogo';
 import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/services/authService';
@@ -8,7 +8,6 @@ import {
   Lock, 
   Mail, 
   Phone, 
-  Sparkles, 
   ArrowRight, 
   CheckCircle2, 
   ShieldCheck, 
@@ -77,11 +76,17 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
 
-  // Clear errors when toggling modes
-  useEffect(() => {
+  const handleModeChange = (newMode) => {
+    setMode(newMode);
     setError(null);
     setSuccessMsg(null);
-  }, [mode, method]);
+  };
+
+  const handleMethodChange = (newMethod) => {
+    setMethod(newMethod);
+    setError(null);
+    setSuccessMsg(null);
+  };
 
   // 1-Click Fast Demo Login
   const handleDemoLogin = async () => {
@@ -109,7 +114,6 @@ export default function Login() {
     }
   };
 
-  // Handle Email + Password or Phone Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -282,7 +286,7 @@ export default function Login() {
         <div className="flex bg-slate-100 p-1 rounded-2xl mb-5">
           <button
             type="button"
-            onClick={() => setMode('signin')}
+            onClick={() => handleModeChange('signin')}
             className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
               mode === 'signin'
                 ? 'bg-white text-slate-900 shadow-xs'
@@ -293,7 +297,7 @@ export default function Login() {
           </button>
           <button
             type="button"
-            onClick={() => setMode('signup')}
+            onClick={() => handleModeChange('signup')}
             className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
               mode === 'signup'
                 ? 'bg-white text-slate-900 shadow-xs'
@@ -309,7 +313,7 @@ export default function Login() {
           <div className="flex justify-center gap-4 text-xs font-bold mb-5 pb-2 border-b border-slate-100">
             <button
               type="button"
-              onClick={() => setMethod('email')}
+              onClick={() => handleMethodChange('email')}
               className={`flex items-center gap-1.5 pb-1 border-b-2 transition-all ${
                 method === 'email'
                   ? 'border-[#13805B] text-[#13805B]'
@@ -321,7 +325,7 @@ export default function Login() {
             </button>
             <button
               type="button"
-              onClick={() => setMethod('phone')}
+              onClick={() => handleMethodChange('phone')}
               className={`flex items-center gap-1.5 pb-1 border-b-2 transition-all ${
                 method === 'phone'
                   ? 'border-[#13805B] text-[#13805B]'

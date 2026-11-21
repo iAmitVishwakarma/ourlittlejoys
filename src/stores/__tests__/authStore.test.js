@@ -60,9 +60,7 @@ beforeEach(() => {
   });
 });
 
-// ============================================================================
 // Initial State
-// ============================================================================
 describe('authStore - initial state', () => {
   it('starts unauthenticated', () => {
     const state = useAuthStore.getState();
@@ -72,9 +70,7 @@ describe('authStore - initial state', () => {
   });
 });
 
-// ============================================================================
 // Login
-// ============================================================================
 describe('authStore - login', () => {
   it('sets user, token, and isAuthenticated on login', () => {
     const user = { id: 'user_001', name: 'Amit', email: 'amit@test.com' };
@@ -103,9 +99,7 @@ describe('authStore - login', () => {
   });
 });
 
-// ============================================================================
 // Logout
-// ============================================================================
 describe('authStore - logout', () => {
   it('clears all auth state on logout', () => {
     // First login
@@ -122,9 +116,7 @@ describe('authStore - logout', () => {
   });
 });
 
-// ============================================================================
 // Session Restoration
-// ============================================================================
 describe('authStore - restoreSession', () => {
   it('sets isLoading to false when no token exists', async () => {
     useAuthStore.setState({ isLoading: true, token: null, user: null });
@@ -140,9 +132,7 @@ describe('authStore - restoreSession', () => {
   });
 });
 
-// ============================================================================
 // Profile Updates
-// ============================================================================
 describe('authStore - updateProfile', () => {
   it('does nothing if no user is logged in', async () => {
     await useAuthStore.getState().updateProfile({ name: 'New Name' });

@@ -1,18 +1,6 @@
-/**
- * ============================================================================
- * AUTHENTICATION SERVICE - OUR LITTLE JOYS
- * ============================================================================
- * Production-ready frontend auth service interacting with backend / json-server.
- * Handles Email/Password login, Signup, Phone OTP verification, Session validation,
- * Profile updates, and token management.
- * 
- * Note: Clearly separated for easy swap when switching to a live production backend.
- * ============================================================================
- */
-
 import { apiClient } from './apiClient';
+import { safeStorage } from '@/utils/storage';
 
-// Fallback demo users when json-server is not reachable
 const FALLBACK_USERS = [
   {
     id: 'user_demo',
@@ -25,7 +13,7 @@ const FALLBACK_USERS = [
     childName: 'Joy',
     childAge: '4',
     nutritionGoal: 'Growth & Immunity',
-    createdAt: '2026-09-01T10:00:00Z'
+    createdAt: '2026-09-01T10:00:00Z',
   },
   {
     id: 'user_001',
@@ -38,7 +26,7 @@ const FALLBACK_USERS = [
     childName: 'Shubh',
     childAge: '7',
     nutritionGoal: 'Growth & Immunity',
-    createdAt: '2026-09-01T10:00:00Z'
+    createdAt: '2026-09-01T10:00:00Z',
   },
   {
     id: 'usr_001',
@@ -51,47 +39,42 @@ const FALLBACK_USERS = [
     childName: 'Shubh',
     childAge: '7',
     nutritionGoal: 'Growth & Immunity',
-    createdAt: '2026-09-01T10:00:00Z'
-  }
+    createdAt: '2026-09-01T10:00:00Z',
+  },
 ];
 
 function getCustomUsers() {
-  try {
-    const raw = localStorage.getItem('lj_custom_users');
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
+  const stored = safeStorage.getJSON('lj_custom_users');
+  return Array.isArray(stored) ? stored : [];
 }
 
 function saveCustomUser(user) {
-  try {
-    const existing = getCustomUsers();
-    const filtered = existing.filter((u) => u.id !== user.id && u.email !== user.email && u.phone !== user.phone);
-    filtered.push(user);
-    localStorage.setItem('lj_custom_users', JSON.stringify(filtered));
-  } catch (e) {
-    console.error(e);
-  }
+  const existing = getCustomUsers();
+  const filtered = existing.filter(
+    (u) => u.id !== user.id && u.email !== user.email && u.phone !== user.phone
+  );
+  filtered.push(user);
+  safeStorage.setJSON('lj_custom_users', filtered);
 }
 
 async function findUserByEmail(email) {
-  const normalized = email.trim().toLowerCase();
-  // 1. Check backend / json-server
-  try {
-    const res = await apiClient.get('/users', { email: normalized });
-    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
-      return res.data[0];
+  const normalized = (email || '').trim().toLowerCase();
+  const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+
+  if (!isMock) {
+    try {
+      const res = await apiClient.get('/users', { email: normalized });
+      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+        return res.data[0];
+      }
+    } catch (err) {
+      console.warn('[authService] apiClient.get error:', err);
     }
-  } catch (err) {
-    console.warn('[authService] apiClient.get error:', err);
   }
 
-  // 2. Check local registered custom users
   const custom = getCustomUsers().find((u) => u.email?.toLowerCase() === normalized);
   if (custom) return custom;
 
-  // 3. Check fallback demo users
   const fallback = FALLBACK_USERS.find((u) => u.email?.toLowerCase() === normalized);
   if (fallback) return fallback;
 
@@ -99,55 +82,49 @@ async function findUserByEmail(email) {
 }
 
 async function findUserByPhone(phone) {
-  const cleanPhone = phone.replace(/\D/g, '').slice(-10);
-  // 1. Check backend / json-server
-  try {
-    const res = await apiClient.get('/users', { phone: cleanPhone });
-    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
-      return res.data[0];
+  const cleanPhone = (phone || '').replace(/\D/g, '').slice(-10);
+  const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+
+  if (!isMock) {
+    try {
+      const res = await apiClient.get('/users', { phone: cleanPhone });
+      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+        return res.data[0];
+      }
+    } catch (err) {
+      console.warn('[authService] apiClient.get error:', err);
     }
-  } catch (err) {
-    console.warn('[authService] apiClient.get error:', err);
   }
 
-  // 2. Check local registered custom users
-  const custom = getCustomUsers().find((u) => u.phone?.replace(/\D/g, '').slice(-10) === cleanPhone);
+  const custom = getCustomUsers().find(
+    (u) => u.phone?.replace(/\D/g, '').slice(-10) === cleanPhone
+  );
   if (custom) return custom;
 
-  // 3. Check fallback demo users
-  const fallback = FALLBACK_USERS.find((u) => u.phone?.replace(/\D/g, '').slice(-10) === cleanPhone);
+  const fallback = FALLBACK_USERS.find(
+    (u) => u.phone?.replace(/\D/g, '').slice(-10) === cleanPhone
+  );
   if (fallback) return fallback;
 
   return null;
 }
 
 export const authService = {
-  /**
-   * DEVELOPMENT NOTE:
-   * json-server is used strictly as a development mock. Real password verification,
-   * hashing, rate-limiting, and JWT issuance MUST be enforced by the production backend
-   * at POST /auth/login. Plaintext passwords must never be stored or evaluated in the browser.
-   */
-
-  /**
-   * Request OTP code for phone authentication
-   * Contract: POST /auth/send-otp
-   */
   async sendOtp(phone) {
     const cleanPhone = (phone || '').replace(/\D/g, '').slice(-10);
-    try {
-      await apiClient.post('/auth/send-otp', { phone: cleanPhone });
-    } catch {
-      // Silently fall back in development mock mode
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+
+    if (!isMock) {
+      try {
+        await apiClient.post('/auth/send-otp', { phone: cleanPhone });
+      } catch {
+        // Fallback in case backend OTP route is simulated
+      }
     }
+
     return { success: true, message: `OTP sent to +91 ${cleanPhone}` };
   },
 
-  /**
-   * Login with Email & Password or Phone OTP
-   * Backend Contract: POST /auth/login -> { token, user }
-   * @param {{ email?: string, password?: string, phone?: string, otp?: string }} credentials
-   */
   async loginUser({ email, password, phone, otp }) {
     try {
       // 1. Email + Password Flow
@@ -160,50 +137,50 @@ export const authService = {
           return { success: false, message: 'Please enter your password.' };
         }
 
-        // Production contract attempt: POST /auth/login
-        try {
-          const apiRes = await apiClient.post('/auth/login', {
-            email: normalizedEmail,
-            password
-          });
-          if (apiRes.success && apiRes.data?.token && apiRes.data?.user) {
-            const { password: _, ...safeUser } = apiRes.data.user;
-            const token = apiRes.data.token;
-            this.setToken(token);
-            this.setUserData(safeUser);
-            return {
-              success: true,
-              user: safeUser,
-              token,
-              message: 'Login successful!'
-            };
-          }
-        } catch (apiErr) {
-          if (apiErr.response?.status === 401) {
-            return {
-              success: false,
-              message: apiErr.response.data?.message || 'Incorrect email or password.'
-            };
+        const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+        if (!isMock) {
+          try {
+            const apiRes = await apiClient.post('/auth/login', {
+              email: normalizedEmail,
+              password,
+            });
+            if (apiRes.success && apiRes.data?.token && apiRes.data?.user) {
+              const { password: _, ...safeUser } = apiRes.data.user;
+              const token = apiRes.data.token;
+              this.setToken(token);
+              this.setUserData(safeUser);
+              return {
+                success: true,
+                user: safeUser,
+                token,
+                message: 'Login successful!',
+              };
+            }
+          } catch (apiErr) {
+            if (apiErr.response?.status === 401) {
+              return {
+                success: false,
+                message: apiErr.response.data?.message || 'Incorrect email or password.',
+              };
+            }
           }
         }
 
-        // Development Mock Fallback Adapter
         const user = await findUserByEmail(normalizedEmail);
         if (!user) {
           return {
             success: false,
-            message: 'No account found with this email. Please check your spelling or sign up.'
+            message: 'No account found with this email. Please check your spelling or sign up.',
           };
         }
 
         if (user.password !== password) {
           return {
             success: false,
-            message: 'Incorrect password. Please verify and try again.'
+            message: 'Incorrect password. Please verify and try again.',
           };
         }
 
-        // SANITIZE: Never expose or store plaintext password in user state
         const { password: _, ...safeUser } = user;
         const token = `mock_jwt_${safeUser.id}_${Date.now()}`;
         this.setToken(token);
@@ -213,7 +190,7 @@ export const authService = {
           success: true,
           user: safeUser,
           token,
-          message: 'Login successful!'
+          message: 'Login successful!',
         };
       }
 
@@ -224,30 +201,32 @@ export const authService = {
           return { success: false, message: 'Please enter a valid 10-digit mobile number.' };
         }
 
-        // Production contract attempt: POST /auth/login-otp
-        try {
-          const apiRes = await apiClient.post('/auth/login-otp', {
-            phone: cleanPhone,
-            otp
-          });
-          if (apiRes.success && apiRes.data?.token && apiRes.data?.user) {
-            const { password: _, ...safeUser } = apiRes.data.user;
-            const token = apiRes.data.token;
-            this.setToken(token);
-            this.setUserData(safeUser);
-            return {
-              success: true,
-              user: safeUser,
-              token,
-              message: 'Phone verified successfully!'
-            };
-          }
-        } catch (apiErr) {
-          if (apiErr.response?.status === 401) {
-            return {
-              success: false,
-              message: apiErr.response.data?.message || 'Invalid OTP code.'
-            };
+        const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+        if (!isMock) {
+          try {
+            const apiRes = await apiClient.post('/auth/login-otp', {
+              phone: cleanPhone,
+              otp,
+            });
+            if (apiRes.success && apiRes.data?.token && apiRes.data?.user) {
+              const { password: _, ...safeUser } = apiRes.data.user;
+              const token = apiRes.data.token;
+              this.setToken(token);
+              this.setUserData(safeUser);
+              return {
+                success: true,
+                user: safeUser,
+                token,
+                message: 'Phone verified successfully!',
+              };
+            }
+          } catch (apiErr) {
+            if (apiErr.response?.status === 401) {
+              return {
+                success: false,
+                message: apiErr.response.data?.message || 'Invalid OTP code.',
+              };
+            }
           }
         }
 
@@ -255,11 +234,10 @@ export const authService = {
         if (!user) {
           return {
             success: false,
-            message: `No account registered with +91 ${cleanPhone}. Please switch to Sign Up to create your account.`
+            message: `No account registered with +91 ${cleanPhone}. Please switch to Sign Up to create your account.`,
           };
         }
 
-        // Verify OTP (Requires '1234' for demo simulation)
         const cleanOtp = (otp || '').trim();
         if (!cleanOtp) {
           return { success: false, message: 'Please enter the 4-digit OTP code sent to your mobile.' };
@@ -268,11 +246,10 @@ export const authService = {
         if (cleanOtp !== '1234') {
           return {
             success: false,
-            message: 'Invalid OTP code. Please enter the demo verification code: 1234'
+            message: 'Invalid OTP code. Please enter the demo verification code: 1234',
           };
         }
 
-        // SANITIZE: Never expose password in user state
         const { password: _, ...safeUser } = user;
         const token = `mock_jwt_${safeUser.id}_${Date.now()}`;
         this.setToken(token);
@@ -282,29 +259,25 @@ export const authService = {
           success: true,
           user: safeUser,
           token,
-          message: 'Phone verified successfully!'
+          message: 'Phone verified successfully!',
         };
       }
 
       return {
         success: false,
-        message: 'Please provide either email & password or mobile number.'
+        message: 'Please provide either email & password or mobile number.',
       };
     } catch (err) {
       console.warn('[authService] loginUser error:', err);
       return {
         success: false,
-        message: 'Authentication failed due to an unexpected error. Please try again.'
+        message: 'Authentication failed due to an unexpected error. Please try again.',
       };
     }
   },
 
-  /**
-   * Register a new user with real database write
-   */
   async signupUser({ name, email, password, phone, childName, childAge, nutritionGoal }) {
     try {
-      // 1. Strict Validations
       const trimmedName = (name || '').trim();
       if (!trimmedName || trimmedName.length < 2) {
         return { success: false, message: 'Please enter your full name (at least 2 characters).' };
@@ -326,12 +299,11 @@ export const authService = {
         return { success: false, message: 'Password must be at least 6 characters long.' };
       }
 
-      // 2. Check if already exists in json-server or fallbacks
       const existingByEmail = await findUserByEmail(normalizedEmail);
       if (existingByEmail) {
         return {
           success: false,
-          message: 'An account with this email address already exists. Please log in instead.'
+          message: 'An account with this email address already exists. Please log in instead.',
         };
       }
 
@@ -339,11 +311,10 @@ export const authService = {
       if (existingByPhone) {
         return {
           success: false,
-          message: 'An account with this mobile number already exists. Please log in instead.'
+          message: 'An account with this mobile number already exists. Please log in instead.',
         };
       }
 
-      // 3. Construct user object
       const newUser = {
         id: `usr_${Date.now()}`,
         name: trimmedName,
@@ -351,27 +322,24 @@ export const authService = {
         phone: cleanPhone,
         password: trimmedPassword,
         role: 'parent',
-        walletBalance: 200, // ₹200 Welcome Bonus
+        walletBalance: 200,
         childName: (childName || 'Little Joy').trim(),
         childAge: childAge || '4',
         nutritionGoal: nutritionGoal || 'Overall Growth & Immunity',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
 
-      // 4. Write to json-server backend
-      try {
-        const createRes = await apiClient.post('/users', newUser);
-        if (createRes.success && createRes.data) {
-          console.log('[authService] User persisted to json-server:', createRes.data.id);
+      const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+      if (!isMock) {
+        try {
+          await apiClient.post('/auth/signup', newUser);
+        } catch (e) {
+          console.warn('[authService] backend signup error:', e);
         }
-      } catch (e) {
-        console.warn('[authService] json-server write error:', e);
       }
 
-      // 5. Save to local custom registry as reliable persistence
       saveCustomUser(newUser);
 
-      // SANITIZE: Never expose or store plaintext password in user state
       const { password: _, ...safeUser } = newUser;
       const token = `mock_jwt_${safeUser.id}_${Date.now()}`;
       this.setToken(token);
@@ -381,30 +349,30 @@ export const authService = {
         success: true,
         user: safeUser,
         token,
-        message: 'Account created successfully! ₹200 welcome bonus added to your Nestor Wallet.'
+        message: 'Account created successfully! ₹200 welcome bonus added to your Nestor Wallet.',
       };
     } catch (err) {
       console.warn('[authService] signupUser error:', err.message);
       return {
         success: false,
-        message: 'Unable to create account. Please try again.'
+        message: 'Unable to create account. Please try again.',
       };
     }
   },
 
-  /**
-   * Check / validate session
-   */
   async checkSession(token) {
     if (!token) return null;
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+
     try {
       const localUser = this.getCurrentUser();
       if (localUser && localUser.id) {
-        // Try verifying with backend
-        const res = await apiClient.get(`/users/${localUser.id}`);
-        if (res.success && res.data) {
-          this.setUserData(res.data);
-          return res.data;
+        if (!isMock) {
+          const res = await apiClient.get('/auth/me');
+          if (res.success && res.data) {
+            this.setUserData(res.data);
+            return res.data;
+          }
         }
         return localUser;
       }
@@ -414,65 +382,46 @@ export const authService = {
     }
   },
 
-  /**
-   * Update profile
-   */
   async updateProfile(userId, profileData) {
-    try {
-      const res = await apiClient.patch(`/users/${userId}`, profileData);
-      const current = this.getCurrentUser() || {};
-      const updated = (res.success && res.data) ? res.data : { ...current, ...profileData };
-      this.setUserData(updated);
-      return { success: true, user: updated };
-    } catch (err) {
-      console.warn('[authService] updateProfile error:', err.message);
-      const current = this.getCurrentUser() || {};
-      const updated = { ...current, ...profileData };
-      this.setUserData(updated);
-      return { success: true, user: updated };
+    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+    const current = this.getCurrentUser() || {};
+
+    if (!isMock) {
+      try {
+        const res = await apiClient.patch('/users/me', profileData);
+        const updated = (res.success && res.data) ? res.data : { ...current, ...profileData };
+        this.setUserData(updated);
+        return { success: true, user: updated };
+      } catch (err) {
+        console.warn('[authService] updateProfile backend error:', err.message);
+      }
     }
+
+    const updated = { ...current, ...profileData };
+    this.setUserData(updated);
+    return { success: true, user: updated };
   },
 
-  /**
-   * Get current authenticated user from storage
-   */
   getCurrentUser() {
-    try {
-      const raw = localStorage.getItem('lj_user_data');
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
+    return safeStorage.getJSON('lj_user_data');
   },
 
   setUserData(user) {
-    try {
-      localStorage.setItem('lj_user_data', JSON.stringify(user));
-    } catch (e) {
-      console.error(e);
-    }
+    safeStorage.setJSON('lj_user_data', user);
   },
 
   setToken(token) {
-    try {
-      localStorage.setItem('lj_auth_token', token);
-    } catch (e) {
-      console.error(e);
-    }
+    safeStorage.setItem('lj_auth_token', token);
   },
 
   logoutUser() {
-    try {
-      localStorage.removeItem('lj_auth_token');
-      localStorage.removeItem('lj_user_data');
-    } catch (e) {
-      console.error(e);
-    }
+    safeStorage.removeItem('lj_auth_token');
+    safeStorage.removeItem('lj_user_data');
   },
 
   logout() {
     return this.logoutUser();
-  }
+  },
 };
 
 export default authService;

@@ -9,10 +9,6 @@ import CheckoutOrderSummary from '@/components/checkout/CheckoutOrderSummary';
 import SEO from '@/components/common/SEO';
 import { 
   Plus, 
-  MapPin, 
-  Home, 
-  Briefcase, 
-  Building, 
   Check, 
   Edit3, 
   Trash2, 
@@ -28,13 +24,11 @@ export default function AddressStep() {
   const isLoading = useAuthStore((s) => s.isLoading);
 
   const { cartItems, totalPayable } = useCartDerived();
-  const { 
-    savedAddresses, 
-    selectedAddressId, 
-    selectAddress, 
-    removeAddress, 
-    setDefaultAddress 
-  } = useCheckoutStore();
+  const savedAddresses = useCheckoutStore((s) => s.savedAddresses);
+  const selectedAddressId = useCheckoutStore((s) => s.selectedAddressId);
+  const selectAddress = useCheckoutStore((s) => s.selectAddress);
+  const removeAddress = useCheckoutStore((s) => s.removeAddress);
+  const setDefaultAddress = useCheckoutStore((s) => s.setDefaultAddress);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
@@ -75,8 +69,6 @@ export default function AddressStep() {
       </div>
     );
   }
-
-  const selectedAddress = savedAddresses.find((a) => a.id === selectedAddressId) || savedAddresses[0];
 
   const handleOpenAdd = () => {
     setEditingAddress(null);

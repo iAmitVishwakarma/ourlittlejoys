@@ -149,7 +149,7 @@ export function KidStampBadge({ text = "100% TASTY", className = "" }) {
   );
 }
 
-// 🦸 Cheerful Hand-Drawn Superhero Kid Flying with Cape (Iconic Little Joys Healthy Habits illustration)
+// Flying kid illustration with cape
 export function FlyingKidDoodle({ className = "w-48 h-24" }) {
   return (
     <svg viewBox="0 0 240 100" fill="none" className={`inline-block ${className}`}>
@@ -213,7 +213,7 @@ export function FlyingKidDoodle({ className = "w-48 h-24" }) {
   );
 }
 
-// 🥕 Hand-Drawn Fresh Organic Carrot with Green Leafy Top
+// Fresh organic carrot doodle
 export function CarrotDoodle({ className = "w-12 h-20" }) {
   return (
     <svg viewBox="0 0 60 100" fill="none" className={`inline-block ${className}`}>
@@ -239,7 +239,7 @@ export function CarrotDoodle({ className = "w-12 h-20" }) {
   );
 }
 
-// 🥬 Hand-Drawn Leafy Cabbage / Veggies Cluster
+// Leafy cabbage / veggies cluster doodle
 export function VeggiesClusterDoodle({ className = "w-16 h-16" }) {
   return (
     <svg viewBox="0 0 80 80" fill="none" className={`inline-block ${className}`}>
@@ -272,7 +272,7 @@ export function VeggiesClusterDoodle({ className = "w-16 h-16" }) {
   );
 }
 
-// 🌿 Hand-Drawn Fresh Herb Sprig / Leek
+// Fresh herb sprig doodle
 export function SprigDoodle({ className = "w-12 h-16" }) {
   return (
     <svg viewBox="0 0 60 80" fill="none" className={`inline-block ${className}`}>
@@ -286,7 +286,7 @@ export function SprigDoodle({ className = "w-12 h-16" }) {
   );
 }
 
-// 🍎 Hand-Drawn Sweet Red Fruit / Apple Doodle
+// Sweet red fruit / apple doodle
 export function AppleFruitDoodle({ className = "w-12 h-14" }) {
   return (
     <svg viewBox="0 0 60 70" fill="none" className={`inline-block ${className}`}>
@@ -307,7 +307,7 @@ export function AppleFruitDoodle({ className = "w-12 h-14" }) {
   );
 }
 
-// 🔬 Iconic Circular Nutrition & Science Seal Stamp
+// Circular nutrition & science seal stamp
 export function ScienceNutritionSeal({ className = "w-28 h-28" }) {
   return (
     <svg viewBox="0 0 140 140" fill="none" className={`inline-block ${className}`}>
@@ -342,7 +342,7 @@ export function ScienceNutritionSeal({ className = "w-28 h-28" }) {
   );
 }
 
-// 👑 Golden Hand-Drawn Crown Doodle
+// Golden crown doodle
 export function CrownDoodle({ className = "w-10 h-8 text-amber-400" }) {
   return (
     <svg viewBox="0 0 48 36" fill="none" className={`inline-block ${className}`}>
@@ -366,7 +366,7 @@ export function CrownDoodle({ className = "w-10 h-8 text-amber-400" }) {
   );
 }
 
-// ↪️ Hand-Drawn Whimsical Curly Arrow
+// Whimsical curly arrow doodle
 export function CurlyArrowDoodle({ className = "w-12 h-10 text-slate-700" }) {
   return (
     <svg viewBox="0 0 60 40" fill="none" className={`inline-block ${className}`}>
@@ -387,7 +387,7 @@ export function CurlyArrowDoodle({ className = "w-12 h-10 text-slate-700" }) {
   );
 }
 
-// 💪 Cute Hand-Drawn Illustrated Champion Boy Flexing (Green shirt, smiling, golden crown)
+// Illustrated champion boy flexing doodle
 export function StrongBoyDoodle({ className = "w-44 h-48" }) {
   return (
     <svg viewBox="0 0 160 160" fill="none" className={`inline-block select-none ${className}`}>

@@ -1,0 +1,11 @@
+export { default as ProductGallery } from './ProductGallery';
+export { default as ProductPurchasePanel } from './ProductPurchasePanel';
+export { default as ProductStickyBars } from './ProductStickyBars';
+export { default as ProductHighlights } from './ProductHighlights';
+export { default as ProductBundleSection } from './ProductBundleSection';
+export { default as ProductDailyRoutine } from './ProductDailyRoutine';
+export { default as ProductIngredients } from './ProductIngredients';
+export { default as ProductScienceCare } from './ProductScienceCare';
+export { default as ProductReviews } from './ProductReviews';
+export { default as ProductFAQ } from './ProductFAQ';
+export { default as RelatedProducts } from './RelatedProducts';

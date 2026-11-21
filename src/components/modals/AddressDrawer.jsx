@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, MapPin, Building, Home, Briefcase, Check, Sparkles } from 'lucide-react';
+import { X, MapPin, Building, Home, Briefcase, Check, Loader2 } from 'lucide-react';
 import { useCheckoutStore } from '@/stores/checkoutStore';
 
 export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
-  const { addAddress, updateAddress } = useCheckoutStore();
+  const addAddress = useCheckoutStore((s) => s.addAddress);
+  const updateAddress = useCheckoutStore((s) => s.updateAddress);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -18,6 +19,7 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -48,7 +50,7 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
     setErrors({});
   }, [initialData, isOpen]);
 
-  // Handle Pincode Auto-detect (Simulated intelligent Indian Pincode resolver)
+  // Auto-fill city/state based on Indian PIN prefix
   const handlePincodeChange = (val) => {
     const cleanPin = val.replace(/\D/g, '').slice(0, 6);
     setFormData((prev) => ({ ...prev, pincode: cleanPin }));
@@ -85,17 +87,22 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (!validate()) return;
 
-    if (initialData?.id) {
-      updateAddress(initialData.id, formData);
-    } else {
-      addAddress(formData);
+    try {
+      setIsSubmitting(true);
+      if (initialData?.id) {
+        await updateAddress(initialData.id, formData);
+      } else {
+        await addAddress(formData);
+      }
+      onClose();
+    } finally {
+      setIsSubmitting(false);
     }
-
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -351,10 +358,20 @@ export default function AddressDrawer({ isOpen, onClose, initialData = null }) {
             <button
               type="submit"
               form="address-drawer-form"
-              className="flex-1 py-3 px-4 rounded-full bg-[#13805B] hover:bg-[#0E6346] text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+              disabled={isSubmitting}
+              className="flex-1 py-3 px-4 rounded-full bg-[#13805B] hover:bg-[#0E6346] disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Check className="w-4 h-4 stroke-3" />
-              <span>Save Address</span>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4 stroke-3" />
+                  <span>Save Address</span>
+                </>
+              )}
             </button>
           </div>
 
