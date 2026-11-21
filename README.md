@@ -12,39 +12,6 @@ Production-grade React storefront for Nestor / Our Little Joys child nutrition, 
 
 ---
 
-## Key Features & Highlights
-
-- **Smart Scroll Navbar:**
-  - Auto-hiding top announcement bar with smooth CSS grid transition (`grid-rows-[1fr]` to `grid-rows-[0fr]`) when scrolling beyond 10px (`window.scrollY > 10`), sliding the main navbar flush to `top-0` without layout jank.
-  - Subtle frosted-glass backdrop blur (`bg-white/85 backdrop-blur-md border-b border-stone-200/70 shadow-sm`) providing legibility and polish over scrolling content.
-  - DRY user dropdown with direct navigation to My Account, My Orders, and Logout, plus a live Nestor Wallet balance pill (`₹200`).
-
-- **Dedicated `/orders` Dashboard:**
-  - Full-width protected standalone page (`max-w-5xl mx-auto`) with complete `<SEO>` metadata.
-  - Interactive status filter dropdown (`All Orders`, `Delivered`, `Processing`) and order count badges.
-  - Visual 4-step delivery progress tracker (`Confirmed → Packed → Shipped → Delivered`).
-  - Single-click **Buy Again** reordering to cart, detailed order receipts via `OrderDetailModal`, and delivery address recap.
-  - Dedicated business logic hook (`useOrders.js`).
-
-- **Unified `/wallet` Hub:**
-  - Combines available Nestor Wallet balance, tiered top-up bonus packs (+10%, +15%, +30%), and instant credit animations.
-  - Integrated **Recent Wallet Transactions Ledger** tracking credits, order redemptions, and bonus credits with real-time updates.
-
-- **Balanced `/profile` Bento Grid Layout:**
-  - **Hero Welcome Banner:** Personalized parent welcome, verified badge, child milestone pill, and Nestor Wallet quick link.
-  - **Row 1 Bento Grid (7:5 Split):**
-    - `ParentDetailsCard`: Eyebrow branding, unwrapable `"Edit Details →"` action (`whitespace-nowrap shrink-0`), structured 2-column contact grid (`whitespace-nowrap` on phone numbers), and full-width email with inline form validation.
-    - `ChildProfileCard`: Soft mint card (`bg-emerald-50/60 border border-emerald-100 rounded-2xl p-6`) with zero dead space across 3 milestone tiles (`Child Name`, `Age Milestone`, `Nutrition Focus`) and inline editing.
-    - `AccountPreferencesCard`: Full-height card with accessible switch toggles (`role="switch"`, `aria-checked`, forest green active state) for WhatsApp alerts, weekly pediatric nutrition digests, and birthday cash, plus dedicated support contact.
-  - **Row 2 Action Cards:** 3 equal-height cards for restock reordering, order tracking & support, and referral sharing (`Refer Now →`).
-
-- **Production-Grade E-Commerce Flow:**
-  - Complete 4-step checkout flow (Shopping Bag → Address Selection → Razorpay/COD Payment → Order Confirmation).
-  - Centralized pricing calculations with GST, tiered quantity discounts, coupon validation, and wallet balance deductions.
-  - Safe `localStorage` hydration preventing SSR/private browsing corruption.
-
----
-
 ## Tech Stack
 
 | Layer | Technology |
